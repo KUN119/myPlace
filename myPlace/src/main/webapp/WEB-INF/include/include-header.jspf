@@ -11,10 +11,10 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <body>
 <div>
-  <image-button><a href = 'myPlace/Main'></a></image-button>
+  <image-button><a href = '/myPlace/Main'></a></image-button>
    
     <nav>
-    <button><a href = '/loginForm'>logout</a></button>
+    <button><a href = '/myPlacd/loginForm'>logout</a></button>
     
     </nav>
 </div>
