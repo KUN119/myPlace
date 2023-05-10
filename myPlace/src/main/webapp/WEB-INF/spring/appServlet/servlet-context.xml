@@ -36,28 +36,7 @@
 	<!-- 전체경로 매핑 /를 사용하기위한 디폴트 서블릿 설정 -->
 	<mvc:default-servlet-handler/>
 
-	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
-	<!-- resources 경로 설정 -->
-	<!-- resources 경로 밑에 폴더 추가될 때마다 추가하기 -->
-	<mvc:resources location="/resources/" mapping="/resources/**"></mvc:resources>
-	<mvc:resources location="/resources/assets/" mapping="/assets/**"></mvc:resources>
-	<mvc:resources location="/resources/assets/css/" mapping="/assets/css/**"></mvc:resources>
-	<mvc:resources location="/resources/assets/img/" mapping="/assets/img/**"></mvc:resources>
-	<mvc:resources location="/resources/assets/js/" mapping="/assets/js/**"></mvc:resources>
-	<mvc:resources location="/resources/assets/vendor/" mapping="/assets/vendor/**"></mvc:resources>
-	<mvc:resources location="/resources/assets/vendor/bootstrap/" mapping="/assets/vendor/bootstrap/**"></mvc:resources>
-	<mvc:resources location="/resources/assets/vendor/bootstrap/css/" mapping="/assets/vendor/bootstrap/css/**"></mvc:resources>
-	<mvc:resources location="/resources/assets/vendor/bootstrap/js/" mapping="/assets/vendor/bootstrap/js/**"></mvc:resources>
-	<mvc:resources location="/resources/assets/vendor/bootstrap-icons/" mapping="/assets/vendor/bootstrap-icons/**"></mvc:resources>
-	<mvc:resources location="/resources/assets/vendor/bootstrap-icons/fonts/" mapping="/assets/vendor/bootstrap-icons/fonts/**"></mvc:resources>
-	<mvc:resources location="/resources/assets/vendor/glightbox/" mapping="/assets/vendor/glightbox/**"></mvc:resources>
-	<mvc:resources location="/resources/assets/vendor/glightbox/css/" mapping="/assets/vendor/glightbox/css/**"></mvc:resources>
-	<mvc:resources location="/resources/assets/vendor/glightbox/js/" mapping="/assets/vendor/glightbox/js/**"></mvc:resources>
-	<mvc:resources location="/resources/assets/vendor/php-email-form/" mapping="/assets/vendor/php-email-form/**"></mvc:resources>
-	<mvc:resources location="/resources/assets/vendor/purecounter/" mapping="/assets/vendor/purecounter/**"></mvc:resources>
-	<mvc:resources location="/resources/assets/vendor/swiper/" mapping="/assets/vendor/swiper/**"></mvc:resources>
-	<mvc:resources location="/resources/assets/vendor/typed.js/" mapping="/assets/vendor/typed.js/**"></mvc:resources>
-
+	
 	<!-- 컨트롤러에서 리턴 받은 뷰의 이름과 빈에 등록되어 있는 id의 값이 같은것을 찾아 실행 시킨다 .페이징-->
     <beans:bean class="org.springframework.web.servlet.view.BeanNameViewResolver" p:order="0" />
      <!-- 컨트롤러에서 jsp 맵핑 설정 Modelandview 객체를 리턴 받았을 때 -->
@@ -66,24 +45,11 @@
 		p:viewClass="org.springframework.web.servlet.view.JstlView"
 		p:prefix="/WEB-INF/views/"
 		p:suffix=".jsp"
-		p:order="2">
+		p:order="0">
 	</beans:bean>
 	
 	<!-- 파일 첨부할 경우 사용 -->
 	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.support.StandardServletMultipartResolver"/>
-	
- 	<!-- tiles 선언 -->
-    <beans:bean id="urlBasedViewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver">
-        <beans:property name="viewClass" value="org.springframework.web.servlet.view.tiles3.TilesView" />
-        <beans:property name="order" value="1" /> <!-- 서블릿 호출 순서 -->
-    </beans:bean>
-    <beans:bean id="tilesConfigurer" class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
-        <beans:property name="definitions">
-            <beans:list>
-                <beans:value>/WEB-INF/spring/appServlet/tiles.xml</beans:value>
-            </beans:list>
-        </beans:property>
-    </beans:bean>
     
     <!-- 컨트롤러가 리턴한 객체의 내용을 분석하여 JSON포맷으로 변환. -->
     <beans:bean id="jsonView" class="org.springframework.web.servlet.view.json.MappingJackson2JsonView"/>

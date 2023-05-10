@@ -24,7 +24,7 @@ public class MemberController {
 	@RequestMapping(value="/loginForm")
 	public ModelAndView loginForm(@RequestParam Map<String, Object>map) throws Exception{
 		log.debug("###### 로그인 폼 ######");
-		ModelAndView mv = new ModelAndView("loginForm");
+		ModelAndView mv = new ModelAndView("member/loginForm");
 		return mv;
 	}
 
