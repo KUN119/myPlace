@@ -29,6 +29,26 @@ public class MemberController {
 		return mv;
 	}
 	
+	@RequestMapping(value="/loginCheck")
+	public String loginCheck(@RequestParam Map<String, Object> map)throws Exception{
+		log.debug("###### 로그인 체크 ######");
+		
+		String result = "";
+		
+		Map<String, Object> member = memberService.selectId(map);
+		log.debug("아이디 : " + (String) map.get("MEM_ID"));
+		
+		if(!member.get("MEM_ID").equals(map.get("MEM_ID"))) {
+			result = "idFail";
+		} else if(!member.get("MEM_PW").equals(map.get("MEM_PW"))) {
+			result = "pwFail";
+		} else {
+			result = "success";
+		}
+		log.debug("reuslt:" + result);
+		return result;
+	}
+	
 	// 회원가입 페이지
    @RequestMapping(value = "/joinForm", method = {RequestMethod.GET})
    public ModelAndView joinForm(@RequestParam Map<String, Object> map) throws Exception{

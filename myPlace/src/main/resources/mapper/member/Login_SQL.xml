@@ -16,6 +16,7 @@
 				MEM_ADMIN
 		FROM  MEMBER
 		WHERE MEM_ID = #{MEM_ID} 
+		AND MEM_PW = #{MEM_PW}
 		AND MEM_DEL_GB = 'N'
 	]]>
 	</select>
