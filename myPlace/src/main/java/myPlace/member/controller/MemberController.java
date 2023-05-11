@@ -1,5 +1,6 @@
 package myPlace.member.controller;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -38,6 +39,33 @@ public class MemberController {
    }
    
    // 회원가입 기능
-   // joinForm.jsp => controller.joinSuccess() => Service =>DAO => SQL => DB
-   // 
+   @RequestMapping(value = "/joinSuccess")
+   public String joinSuccess(@RequestParam Map<String, Object> param) throws Exception{
+      String result = "";
+      
+      String MEM_ID = (String) param.get("MEM_ID");
+      String MEM_EMAIL = (String) param.get("MEM_EMAIL");
+      String MEM_PHONE = (String) param.get("MEM_PHONE");
+      
+      String verifyId = memberService.selectMemberId(MEM_ID);
+      String verifyEmail = memberService.selectMemberEmail(MEM_EMAIL);
+      String verifyPhone = memberService.selectMemberPhone(MEM_PHONE);
+      
+      // 아이디 중복 확인
+      if(verifyId != null) {
+    	  System.out.println("아이디 중복");
+    	  result = "1";
+      }else if(verifyEmail != null) {
+    	  System.out.println("이메일 중복");
+    	  result = "2";
+      }else if(verifyPhone != null) {
+    	  System.out.println("전화번호 중복");
+    	  result = "3";
+      }else {
+    	  result = "0"; // 회원가입 성공
+    	  memberService.insertMember(param); // db에 회원데이터 등록
+      }
+      
+      return result;
+   }
 }
