@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" version="4.0">
-  <display-name>myPlace</display-name>
+	<display-name>myPlace</display-name>
   
-  <welcome-file-list>
-    <welcome-file>index.jsp</welcome-file>
-  </welcome-file-list>
+	<welcome-file-list>
+	  <welcome-file>/WEB-INF/views/index.jsp</welcome-file>
+	</welcome-file-list>
   
 	<!-- The definition of the Root Spring Container shared by all Servlets and Filters -->
 	<!-- 스프링프레임 워크가 동작하기 위한 설정파일의 위치를 알려주는 파라미터 -->
@@ -47,12 +47,13 @@
 		<load-on-startup>1</load-on-startup>
 		
 		<!-- 파일 첨부 할 경우 사용 -->
-		<multipart-config>
+		<!-- <multipart-config>
 			<location>C:\\goods_image\\</location>
-			<max-file-size>20971520</max-file-size> <!-- 1MB * 20 -->
-			<max-request-size>41943040</max-request-size> <!-- 40MB -->
-			<file-size-threshold>20971520</file-size-threshold> <!-- 20MB -->
-		</multipart-config>
+			<max-file-size>20971520</max-file-size> 1MB * 20
+			<max-request-size>41943040</max-request-size> 40MB
+			<file-size-threshold>20971520</file-size-threshold> 20MB
+		</multipart-config> -->
+		
 	</servlet>
 	
 	<servlet-mapping>
