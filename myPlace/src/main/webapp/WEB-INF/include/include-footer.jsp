@@ -5,6 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+
 </head>
 <body>
 
@@ -15,7 +16,7 @@
       <div class="row mt-4">
         <div class="col-9">
           <div class="copyright-box">
-            <p class="copyright">&copy; Copyright <strong>김태영 김명진 김동영 박건주</strong>. All Rights Reserved</p>
+            <p class="copyright">&copy; Copyright <strong>김태영 김명진 김동영 박건주</strong>.  All Rights Reserved</p>
             <div class="credits">
             주)지도에이피아이 | 사업자등록번호: 842-85-01564 | 대표자: 서울시 뉴딜사업 | 서울특별시
             대표번호: 02-733-8782 | 이메일: cs@aaa.com
@@ -25,12 +26,7 @@
             </div>
           </div>
         </div>
-        <div class="col-3 text-center">
-            <div class="copyright-box">
-                <p class="copyright">메인</p>
-                <div class="credits mt-3"><a href="/myPlace">메인</a></div>
-            </div>
-        </div>
+        
       </div>
     </div>
   </footer>
