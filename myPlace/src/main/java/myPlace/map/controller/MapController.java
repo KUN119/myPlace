@@ -18,6 +18,8 @@ public class MapController {
 	public ModelAndView mapPage(@RequestParam Map<String, Object> map)throws Exception{
 		log.debug("###### 맵 페이지 ######");
 		ModelAndView mv = new ModelAndView("map/map");
+		
+		
 		return mv;
 	}
 
