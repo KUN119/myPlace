@@ -15,7 +15,7 @@ public class MemberDAO extends AbstractDAO{
 		System.out.println("selectId : " + map);
 		return (Map<String, Object>) selectOne("member.selectMemberId", map);
 		// 이메일에 해당하는 회원정보를 가져옴
-	}
+	} 
 
 	// 아이디 중복 검사
 		public String selectMemberId(String id) throws Exception {

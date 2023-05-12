@@ -22,6 +22,6 @@ public class MainController {
 		log.debug("###### 메인 페이지 ######");
 		ModelAndView mv = new ModelAndView("main/main");
 		return mv;
-	}
+	} 
 
 }

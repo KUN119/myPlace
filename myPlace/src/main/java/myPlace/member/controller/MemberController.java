@@ -27,7 +27,7 @@ public class MemberController {
 		log.debug("###### 로그인 폼 ######");
 		ModelAndView mv = new ModelAndView("member/loginForm");
 		return mv;
-	}
+	} 
 	
 	@RequestMapping(value="/loginCheck")
 	public String loginCheck(@RequestParam Map<String, Object> map)throws Exception{

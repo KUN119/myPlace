@@ -10,7 +10,7 @@ public interface MemberService {
 	/* @@@@@@@@@@@@@@@@@@@ 회원가입 관련 @@@@@@@@@@@@@@@@@@@ */
 	
 	/* 아이디 중복 검사 */
-	String selectMemberId(String id) throws Exception;
+	String selectMemberId(String id) throws Exception; 
 
 	/* 이메일 중복 검사 */
 	String selectMemberEmail(String email) throws Exception;

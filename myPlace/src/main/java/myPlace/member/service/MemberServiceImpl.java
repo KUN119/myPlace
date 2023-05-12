@@ -16,7 +16,7 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public Map<String, Object> selectId(Map<String, Object> map) throws Exception {
-		return memberDAO.selectId(map);
+		return memberDAO.selectId(map); 
 	}
 
 	@Override

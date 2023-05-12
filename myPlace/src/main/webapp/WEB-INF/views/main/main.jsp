@@ -15,6 +15,7 @@
 <%@ include file="/WEB-INF/include/include-header.jsp" %>
 <body>
 
+
 <hr>
 <div class="col-2">
   <%@ include file="/WEB-INF/include/include-sidebar.jsp"%>
