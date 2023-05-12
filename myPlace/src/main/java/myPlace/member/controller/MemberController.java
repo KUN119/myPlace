@@ -1,9 +1,9 @@
 package myPlace.member.controller;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -30,17 +30,8 @@ public class MemberController {
 		return mv;
 	}
 	
-	@RequestMapping(value="/logout")
-	public String logout(@RequestParam Map<String, Object> memId, HttpSession session) throws Exception{
-		log.debug("###### 로그아웃 ######");
-		
-		session.invalidate();
-		
-		return "로그아웃 성공";
-	}
-	
 	@RequestMapping(value="/loginCheck")
-	public String loginCheck(@RequestParam Map<String, Object> map, HttpSession session)throws Exception{
+	public String loginCheck(@RequestParam Map<String, Object> map)throws Exception{
 		log.debug("###### 로그인 체크 ######");
 		
 		String result = "";
@@ -48,21 +39,12 @@ public class MemberController {
 		Map<String, Object> member = memberService.selectId(map);
 		log.debug("아이디 : " + (String) map.get("MEM_ID"));
 		
-		// 회원 정보가 존재하지 않을 경우
-		if(member == null) {
+		if(!member.get("MEM_ID").equals(map.get("MEM_ID"))) {
 			result = "idFail";
-		// 아이디 일치 확인
-		}else if(!member.get("MEM_ID").equals(map.get("MEM_ID"))) {
-			result = "idFail";
-		// 비밀번호 일치 확인
 		} else if(!member.get("MEM_PW").equals(map.get("MEM_PW"))) {
 			result = "pwFail";
 		} else {
 			result = "success";
-			
-			// 세션 부여
-			session.setAttribute("MEM_ID", member.get("MEM_ID"));
-			session.setAttribute("MEM_NAME", member.get("MEM_NAME"));
 		}
 		log.debug("reuslt:" + result);
 		return result;

@@ -130,33 +130,31 @@ $("#joinBtn").click(function(e){
 	}else if(joinPhone == ""){ // 전화번호 1,2로 나누기, 전화번호 앞 3자리는 드롭다운으로 변경, 숫자만 입력 가능하도록
 		alert("전화번호를 입력하세요.");
 		$("#joinPhone").focus();
-	}else{
-		
-		$.ajax({
-			  url : "joinSuccess"
-			, type : 'POST'
-			, data : joinData
-			, dataType : 'text'
-			, success: function(result){
-				
-				if(result == "1"){
-					alert("이미 존재하는 아이디입니다.");
-				}else if(result == "2"){
-					alert("이미 존재하는 이메일입니다.");	
-				}else if(result == "3"){
-					alert("이미 등록된 전화번호입니다.")
-				}else if(result == "0"){
-					alert("회원가입이 완료되었습니다!");
-					location.href = "loginForm";
-				}
-			}
-			, error: function(error){
-				alert("실패");
-				console.log("에러 : " + error);
-			}
-		});
-		
 	}
+	
+	$.ajax({
+		  url : "joinSuccess"
+		, type : 'POST'
+		, data : joinData
+		, dataType : 'text'
+		, success: function(result){
+			
+			if(result == "1"){
+				alert("이미 존재하는 아이디입니다.");
+			}else if(result == "2"){
+				alert("이미 존재하는 이메일입니다.");	
+			}else if(result == "3"){
+				alert("이미 등록된 전화번호입니다.")
+			}else if(result == "0"){
+				alert("회원가입이 완료되었습니다!");
+				window.location.href = "loginForm";
+			}
+		}
+		, error: function(error){
+			alert("실패");
+			console.log("에러 : " + error);
+		}
+	});
 })
 </script>
 </html>
