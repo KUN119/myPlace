@@ -1,6 +1,5 @@
 package myPlace.board.controller;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -9,13 +8,11 @@ import javax.annotation.Resource;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import myPlace.board.service.BoardService;
-import myPlace.member.service.MemberService;
 
 @RestController
 public class BoardController {
@@ -43,12 +40,25 @@ public class BoardController {
 		return mv;
 	}
 	
+	// 게시글 작성 메서드
 	@RequestMapping(value="/insertBoard")
-	public ModelAndView insertBoard(@RequestParam Map<String, Object> map) throws Exception{
-		ModelAndView mv = new ModelAndView("redirect:/board/BoardList.do");
+	public int insertBoard(@RequestParam Map<String, Object> map) throws Exception{
 		
 		boardService.insertBoard(map);
 		
+		// 방금 입력한 게시물의 BoardNum을 조회
+		int BOARD_NUM = boardService.selectBoardNum((String) map.get("BOARD_WRITER"));
+		
+		return BOARD_NUM ;
+	}
+	
+	@RequestMapping(value="/boardDetail")
+	public ModelAndView BoardDetail(@RequestParam Map<String, Object> map) throws Exception{
+		ModelAndView mv = new ModelAndView("/board/boardDetail");
+  
+		Map<String, Object> map2 = boardService.selectBoardDetail(map);
+		mv.addObject("map2",map2);
 		return mv;
 	}
+   
 }

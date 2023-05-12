@@ -1,26 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<title>메인 페이지</title>
-
-<meta name="viewport" content="width=device-width, initial-scale=0.8" />
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"></script>
-<body>
-<div>
-  <image-button><a href = '/myPlace/Main'></a></image-button>
-   
-    <nav>
-    <button><a href = '/myPlacd/loginForm'>logout</a></button>
-    
-    </nav>
-</div>
-   
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=0.8" />
+<title>메인 페이지</title>
 
 <style>
     nav {
@@ -49,4 +36,53 @@
       cursor: pointer; /* 커서 스타일 변경 */
     }
 </style>
+
+<body>
+<div>
+	<image-button><a href = '/myPlace/Main'></a></image-button>
+   
+	<nav>
+		<div>
+			<%=session.getAttribute("MEM_NAME")%> 님 안녕하세요
+		</div> 
+		<button type="button" id="logoutBtn">logout</button>
+	</nav>
+</div>
 </body>
+
+<!-- Jquery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function() {
+	// session이 존재하지 않으면 로그인 페이지로 이동
+	if('<%=session.getAttribute("MEM_ID")%>' == "null"){
+		alert("세션이 없으므로 로그인으로 이동");
+		location.href = 'loginForm';
+	}
+});
+
+$("#logoutBtn").click(function(e){
+	e.stopPropagation();
+	
+	var MEM_ID = '<%=(String)session.getAttribute("MEM_ID")%>';
+	
+	$.ajax({
+		  url : "logout"
+		, type : 'POST'
+		, data : {"MEM_ID" : MEM_ID}
+		, dataType : 'text'
+		, success: function(result){
+			
+			alert("로그아웃 성공");
+			location.href = "loginForm";
+			
+		}
+		, error: function(error){
+			alert("실패");
+			console.log("에러 : " + error);
+		}
+	});
+	
+});
+</script>

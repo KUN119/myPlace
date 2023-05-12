@@ -28,4 +28,16 @@ public class BoardServiceImpl implements BoardService {
 		boardDAO.insertBoard(map);
 	}
 	
+	@Override
+	public Map<String, Object> selectBoardDetail(Map<String, Object> map) throws Exception {
+		Map<String, Object> resultMap = boardDAO.selectBoardDetail(map);
+		return resultMap;
+	}
+
+	@Override
+	public int selectBoardNum(String id) throws Exception {
+		int BOARD_NUM = boardDAO.selectBoardNum(id);
+		return BOARD_NUM;
+	}
+	
 }

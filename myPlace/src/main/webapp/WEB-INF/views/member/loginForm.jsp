@@ -27,44 +27,72 @@
 		<input type="password" id="pw" name="pw" placeholder="비밀번호"
 			title="비밀번호" class="input_text" maxlength="16">
 	</div>
-	
-	<button type="submit" class="btn_login" id="login">
-    	<span class="btn_text">로그인</span>
-    </button>
+	<div>
+		<button type="submit" class="btn_login" id="login">
+	    	<span class="btn_text">로그인</span>
+	    </button>
+	    <button type="submit" class="btn_Join" id="joinBtn">
+	    	<span class="btn_text">회원가입</span>
+	    </button>
+    </div>
 </body>
 
 <!-- Jquery -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
 <script type="text/javascript">
 $(document).ready(function() {
 	
+	// session이 존재하면 메인화면으로 보내기
+	if(<%=(String)session.getAttribute("MEM_ID")%> != null){
+		alert("메인으로 이동");
+		location.href = 'mainPage';
+	}
+	
+	// 로그인 버튼 클릭
 	$("#login").on("click", function(e) {
 		e.preventDefault();
-		fn_loginForm();
+		
+		if($("#id").val() == ""){
+			alert("아이디를 입력하세요.");
+			$("#id").focus();
+		}else if($("#pw").val() == ""){
+			alert("비밀번호를 입력하세요.");
+			$("#pw").focus();
+		}else{
+			fn_loginForm();
+		}
+		
+	});
+	
+	// 회원가입 버튼 클릭
+	$("#joinBtn").on("click", function(e) {
+		e.preventDefault();
+		window.location.href = "joinForm";
 	});
 	
 	function fn_loginForm() {
-		var formData = new FormData();
 		var MEM_ID = $('#id').val();
 		var MEM_PW = $('#pw').val();
 		
-		formData.append("MEM_ID", MEM_ID);
-		formData.append("MEM_PW", MEM_PW);
+		var formData = {
+				"MEM_ID" : MEM_ID,
+				"MEM_PW" : MEM_PW
+				};
 
 		$.ajax({
 			url: '/myPlace/loginCheck',
 			type: 'POST',
 			data: formData,
-			processData: false,
-			contentType: false,
 			success: function(data) {
+				
 				console.log(data);
 				if(data=="idFail"){
 					alert("아이디를 확인해주세요.");
 				} else if(data=="pwFail"){
 					alert("비밀번호를 확인해주세요.");
 				} else if(data=="success"){
-					location.href='/myPlace/main';
+					location.href='mainPage';
 				}
 			},
 			error: function(xhr, status, error) {
