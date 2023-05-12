@@ -9,7 +9,7 @@
 		FROM  MEMBER
 		WHERE MEM_ID = #{MEM_ID}
 	]]>
-	</select>
+	</select> 
 
 	<!-- 이메일 중복 확인 -->
 	<select id="selectMemberEmail" parameterType="String" resultType="String"> 

@@ -4,7 +4,7 @@
 <mapper namespace="member">
 	<!-- 로그인 체크 -->
 	<select id="selectMemberId" parameterType="hashmap" resultType="hashmap"> 
-	<![CDATA[
+	<![CDATA[ 
 		SELECT 
 				MEM_NUM, 
 				MEM_ID,

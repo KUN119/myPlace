@@ -100,7 +100,7 @@ $(document).ready(function() {
 			error: function(xhr, status, error) {
 				console.log('실패');
 			}
-		});
+		}); 
 	};
 });
 

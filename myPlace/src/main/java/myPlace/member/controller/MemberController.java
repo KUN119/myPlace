@@ -28,7 +28,7 @@ public class MemberController {
 		log.debug("###### 로그인 폼 ######");
 		ModelAndView mv = new ModelAndView("member/loginForm");
 		return mv;
-	}
+	} 
 	
 	@RequestMapping(value="/logout")
 	public String logout(@RequestParam Map<String, Object> memId, HttpSession session) throws Exception{
