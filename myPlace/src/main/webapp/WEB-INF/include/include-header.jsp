@@ -43,7 +43,7 @@
       display: inline-block;
       width: 100px; /* 버튼의 너비 조정 */
       height: 100px; /* 버튼의 높이 조정 */
-      background-image: url("resources/img/myPlace.png"); /* 버튼 이미지의 경로 설정 */
+      background-image: url("resources/assets/img/myPlace.png"); /* 버튼 이미지의 경로 설정 */
       background-size: 100px 80%;
       border: none; /* 버튼 스타일링을 위해 테두리 제거 */
       cursor: pointer; /* 커서 스타일 변경 */

@@ -45,10 +45,46 @@ public class BoardController {
 	
 	@RequestMapping(value="/insertBoard")
 	public ModelAndView insertBoard(@RequestParam Map<String, Object> map) throws Exception{
-		ModelAndView mv = new ModelAndView("redirect:/board/BoardList.do");
+		ModelAndView mv = new ModelAndView("redirect:/main/main");
 		
 		boardService.insertBoard(map);
 		
+		return mv;
+	}
+	
+	@RequestMapping(value="/boardDetail")
+	public ModelAndView BoardDetail(@RequestParam Map<String, Object> map) throws Exception{
+		ModelAndView mv = new ModelAndView("/board/boardDetail");
+		Map<String, Object> map2 = boardService.selectBoardDetail(map);
+		mv.addObject("map2",map2);
+		return mv;
+	}
+	
+	@RequestMapping(value="/boardDelete")
+	public ModelAndView BoardDelete(@RequestParam Map<String, Object> map) throws Exception{
+		ModelAndView mv = new ModelAndView("redirect:/mainPage");
+		
+		boardService.deleteBoard(map);
+		
+		return mv;
+	}
+	
+	@RequestMapping(value="openBoardUpdate.do")
+	public ModelAndView openBoardUpdate(@RequestParam Map<String, Object> map) throws Exception{
+		ModelAndView mv = new ModelAndView("/board/boardUpdate");
+		
+		Map<String,Object> map2 = boardService.selectBoardDetail(map);
+		mv.addObject("map2", map2);
+		
+		return mv;
+	}
+	
+	@RequestMapping(value="boardUpdate")
+	public ModelAndView boardUpdate(@RequestParam Map<String, Object> map) throws Exception{
+		ModelAndView mv = new ModelAndView("redirect:/board/boardDetail");
+		
+		boardService.boardUpdate(map);
+		mv.addObject(map);
 		return mv;
 	}
 }

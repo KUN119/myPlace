@@ -51,8 +51,8 @@ $(document).ready(function(){
 });
 
 function fn_openBoardList(){
-	var comSubmit = new ComSubmit();
-	comSubmit.setUrl("<c:url value='/myPlace/boardList' />");
+	var comSubmit = new ComSubmit("frm");
+	comSubmit.setUrl("<c:url value='/mainPage' />");
 	comSubmit.submit();
 }
 
