@@ -11,24 +11,26 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
-
 <%@ include file="/WEB-INF/include/include-header.jsp" %>
+
 <body>
 
 
 <hr>
-<div class="col-2">
+
   <%@ include file="/WEB-INF/include/include-sidebar.jsp"%>
-</div>
+
 <hr>
 
-
-<div class="col-2"></div>
+<div class="row">
+  <div class="col-2">
+  <h1 style="text-align: center;">장소리뷰</h1>
+  </div>
 <div class="col-10">
-  <div class="table-responsive">
-    <table class="table-responsive" style="margin-left: auto; margin-right: auto;">
+  
+    <table class="table" style="text-align: center;">
     
-        <caption>리뷰</caption>
+        
         <thead>
           <tr>
             
@@ -58,11 +60,8 @@
           </tr>
         </tbody>
     </table>
-
 </div>
-
-  </div>
-  
+</div>
 
 
 </body>

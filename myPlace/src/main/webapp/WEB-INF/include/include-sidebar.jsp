@@ -17,25 +17,17 @@
           <ul>
             <li class="list-group-item d-flex justify-content-between lh-sm">
               <div>
-                <h5><a href="/sk/brandPage/accountModifyForm" name="brandInfoModify">기본 정보 수정</a></h5> <!-- 추후 data-brandNum 세션에서 꺼낸 BRAND_NUM 값으로 전송 -->
+                <h5><a href="/myPlace/mainPage" name="place">장소저장</a></h5> <!-- 추후 data-brandNum 세션에서 꺼낸 BRAND_NUM 값으로 전송 -->
                 <small class="text-muted">  </small>
               </div>
             </li>
             <li class="list-group-item d-flex justify-content-between lh-sm mt-4">
               <div>
-                <h5 class="my-0">상품 관리</h5>
+                <h5><a href="/myPlace/mainPage" name="place">장소관리</a></h5>
                 <br>
                 
               </div>
             
-            </li>
-
-            <li class="list-group-item d-flex justify-content-between lh-sm mt-4">
-              <div>
-                <h5 class="my-0">매장 관리</h5>
-                <br>
-                
-                </div>
             </li>
           </ul>
         </div>
