@@ -2,22 +2,22 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="board">
-   <!-- 게시판 목록 -->
-   <select id="selectBoardList" parameterType="hashmap" resultType="hashmap"> 
-      <![CDATA[
-      SELECT 
-         BOARD_NUM,
-         BOARD_WRITER,
-         BOARD_TITLE,
-         BOARD_DATE
-      FROM
-         BOARD
-      WHERE 
-         BOARD_DEL_GB='N'
-      ORDER BY BOARD_NUM DESC
-      ]]>
-   </select>
-   
+	<!-- 게시판 목록 -->
+	<select id="selectBoardList" parameterType="hashmap" resultType="hashmap"> 
+		<![CDATA[
+		SELECT 
+			BOARD_NUM,
+			BOARD_WRITER,
+			BOARD_CONTENT,
+			BOARD_DATE
+		FROM
+			BOARD
+		WHERE 
+			BOARD_DEL_GB='N'
+		ORDER BY BOARD_NUM DESC
+		]]>
+	</select>
+	
 	<insert id="insertBoard" parameterType="hashmap" >
 		<![CDATA[
 			INSERT INTO BOARD
@@ -40,23 +40,22 @@
 			)
 		]]>
 	</insert>
-	
+
 	<select id="selectBoardDetail" parameterType="hashmap" resultType="hashmap">
-		<![CDATA[
-		  SELECT
-		     BOARD_NUM,
-		     BOARD_WRITER,
-		     BOARD_TITLE,
-		     BOARD_CONTENT,
-		     BOARD_DATE
-		  FROM
-		     BOARD
-		  WHERE
-		     BOARD_NUM = #{BOARD_NUM}   
-		]]>
-	</select>
-	
-	<select id="selectBoardNum" parameterType="String" resultType="int">
+	<![CDATA[
+		SELECT
+			BOARD_NUM,
+			BOARD_WRITER,
+			BOARD_TITLE,
+			BOARD_CONTENT,
+			BOARD_DATE
+		FROM
+			BOARD
+		WHERE
+			BOARD_NUM = #{BOARD_NUM}	
+	]]>
+</select>
+<select id="selectBoardNum" parameterType="String" resultType="int">
 		<![CDATA[
 			SELECT BOARD_NUM
 				FROM (
@@ -67,4 +66,24 @@
 				) WHERE ROWNUM = 1
 		]]>
 	</select>
+	<update id="deleteBoard" parameterType="hashmap">
+	<![CDATA[
+		UPDATE BOARD
+		SET
+			BOARD_DEL_GB = 'Y'
+		WHERE
+			BOARD_NUM = #{BOARD_NUM}
+	]]>
+</update>
+
+<update id="boardUpdate" parameterType="hashmap">
+	<![CDATA[
+		UPDATE BOARD 
+		SET
+			BOARD_TITLE = #{BOARD_TITLE},
+			BOARD_CONTENT = #{BOARD_CONTENT}
+		WHERE
+			BOARD_NUM = #{BOARD_NUM} AND BOARD_WRITER = #{BOARD_WRITER}	
+	]]>
+</update>
 </mapper>

@@ -18,14 +18,16 @@ public class BoardDAO extends AbstractDAO {
 	public void insertBoard(Map<String, Object> map) throws Exception{
 		insert("board.insertBoard", map);
 	}
-	
 	@SuppressWarnings("unchecked")
 	public Map<String, Object> selectBoardDetail(Map<String, Object> map) throws Exception{
 		return (Map<String, Object>) selectOne("board.selectBoardDetail", map);
 	}
 	
-	public int selectBoardNum(String id) throws Exception{
-		return (int) selectOne("board.selectBoardNum", id);
+	public void deleteBoard(Map<String, Object> map) throws Exception{
+		update("board.deleteBoard", map);
 	}
 	
+	public void boardUpdate(Map<String, Object> map) throws Exception{
+		update("board.boardUpdate", map);
+	}
 }

@@ -16,15 +16,13 @@ import myPlace.board.service.BoardService;
 
 @RestController
 public class MainController {
-   
-//   @Resource(name="mainService")
-//   private MainService mainService;
-   @Resource(name="boardService")
-   private BoardService boardService;
-   
-   Log log = LogFactory.getLog(this.getClass());
-   
-   @RequestMapping(value="/mainPage")
+	
+//	@Resource(name="mainService")
+//	private MainService mainService;
+	
+	Log log = LogFactory.getLog(this.getClass());
+	
+	@RequestMapping(value="/mainPage")
    public ModelAndView mainPage(@RequestParam Map<String, Object> map)throws Exception{
       log.debug("###### 메인 페이지 ######");
       ModelAndView mv = new ModelAndView("main/main");
