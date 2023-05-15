@@ -1,12 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+    
 <!DOCTYPE html>
+
 <html>
 <head>
+  <link rel="stylesheet" href="resources/css/bootstrap.min.css">
+	<!-- jQuery -->
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+   <script src="<c:url value='/js/common.js'/>" charset="utf-8"></script>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous"> -->
-
+<title>Insert title here</title>
 <style> 
 .join_element {
 	display: flex;
@@ -17,17 +22,31 @@
 	margin: 20px 0px 10px;
 	font-size: 20px;
 }
-</style>
 
-<title>회원가입</title>
+.btn_Join {
+  	background-color:#0a0a23;
+    color: #fff;
+    border:none; 
+    border-radius:10px; 
+    padding:10px;
+    min-height:30px; 
+    min-width: 120px;
+}
+</style>
 </head>
-<body style="background-color: gold;">
+<%@ include file="/WEB-INF/include/include-header.jsp" %>
+
+
+<body>
+
+<form id="JoinForm" class="needs-validation" method="post">
+ 
 	<div style="display: flex; justify-content: center;">
 		<div style="margin: 100px 0px 100px;">
 			<div style="display: flex; justify-content: center; font-size: 30px;">
 				회원가입
 			</div>
-			<div id="container">
+			<div id="container" style="width: 600px;">
 				<div class="join_element">
 					<h3 class="element_name">
 						<label>아이디</label>
@@ -85,14 +104,18 @@
 			</div>
 			<div
 				style="display: flex; justify-content: center; margin: 50px 0px;">
-				<button type="button" id="joinBtn"
-					style="width: 150px; height: 50px; font-size: 20px; font-weight: 1000; background-color: springgreen;">회원가입</button>
+				<button type="button" id="joinBtn" class="btn_Join"
+					style="width: 150px; height: 50px; font-size: 20px; font-weight: 1000;">회원가입</button>
 			</div>
 		</div>
 	</div>
 	
+	</form>
+	
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 </body>
+
+<%@ include file="/WEB-INF/include/include-footer.jsp" %>
 
 <!-- Jquery -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
