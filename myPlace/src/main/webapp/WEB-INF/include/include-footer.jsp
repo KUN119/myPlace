@@ -13,7 +13,7 @@
 <!-- ======= Footer ======= -->
 <footer>
     <hr/>
-    <div class="container">
+    
       <div class="row mt-4">
         <div class="col-9">
           <div class="copyright-box">
@@ -29,7 +29,7 @@
         </div>
         
       </div>
-    </div>
+    
   </footer>
 </footer>
 <!-- End  Footer -->
