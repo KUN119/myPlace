@@ -26,13 +26,13 @@ public class MainController {
 	Log log = LogFactory.getLog(this.getClass());
 	
 	@RequestMapping(value="/mainPage")
-   public ModelAndView mainPage(@RequestParam Map<String, Object> map)throws Exception{
+	public ModelAndView mainPage(@RequestParam Map<String, Object> map)throws Exception{
       log.debug("###### 메인 페이지 ######");
       ModelAndView mv = new ModelAndView("main/main");
       
-        List<Map<String,Object>> list = boardService.selectBoardList(map);
+      List<Map<String,Object>> list = boardService.selectBoardList(map);
         
-        mv.addObject("list",list);
+      mv.addObject("list",list);
       return mv;
    } 
 

@@ -31,6 +31,6 @@ public class BoardDAO extends AbstractDAO {
 		update("board.boardUpdate", map);
 	}
 	public int selectBoardNum(String id) throws Exception{
-	    return (int) selectOne("board.selectBoardNum", id);
+		return (int) selectOne("board.selectBoardNum", id);
 	}
 }
