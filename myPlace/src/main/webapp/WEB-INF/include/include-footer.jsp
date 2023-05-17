@@ -15,7 +15,7 @@
     <hr/>
     
       <div class="row mt-4">
-        <div class="col-9">
+        <div class="col-12">
           <div class="copyright-box">
             <p class="copyright">&copy; Copyright <strong>김태영 김명진 김동영 박건주</strong>.  All Rights Reserved</p>
             <div class="credits">
@@ -28,10 +28,11 @@
           </div>
         </div>
         
+        
       </div>
     
   </footer>
-</footer>
+
 <!-- End  Footer -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 </body>
