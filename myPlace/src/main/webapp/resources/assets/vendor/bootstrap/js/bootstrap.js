@@ -781,7 +781,7 @@
         ...(typeof config === 'object' ? config : {})
       };
     }
-
+    
     _typeCheckConfig(config, configTypes = this.constructor.DefaultType) {
       for (const property of Object.keys(configTypes)) {
         const expectedTypes = configTypes[property];

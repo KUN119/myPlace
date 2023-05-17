@@ -6,7 +6,7 @@
 
 <html>
 <head>
-  <link rel="stylesheet" href="resources/css/bootstrap.min.css">
+  <link rel="stylesheet" href="resources/assets/vendor/bootstrap/css/bootstrap.min.css">
 	<!-- jQuery -->
    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
    <script src="<c:url value='/js/common.js'/>" charset="utf-8"></script>
@@ -64,7 +64,7 @@
 			<div style="display: flex; justify-content: center; font-size: 30px;">
 				로그인
 			</div>
-			<div id="container" style="width: 600px;">
+			<div id="container" style="width: 300px;">
 				<div class="join_element">
 					<h3 class="element_name">
 						<label>아이디</label>
@@ -80,14 +80,13 @@
 					</h3>
 					<span
 						style="background-color: white; padding: 10px 50px 10px 10px; border: solid 1px black;">
-						<input type="text" id="loginPass1" style="border: 0;">
+						<input type="passWord" id="loginPass1" style="border: 0;">
 					</span>
 				</div>
 				
 				
 			</div>
-			<div
-				style="display: flex; justify-content: center; margin: 50px 0px;">
+			<div style="display: flex; justify-content: center; margin: 50px 0px;">
 				<button class="btn_login" type="button" id="loginBtn"
 					style="margin-right: 20px; width: 150px; height: 50px; font-size: 20px; font-weight: 1000;">로그인</button>
 					
@@ -117,15 +116,15 @@ $(document).ready(function() {
 	}
 	
 	// 로그인 버튼 클릭
-	$("#login").on("click", function(e) {
+	$("#loginBtn").on("click", function(e) {
 		e.preventDefault();
 		
-		if($("#id").val() == ""){
+		if($("#loginId").val() == ""){
 			alert("아이디를 입력하세요.");
-			$("#id").focus();
-		}else if($("#pw").val() == ""){
+			$("#loginId").focus();
+		}else if($("#loginPass1").val() == ""){
 			alert("비밀번호를 입력하세요.");
-			$("#pw").focus();
+			$("#loginPass1").focus();
 		}else{
 			fn_loginForm();
 		}
@@ -139,8 +138,8 @@ $(document).ready(function() {
 	});
 	
 	function fn_loginForm() {
-		var MEM_ID = $('#id').val();
-		var MEM_PW = $('#pw').val();
+		var MEM_ID = $('#loginId').val();
+		var MEM_PW = $('#loginPass1').val();
 		
 		var formData = {
 				"MEM_ID" : MEM_ID,
