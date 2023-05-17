@@ -1,10 +1,11 @@
-package myPlace.common.controller;
+package myPlace.place.controller;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -14,12 +15,13 @@ import org.apache.commons.logging.LogFactory;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import lombok.RequiredArgsConstructor;
-import myPlace.common.service.PlaceService;
+import myPlace.place.service.PlaceService;
 
 @RestController
 @RequiredArgsConstructor
@@ -30,16 +32,15 @@ public class PlaceController {
 	@Resource(name = "placeService")
 	private PlaceService placeService;
 	
-	@SuppressWarnings("unchecked")
-	@GetMapping("/api/load")
-	public <T> ResponseEntity<T> insertPlace() {
+	@RequestMapping("/api/load")
+	public Map<String, Object> insertPlace() throws Exception{
 		log.debug("###### api load ######");
 		
 		String result="";
 		Map<String, Object> map = new HashMap<String, Object>();
 		
 		try {
-			URL url = new URL("https://api.odcloud.kr/api/15052408/v1/uddi:611c5470-ad94-49e8-8f72-973732c56304?page=2&perPage=10&serviceKey=oQxZdiXR8K8U%2BsFvOZJxW8bP%2FIs0tqBThPnNxNt0FJrjgOZXM537iVGIyUfCPX86eghuF4HLzRaQ7t4I5gfiPQ%3D%3D");
+			URL url = new URL("https://api.odcloud.kr/api/15052408/v1/uddi:611c5470-ad94-49e8-8f72-973732c56304?page=1&perPage=100&serviceKey=oQxZdiXR8K8U%2BsFvOZJxW8bP%2FIs0tqBThPnNxNt0FJrjgOZXM537iVGIyUfCPX86eghuF4HLzRaQ7t4I5gfiPQ%3D%3D");
 			HttpURLConnection urlConnection = (HttpURLConnection)url.openConnection();
 			urlConnection.setRequestProperty("Content-Type", "application/json");
 			
@@ -77,6 +78,21 @@ public class PlaceController {
 		}catch(Exception e) {
 			log.debug(e);
 		}
-		return (ResponseEntity<T>) map;
+		return map;
 	}
+	
+	@RequestMapping(value="/place")
+	public ModelAndView mapPage(@RequestParam Map<String, Object> map)throws Exception{
+		log.debug("###### 맵 페이지 ######");
+		
+		ModelAndView mv = new ModelAndView("place/place");
+		
+		List<Map<String, Object>> list = placeService.selectPlaceList(map);
+		log.debug("###### list: " + list);
+		mv.addObject("placeList", list);
+
+		return mv;
+	}
+	
+	
 }

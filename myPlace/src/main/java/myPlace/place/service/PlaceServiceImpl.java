@@ -1,13 +1,13 @@
-package myPlace.common.service;
+package myPlace.place.service;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import myPlace.common.dao.PlaceDAO;
-
+import myPlace.place.dao.PlaceDAO;
 
 @Service("placeService")
 public class PlaceServiceImpl implements PlaceService{
@@ -20,5 +20,9 @@ public class PlaceServiceImpl implements PlaceService{
 		placeDAO.insertPlace(map);
 	}
 	
+	@Override
+	public List<Map<String, Object>> selectPlaceList(Map<String, Object> map) throws Exception {
+		return placeDAO.selectPlaceList(map);
+	}
 
 }

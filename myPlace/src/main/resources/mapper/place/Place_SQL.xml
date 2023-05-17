@@ -28,4 +28,12 @@
 		)
 	]]>
 	</insert>
+	
+	<select id="selectPlaceList" parameterType="hashmap" resultType="hashmap"> 
+		<![CDATA[
+		SELECT *
+		FROM PLACE
+		]]>
+	</select>
+	
 </mapper>

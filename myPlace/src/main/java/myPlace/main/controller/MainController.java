@@ -20,6 +20,9 @@ public class MainController {
 //	@Resource(name="mainService")
 //	private MainService mainService;
 	
+	@Resource(name="boardService")
+	private BoardService boardService;
+	
 	Log log = LogFactory.getLog(this.getClass());
 	
 	@RequestMapping(value="/mainPage")
