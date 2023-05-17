@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="likePlace">
+	<!-- 게시판 목록 -->
+	<select id="selectLikePlaceList" parameterType="hashmap" resultType="hashmap"> 
+		<![CDATA[
+			SELECT
+				P.PLACE_NUM,
+				P.PLACE_NAME
+			FROM
+				PLACE P
+			JOIN
+				LIKEPLACE L
+			ON
+				P.PLACE_NUM = L.LIKEPLACE_PLACE
+			WHERE
+				L.LIKEPLACE_MEM = #{MEM_ID}
+		]]>
+	</select>
+
+</mapper>

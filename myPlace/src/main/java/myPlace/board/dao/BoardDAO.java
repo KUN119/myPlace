@@ -30,4 +30,8 @@ public class BoardDAO extends AbstractDAO {
 	public void boardUpdate(Map<String, Object> map) throws Exception{
 		update("board.boardUpdate", map);
 	}
+	
+	public int selectBoardNum(String id) throws Exception{
+		return (int) selectOne("board.selectBoardNum", id);
+	}
 }
