@@ -23,40 +23,40 @@
 				<tr>
 					<th scope="row">글 번호</th>
 					<td>
-						${map3.BOARD_NUM }
-						<input type="hidden" id="BOARD_NUM" name="BOARD_NUM" value="${map3.BOARD_NUM }">
+						${map2.BOARD_NUM }
+						<input type="hidden" id="BOARD_NUM" name="BOARD_NUM" value="${map2.BOARD_NUM }">
 					</td>
 				</tr>
 				<tr>
 					<th scope="row">작성자</th>
-					<td>${map3.BOARD_WRITER }</td>
+					<td>${map2.BOARD_WRITER }</td>
 					<th scope="row">작성시간</th>
-					<td>${map3.BOARD_DATE }</td>
+					<td>${map2.BOARD_DATE }</td>
 				</tr>
 				<tr>
 					<th scope="row">제목</th>
 					<td colspan="3">
-						<input type="text" id="TITLE" name="TITLE" class="wdp_90" value="${map3.BOARD_TITLE }"/>
+						<input type="text" id="TITLE" name="TITLE" class="wdp_90" value="${map2.BOARD_TITLE }"/>
 					</td>
 				</tr>
 				<tr>
 					<td colspan="4" class="view_text">
-						<textarea rows="20" cols="100" title="내용" id="CONTENTS" name="CONTENTS">${map3.BOARD_CONTENTS }</textarea>
+						<textarea rows="20" cols="100" title="내용" id="CONTENT" name="CONTENT">${map2.BOARD_CONTENT }</textarea>
 					</td>
 				</tr>
 			</tbody>
 		</table>
 	</form>
 	
-	<a href="#this" class="btn" id="list">목록으로</a>
+	<a href="#this" class="btn" id="cancel">취소</a>
 	<a href="#this" class="btn" id="update">저장하기</a>
 	<a href="#this" class="btn" id="delete">삭제하기</a>
 	
 	<script type="text/javascript">
 		$(document).ready(function(){
-			$("#list").on("click", function(e){ //목록으로 버튼
+			$("#cancel").on("click", function(e){ //목록으로 버튼
 				e.preventDefault();
-				fn_openBoardList();
+				fn_openBoardDetail();
 			});
 			
 			$("#update").on("click", function(e){ //저장하기 버튼
@@ -64,21 +64,32 @@
 				fn_updateBoard();
 			});
 			
-			$("#delete").on("click", function(e){ //삭제하기 버튼
+			$("#delete").on("click", function(e){
 				e.preventDefault();
+				alert("삭제되었습니다.");
 				fn_deleteBoard();
 			});
 		});
 		
-		function fn_openBoardList(){
-			var comSubmit = new ComSubmit();
-			comSubmit.setUrl("<c:url value='/sample/openBoardList.do' />");
+		function fn_openBoardDetail(){
+			var comSubmit = new ComSubmit("frm");
+			comSubmit.setUrl("<c:url value='/boardDetail?BOARD_NUM=${map2.BOARD_NUM }' />");
 			comSubmit.submit();
 		}
 		
 		function fn_updateBoard(){
 			var comSubmit = new ComSubmit("frm");
-			comSubmit.setUrl("<c:url value='/sample/updateBoard.do' />");
+			var BOARD_NUM = $("#map2.BOARD_NUM").val();
+			var BOARD_TITLE = $("#TITLE ").val();
+			var BOARD_CONTENT = $("#CONTENT").val();
+			
+			
+			comSubmit.setUrl("<c:url value='/boardUpdate' />");
+			comSubmit.addParam("BOARD_NUM", BOARD_NUM);
+			comSubmit.addParam("BOARD_TITLE", BOARD_TITLE);
+			comSubmit.addParam("BOARD_CONTENT", BOARD_CONTENT);
+
+			console.log(comSubmit);
 			comSubmit.submit();
 		}
 		

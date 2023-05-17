@@ -1,7 +1,9 @@
 package myPlace.common.dao;
 
 import java.util.List;
+import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -58,25 +60,27 @@ public class AbstractDAO {
 	}
 	
 	//페이징 할 경우 쓸 코드
-//	@SuppressWarnings("unchecked")
-//	public Object selectPagingList(String queryId, Object params) {
-//		printQueryId(queryId);
-//		Map<String, Object> map = (Map<String, Object>) params;
-//
-//		String strPageIndex = (String) map.get("PAGE_INDEX"); // 현제 페이지
-//		String strPageRow = (String) map.get("PAGE_ROW"); // 페이지 당 표시될 게시들 수
-//		int nPageIndex = 0;
-//		int nPageRow = 10;
-//
-//		if (StringUtils.isEmpty(strPageIndex) == false) {
-//			nPageIndex = Integer.parseInt(strPageIndex) - 1;
-//		}
-//		if (StringUtils.isEmpty(strPageRow) == false) {
-//			nPageRow = Integer.parseInt(strPageRow);
-//		}
-//		map.put("START", (nPageIndex * nPageRow) + 1);
-//		map.put("END", (nPageIndex * nPageRow) + nPageRow);
-//
-//		return sqlSession.selectList(queryId, map);
-//	}
+	@SuppressWarnings("unchecked")
+	public Object selectPagingList(String queryId, Object params) {
+		printQueryId(queryId);
+		Map<String, Object> map = (Map<String, Object>) params;
+
+		String strPageIndex = (String) map.get("PAGE_INDEX"); // 현제 페이지
+		String strPageRow = (String) map.get("PAGE_ROW"); // 페이지 당 표시될 게시들 수
+		int nPageIndex = 0;
+		int nPageRow = 5;
+
+		if (StringUtils.isEmpty(strPageIndex) == false) {
+			nPageIndex = Integer.parseInt(strPageIndex) - 1;
+		}
+		if (StringUtils.isEmpty(strPageRow) == false) {
+			nPageRow = Integer.parseInt(strPageRow);
+		}
+		
+		map.put("START", (nPageIndex * nPageRow) + 1);
+		map.put("END", (nPageIndex * nPageRow) + nPageRow);
+
+		return sqlSession.selectList(queryId, map);
+	}
 }
+

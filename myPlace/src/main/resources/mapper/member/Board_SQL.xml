@@ -77,6 +77,17 @@
 	]]>
 </update>
 
+<select id="openBoardUpdate" parameterType="hashmap" resultType="hashmap">
+	<![CDATA[
+		SELECT BOARD 
+		FROM
+			BOARD_TITLE,
+			BOARD_CONTENT
+		WHERE
+			BOARD_NUM = #{BOARD_NUM} AND BOARD_WRITER = #{BOARD_WRITER}	
+	]]>
+</select>
+
 <update id="boardUpdate" parameterType="hashmap">
 	<![CDATA[
 		UPDATE BOARD 
@@ -84,7 +95,7 @@
 			BOARD_TITLE = #{BOARD_TITLE},
 			BOARD_CONTENT = #{BOARD_CONTENT}
 		WHERE
-			BOARD_NUM = #{BOARD_NUM} AND BOARD_WRITER = #{BOARD_WRITER}	
+			BOARD_NUM = #{BOARD_NUM}
 	]]>
 </update>
 </mapper>
