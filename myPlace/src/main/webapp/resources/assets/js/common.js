@@ -38,19 +38,19 @@ function ComSubmit(opt_formId) {
 	};
 }
 
-var fv_ajaxCallback = "";
+var gfv_ajaxCallback = "";
 function ComAjax(opt_formId){
 	this.url = "";		
 	this.formId = gfn_isNull(opt_formId) == true ? "commonForm" : opt_formId;
 	this.param = "";
 	
-	if(this.formId=="commonForm"){
-		var frm = $("#commonForm");
-		if(frm.length>0){
-			frm.remove();
-		}
-		var str = "<form id='commonForm' name='commonForm'></form>";
-		$('body').append(str);
+	if(this.formId == "commonForm"){
+        var frm = $("#commonForm");
+        if(frm.length > 0){
+	        frm.remove();
+        }
+        var str = "<form id='commonForm' name='commonForm'></form>";
+        $('body').append(str);
 	}
 	
 	this.setUrl = function setUrl(url){
