@@ -22,7 +22,7 @@
 	</context:component-scan>
 	
 	<!-- AOP -->
-	<aop:aspectj-autoproxy/>
+	<aop:aspectj-autoproxy/> 
     <beans:bean id="loggerAspect" class="myPlace.common.logger.LoggerAspect" />
     
     <!-- JDBC -->

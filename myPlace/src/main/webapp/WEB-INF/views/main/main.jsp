@@ -36,7 +36,7 @@
             <col width="40%"/>
             <col width="40%"/>
          </colgroup>
-    
+    	
         <caption>리뷰</caption>
         <thead>
          <tr>
@@ -47,27 +47,26 @@
          </tr>
         </thead>
         <tbody>
-         <c:choose>
-            <c:when test="${fn:length(list) > 0}">
-               <c:forEach items="${list }" var="row">
-                  <tr style="border-bottom: 1px solid #ccc;">
-                     <td scope="col" style="border-right: 1px solid #ccc;">${row.BOARD_NUM}</td>
-                     <td scope="col" style="border-right: 1px solid #ccc;">${row.BOARD_WRITER}</td>
-                     <td scope="col" class="title" style="border-right: 1px solid #ccc;">
-                     <a
-                        href='/myPlace/boardDetail?BOARD_NUM=${row.BOARD_NUM }'>${row.BOARD_TITLE}</a>
-                     <td>${row.BOARD_DATE}</td>
-                  </tr>
-               </c:forEach>
-            </c:when>
-            <c:otherwise>
-               <tr>
-                  <td colspan="4">조회된 결과가 없습니다.</td>
-               </tr>
-            </c:otherwise>
-         </c:choose>
-         
-      </tbody>
+        <form id = "frm">
+			<c:choose>
+				<c:when test="${fn:length(list) > 0}">
+					<c:forEach items="${list }" var="row">
+						<tr  id="abc">
+							<td class="boardNum">${row.BOARD_NUM}</td>
+							<td>${row.BOARD_WRITER }</td>
+							<td class="title" name="title">${row.BOARD_TITLE }</td>
+							<td>${row.BOARD_DATE }</td>
+						</tr>
+					</c:forEach>
+				</c:when>
+				<c:otherwise>
+					<tr>
+						<td colspan="4">조회된 결과가 없습니다.</td>
+					</tr>
+				</c:otherwise>
+			</c:choose>
+		</tbody>
+     </table>
     </table>
     <a href="#this" class="btn" id="write">글쓰기</a>
 
@@ -77,14 +76,32 @@
   
 
   <script type="text/javascript">
-
-   $(document).ready(function(){
+  $(document).ready(function(){
+	  
       $("#write").on("click", function(e){ //글쓰기 버튼
          e.preventDefault();
-         location.href='boardWrite';
+         fn_openBoardWrite();
       });   
+      
+      $("[name='title']").on("click", function(e){ //제목 
+			e.preventDefault();
+			var boardNum = $(this).siblings('.boardNum').text();
+			fn_openBoardDetail(boardNum);
+		});
    });
 
+   function fn_openBoardWrite(){
+		var comSubmit = new ComSubmit("frm");
+		comSubmit.setUrl("<c:url value='/boardWrite' />");
+		comSubmit.submit();
+	}
+   
+   function fn_openBoardDetail(element) {
+	   var url = "<c:url value='/boardDetail?BOARD_NUM=" + element + "'/>"; // BOARD_NUM 값을 URL에 추가
+	   var comSubmit = new ComSubmit("frm");
+	   comSubmit.setUrl(url);
+	   comSubmit.submit();
+	 }
    
 </script>   
 </body>

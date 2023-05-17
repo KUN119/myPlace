@@ -41,9 +41,10 @@
 	</table>
 	</form>
 	<a href="#this" class="btn" id="list">목록으로</a>
+<c:if test="${sessionScope.MEM_ID eq map2.BOARD_WRITER}">
 	<a href="#this" class="btn" id="update">수정하기</a>
 	<a href="#this" class="btn" id="delete">삭제하기</a>
-	
+</c:if>
 	<script type="text/javascript">
 		$(document).ready(function(){
 			$("#list").on("click", function(e){ //목록으로 버튼
@@ -65,13 +66,13 @@
 		
 		function fn_openBoardList(){
 			var comSubmit = new ComSubmit();
-			comSubmit.setUrl("<c:url value='/sample/openBoardList.do' />");
+			comSubmit.setUrl("<c:url value='/openBoardList' />");
 			comSubmit.submit();
 		}
 		
 		function fn_openBoardUpdate(){
 			var comSubmit = new ComSubmit("frm");
-			comSubmit.setUrl("<c:url value='/boardUpdate' />");
+			comSubmit.setUrl("<c:url value='/openBoardUpdate?BOARD_NUM=${map2.BOARD_NUM}&BOARD_WRITER=${map2.BOARD_WRITER}' />");
 			comSubmit.submit();
 		}
 		

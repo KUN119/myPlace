@@ -27,7 +27,16 @@ public class BoardDAO extends AbstractDAO {
 		update("board.deleteBoard", map);
 	}
 	
+	@SuppressWarnings("unchecked")
+	public Map<String, Object> openBoardUpdate(Map<String, Object> map) throws Exception{
+		return (Map<String, Object>) selectList("board.openBoardUpdate", map);
+	}
+	
 	public void boardUpdate(Map<String, Object> map) throws Exception{
 		update("board.boardUpdate", map);
 	}
+	
+	public int selectBoardNum(String id) throws Exception{
+	      return (int) selectOne("board.selectBoardNum", id);
+	   }
 }

@@ -46,6 +46,11 @@ public class BoardServiceImpl implements BoardService {
 	}
 	
 	@Override
+	public Map<String, Object> openBoardUpdate(Map<String, Object> map) throws Exception{
+		return boardDAO.openBoardUpdate(map);
+	}
+	
+	@Override
 	public void boardUpdate(Map<String, Object> map) throws Exception{
 		boardDAO.boardUpdate(map);
 	}
