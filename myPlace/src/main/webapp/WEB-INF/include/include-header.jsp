@@ -1,6 +1,3 @@
-incleude-header.jsp에 다음 내용 복붙해주세요~
-
-
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -36,12 +33,12 @@ incleude-header.jsp에 다음 내용 복붙해주세요~
   
         
   
-        <div class="col-md-4 justify-content-end align-items-end">
+        <div class="col-md-4 d-flex flex-row justify-content-end align-items-end">
         
 			<%=session.getAttribute("MEM_NAME")%> 님 안녕하세요
 		
-          <button type="button" class="btn btn-outline-primary">Sign-up</button>
-          <button type="button" class="btn btn-outline-primary"><a href = '/myPlacd/loginForm'>logout</a></button>
+          
+          <button type="button" class="btn btn-outline-primary" id="logoutBtn">logout</button>
           
         </div>
         
