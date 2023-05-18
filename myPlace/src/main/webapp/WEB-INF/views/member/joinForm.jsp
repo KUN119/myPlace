@@ -46,7 +46,7 @@
 			<div style="display: flex; justify-content: center; font-size: 30px;">
 				회원가입
 			</div>
-			<div id="container" style="width: 600px;">
+			<div id="container" style="width: 300px;">
 				<div class="join_element">
 					<h3 class="element_name">
 						<label>아이디</label>

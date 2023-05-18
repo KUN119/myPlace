@@ -8,6 +8,7 @@
 		SELECT 
 			BOARD_NUM,
 			BOARD_WRITER,
+			BOARD_TITLE,
 			BOARD_CONTENT,
 			BOARD_DATE
 		FROM
@@ -19,24 +20,82 @@
 	</select>
 	
 	<insert id="insertBoard" parameterType="hashmap" >
-	<![CDATA[
-		INSERT INTO BOARD
-		(
-			BOARD_NUM,
-		    BOARD_WRITER, 
-		    BOARD_CONTENT, 
-		    BOARD_DATE, 
-		    BOARD_DEL_GB, 
-		)
-		VALUES
-		(
-			SEQ_BOARD_BOARD_NUM.NEXTVAL, 
-		    #{BOARD_WRITER}, 
-		    #{BOARD_CONTENT},  
-		    SYSDATE,
-		    'N'
-		)
-	]]>
-	
+		<![CDATA[
+			INSERT INTO BOARD
+			(
+				BOARD_NUM,
+				BOARD_WRITER,
+				BOARD_TITLE,
+				BOARD_CONTENT, 
+				BOARD_DATE,
+				BOARD_DEL_GB
+			)
+			VALUES
+			(
+				BOARD_SEQ.NEXTVAL,
+				#{BOARD_WRITER},
+				#{BOARD_TITLE},
+				#{BOARD_CONTENT},
+				SYSDATE,
+				'N'
+			)
+		]]>
 	</insert>
+
+	<select id="selectBoardDetail" parameterType="hashmap" resultType="hashmap">
+	<![CDATA[
+		SELECT
+			BOARD_NUM,
+			BOARD_WRITER,
+			BOARD_TITLE,
+			BOARD_CONTENT,
+			BOARD_DATE
+		FROM
+			BOARD
+		WHERE
+			BOARD_NUM = #{BOARD_NUM}	
+	]]>
+</select>
+<select id="selectBoardNum" parameterType="String" resultType="int">
+		<![CDATA[
+			SELECT BOARD_NUM
+				FROM (
+					SELECT BOARD_NUM
+					FROM BOARD
+					WHERE BOARD_WRITER = #{MEM_ID}
+					ORDER BY BOARD_NUM DESC
+				) WHERE ROWNUM = 1
+		]]>
+	</select>
+	<update id="deleteBoard" parameterType="hashmap">
+	<![CDATA[
+		UPDATE BOARD
+		SET
+			BOARD_DEL_GB = 'Y'
+		WHERE
+			BOARD_NUM = #{BOARD_NUM}
+	]]>
+</update>
+
+<select id="openBoardUpdate" parameterType="hashmap" resultType="hashmap">
+	<![CDATA[
+		SELECT BOARD 
+		FROM
+			BOARD_TITLE,
+			BOARD_CONTENT
+		WHERE
+			BOARD_NUM = #{BOARD_NUM} AND BOARD_WRITER = #{BOARD_WRITER}	
+	]]>
+</select>
+
+<update id="boardUpdate" parameterType="hashmap">
+	<![CDATA[
+		UPDATE BOARD 
+		SET
+			BOARD_TITLE = #{BOARD_TITLE},
+			BOARD_CONTENT = #{BOARD_CONTENT}
+		WHERE
+			BOARD_NUM = #{BOARD_NUM}
+	]]>
+</update>
 </mapper>
