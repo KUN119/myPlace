@@ -18,4 +18,6 @@ public interface BoardService {
 	public Map<String, Object> openBoardUpdate(Map<String, Object> map) throws Exception;
 	
 	void boardUpdate(Map<String, Object> map) throws Exception;
+
+	public String boardCount(Map<String, Object> map) throws Exception;
 }

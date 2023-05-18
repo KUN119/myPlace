@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import myPlace.board.dao.BoardDAO;
 
+
 @Service("boardService")
 public class BoardServiceImpl implements BoardService {
 	Logger log = Logger.getLogger(this.getClass());
@@ -55,4 +56,9 @@ public class BoardServiceImpl implements BoardService {
 		boardDAO.boardUpdate(map);
 	}
 	
+	@Override
+	public String boardCount(Map<String, Object> map) throws Exception{
+		return boardDAO.boardCount(map);
+	}
+
 }
