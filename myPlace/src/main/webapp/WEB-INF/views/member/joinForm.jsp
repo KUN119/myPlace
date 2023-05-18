@@ -6,7 +6,7 @@
 
 <html>
 <head>
-  <link rel="stylesheet" href="resources/css/bootstrap.min.css">
+  <link rel="stylesheet" href="resources/assets/vendor/bootstrap/css/bootstrap.min.css">
 	<!-- jQuery -->
    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
    <script src="<c:url value='/js/common.js'/>" charset="utf-8"></script>
@@ -14,8 +14,12 @@
 <title>Insert title here</title>
 <style> 
 .join_element {
+	
 	display: flex;
-	flex-direction: column;
+      flex-direction: column;
+      width: 320px;
+      background-color: white;
+      margin: 0 auto; /* Add this line to center-align the container */
 }
 
 .element_name {
@@ -32,12 +36,38 @@
     min-height:30px; 
     min-width: 120px;
 }
+
+@media screen and (max-width: 350px) {
+   .join_element {
+      width: 200px;
+      margin: 0 auto;
+   }
+}
+
+/* @media screen and (min-width: 350px) and (max-width: 1000px) {
+   .join_element {
+      width: 100%;
+      margin: 0 auto;
+   }
+}
+
+@media screen and (min-width: 1000px) {
+   .join_element {
+      width: 100%;
+      margin: 0 auto;
+   } */
+}
+
 </style>
 </head>
-<%@ include file="/WEB-INF/include/include-header.jsp" %>
 
 
 <body>
+
+	<div class="col-8">
+       <a href="/myPlace/loginForm">
+       <img src="./resources/assets/img/myPlace.png" width="200px" height="100px"></a>
+    </div>
 
 <form id="JoinForm" class="needs-validation" method="post">
  

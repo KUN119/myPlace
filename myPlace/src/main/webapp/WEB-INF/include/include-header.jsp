@@ -32,7 +32,7 @@ incleude-header.jsp에 다음 내용 복붙해주세요~
          <img src="./resources/assets/img/myPlace.png" width="200px" height="100px"></a>
       </div>      
   
-      <div class="col-md-4 justify-content-end align-items-end">
+      <div class="col-md-4 d-flex flex-row justify-content-end align-items-end">
          <%=session.getAttribute("MEM_NAME")%> 님 안녕하세요
          <button type="button" class="btn btn-outline-primary">Sign-up</button>
          <button type="button" class="btn btn-outline-primary" id="logoutBtn">logout</button>
@@ -69,6 +69,4 @@ $("#logoutBtn").click(function(e){
    
 });
 </script>
-
-
 </html>
