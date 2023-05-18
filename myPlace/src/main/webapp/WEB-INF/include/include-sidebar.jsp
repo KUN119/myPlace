@@ -14,7 +14,7 @@
 <div id="placeList" style="height: 90%; background-color: blue;">
 	<h3 style="margin-left: 13%; color: black;"><%=(String)session.getAttribute("MEM_ID")%>님의 장소</h3>
 	<hr style="border: solid 1px rgb(73, 73, 73); width: 80%; margin-left: 5%;">
-	
+	<!--  -->
 	<!-- <div id="placeList" style="height: 90%; background-color: blue;"> -->
 		<!-- 장소 리스트 추가되는 위치 -->
 	</div>
