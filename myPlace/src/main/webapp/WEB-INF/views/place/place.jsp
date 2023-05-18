@@ -20,57 +20,49 @@
 	////////////////////////////////지도 생성///////////////////////////////////////////////
 	var container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
 	var options = { //지도를 생성할 때 필요한 기본 옵션
-		center: new kakao.maps.LatLng(33.450701, 126.570667), //지도의 중심좌표.
-		level: 3 //지도의 레벨(확대, 축소 정도)
+		center: new kakao.maps.LatLng(37.56677914878755, 126.97862963358072), //지도의 중심좌표.
+		level: 9 //지도의 레벨(확대, 축소 정도)
 	};
 
 	var map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
 	////////////////////////////////지도 생성 끝///////////////////////////////////////////////	
 	
-	////////////////////////////////여러 개의 마커 표시///////////////////////////////////////////////
-	var positions = [{}]
-	//표시할 장소들을 positions 배열에 등록
-	var positions = [
-	    {
-	        title: '카카오', 
-	        latlng: new kakao.maps.LatLng(33.450705, 126.570677)
-	    },
-	    {
-	        title: '생태연못', 
-	        latlng: new kakao.maps.LatLng(33.450936, 126.569477)
-	    },
-	    {
-	        title: '텃밭', 
-	        latlng: new kakao.maps.LatLng(33.450879, 126.569940)
-	    },
-	    {
-	        title: '근린공원',
-	        latlng: new kakao.maps.LatLng(33.451393, 126.570738)
-	    }
-	];
+	var data = ${placeData};
 	
+	var positions = []
+	
+	for(var k = 0; k<data.length; k++){
+		positions.push(
+			{
+				"title": data[k].PLACE_NAME, 
+				"latlng": new kakao.maps.LatLng(data[k].PLACE_LAT, data[k].PLACE_LNG)
+			}
+		);
+	}
 	console.log(positions);
 	
-	var data = "${placeList}";
-	console.log(data);
+	// 일반 지도와 스카이뷰로 지도 타입을 전환할 수 있는 지도타입 컨트롤을 생성합니다
+	var mapTypeControl = new kakao.maps.MapTypeControl();
+
+	// 지도에 컨트롤을 추가해야 지도위에 표시됩니다
+	// kakao.maps.ControlPosition은 컨트롤이 표시될 위치를 정의하는데 TOPRIGHT는 오른쪽 위를 의미합니다
+	map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
+
+	// 지도 확대 축소를 제어할 수 있는  줌 컨트롤을 생성합니다
+	var zoomControl = new kakao.maps.ZoomControl();
+	map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
+	
 	//마커의 이미지
 	var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png"; 
 	
 	//장소들의 길이만큼 반복해서 여러개의 마커 표시
-	for (var i = 0; i < data.length; i ++) {
+	for (var i = 0; i < positions.length; i ++) {
 	    
 	    // 마커 이미지의 이미지 크기 입니다
 	    var imageSize = new kakao.maps.Size(24, 35); 
 	    
 	    // 마커 이미지를 생성합니다    
 	    var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize); 
-	    
-//	    var latlng = "";
-	    
-//	   	for(var j=0; j<data.length; j++){
-//	   		latlng = data[j].PLACE_LAT +","+data[j].PLACE_LNG	
-//	   	}
-//	   	console.log(latlng);
 	    
 	    // 마커를 생성합니다
 	    var marker = new kakao.maps.Marker({

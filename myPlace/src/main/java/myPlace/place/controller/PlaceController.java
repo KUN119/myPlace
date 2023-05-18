@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import lombok.RequiredArgsConstructor;
 import myPlace.place.service.PlaceService;
 
@@ -89,7 +91,13 @@ public class PlaceController {
 		
 		List<Map<String, Object>> list = placeService.selectPlaceList(map);
 		log.debug("###### list: " + list);
-		mv.addObject("placeList", list);
+		//mv.addObject("placeList", list);
+		
+		ObjectMapper objectMapper = new ObjectMapper();
+	    String placeData = objectMapper.writeValueAsString(list);
+	    mv.addObject("placeData", placeData);
+	    //mv.addObject("placeList", placeData);
+	    log.debug("###### placeData: " + placeData);
 
 		return mv;
 	}
