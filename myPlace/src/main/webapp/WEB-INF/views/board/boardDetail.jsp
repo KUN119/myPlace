@@ -7,7 +7,7 @@
 <link rel="stylesheet" type="text/css" href="<c:url value='/css/ui.css'/>" />
 <!-- jQuery -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-<script src="<c:url value='/js/common.js'/>" charset="utf-8"></script>
+<script src="<c:url value='/resources/assets/js/common.js'/>" charset="utf-8"></script>
 </head>
 <body>
 <form id ="frm">

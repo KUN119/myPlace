@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="resources/assets/vendor/bootstrap/css/bootstrap.min.css">
 	<!-- jQuery -->
    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-   <script src="<c:url value='/js/common.js'/>" charset="utf-8"></script>
+   <script src="<c:url value='/resources/assets/js/common.js'/>" charset="utf-8"></script>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style> 

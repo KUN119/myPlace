@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="resources/assets/vendor/bootstrap/css/bootstrap.min.css">
    <!-- jQuery -->
    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-   <script src="<c:url value='/js/common.js'/>" charset="utf-8"></script>
+   <script src="<c:url value='/resources/assets/js/common.js'/>" charset="utf-8"></script>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style>
@@ -21,10 +21,10 @@
       margin: 0 auto; /* Add this line to center-align the container */
    }
 
-   .element_name {
-      margin: 20px 0px 10px;
-      font-size: 20px;
-   }
+.element_name {
+	margin: 20px 0px 10px;
+	font-size: 20px;
+}
 
    .row {
       margin-top: 20px;
@@ -192,7 +192,64 @@ $(document).ready(function() {
             "MEM_ID" : MEM_ID,
             "MEM_PW" : MEM_PW
             };
+   
+   // session이 존재하면 메인화면으로 보내기
+   if(<%=(String)session.getAttribute("MEM_ID")%> != null){
+      alert("메인으로 이동");
+      location.href = 'mainPage';
+   }
+   
+   // 로그인 버튼 클릭
+   $("#loginBtn").on("click", function(e) {
+      e.preventDefault();
+      
+      if($("#loginId").val() == ""){
+         alert("아이디를 입력하세요.");
+         $("#loginId").focus();
+      }else if($("#loginPass1").val() == ""){
+         alert("비밀번호를 입력하세요.");
+         $("#loginPass1").focus();
+      }else{
+         fn_loginForm();
+      }
+      
+   });
+   
+   // 회원가입 버튼 클릭
+   $("#joinBtn").on("click", function(e) {
+      e.preventDefault();
+      window.location.href = "joinForm";
+   });
+   
+   function fn_loginForm() {
+      var MEM_ID = $('#loginId').val();
+      var MEM_PW = $('#loginPass1').val();
+      
+      var formData = {
+            "MEM_ID" : MEM_ID,
+            "MEM_PW" : MEM_PW
+            };
 
+      $.ajax({
+         url: '/myPlace/loginCheck',
+         type: 'POST',
+         data: formData,
+         success: function(data) {
+            
+            console.log(data);
+            if(data=="idFail"){
+               alert("아이디를 확인해주세요.");
+            } else if(data=="pwFail"){
+               alert("비밀번호를 확인해주세요.");
+            } else if(data=="success"){
+               location.href='mainPage';
+            }
+         },
+         error: function(xhr, status, error) {
+            console.log('실패');
+         }
+      }); 
+   };
       $.ajax({
          url: '/myPlace/loginCheck',
          type: 'POST',
