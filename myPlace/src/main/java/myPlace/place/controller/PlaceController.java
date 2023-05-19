@@ -15,12 +15,11 @@ import org.apache.commons.logging.LogFactory;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.ModelAndView;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
 import myPlace.place.service.PlaceService;
@@ -84,23 +83,12 @@ public class PlaceController {
 	}
 	
 	@RequestMapping(value="/place")
-	public ModelAndView mapPage(@RequestParam Map<String, Object> map)throws Exception{
+	public ResponseEntity<List<Map<String, Object>>> mapPage(@RequestParam Map<String, Object> map)throws Exception{
 		log.debug("###### 맵 페이지 ######");
-		
-		ModelAndView mv = new ModelAndView("place/place");
 		
 		List<Map<String, Object>> list = placeService.selectPlaceList(map);
 		log.debug("###### list: " + list);
-		//mv.addObject("placeList", list);
 		
-		ObjectMapper objectMapper = new ObjectMapper();
-	    String placeData = objectMapper.writeValueAsString(list);
-	    mv.addObject("placeData", placeData);
-	    //mv.addObject("placeList", placeData);
-	    log.debug("###### placeData: " + placeData);
-
-		return mv;
-	}
-	
-	
+	    return new ResponseEntity<>(list, HttpStatus.OK);
+	}	
 }
