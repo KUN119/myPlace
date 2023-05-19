@@ -7,4 +7,10 @@ public interface LikePlaceService {
 
 	public List<Map<String, Object>> selectLikePlaceList(Map<String, Object> map) throws Exception;
 
+	public void insertLikePlace(Map<String, Object> map) throws Exception;
+	
+//	public void disLikePlace(Map<String, Object> map) throws Exception;
+	
+	
+
 }

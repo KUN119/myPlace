@@ -11,6 +11,9 @@
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
 	<!-- 구글 웹 폰트 끝 -->
+	<!--  아이콘 추가하기 -->
+   <script src="https://kit.fontawesome.com/54cc554368.js" crossorigin="anonymous"></script>
+   <!--  아이콘 추가하기 끝 -->
  	<link rel="stylesheet" href="resources/assets/vendor/bootstrap/css/bootstrap.min.css">
 	<!-- jQuery -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
@@ -228,10 +231,17 @@ $(document).ready(function(){
                          clickable: true
                      });
                      
-                     var iwContent = '<div class="bold"><h2>'+placeData[i].PLACE_NAME+'</h2><h5>'+placeData[i].PLACE_ADDR+'</h5></div>' // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
-                              + '<input type="hidden" name="likePlaceLng" value="' + placeData[i].PLACE_NUM + '">',
-                         iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
+                     //좋아요
+                     var iwContent = '<div class="bold"><h2>'+placeData[i].PLACE_NAME
+                     + '&nbsp;<i class="fa-solid fa-heart" style="color: #ff0000;"></i>'
+                     + '&nbsp;<i name="likeBtn" class="fa-solid fa-heart" style="color: #000000;"></i>'
+                     + '&nbsp;<i class="fa-solid fa-user"></i></i></h2>'
+                     + '<h5>'+placeData[i].PLACE_ADDR+'</h5></div>' // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
                      
+                     + '<input class="likePlaceNum" type="hidden" value="' + placeData[i].PLACE_NUM + '">'
+                     
+                 		iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
+                
                      var infowindow = new kakao.maps.InfoWindow({
                          content: iwContent,
                          removable: iwRemoveable
@@ -260,6 +270,36 @@ $(document).ready(function(){
             });
    
       //////////////////////////////////////////////////////////////////////////////////////////
+      //하트클릭 
+      $(document).on('click', '.fa-heart', function(e) {
+    	  
+    	  e.preventDefault();
+    	  var memId = '<%=(String)session.getAttribute("MEM_ID")%>'
+    	  
+          /* var placeNum = $(this).siblings('.likePlaceNum').val(); */
+
+    	  
+    	  /* alert(typeof placeNum) */
+    	  
+    	  var placeNum = "1"
+    	  
+    	  
+    		  $.ajax({
+    		         url: '/myPlace/addLikePlace',
+    		         type:'POST',
+    		         data:{ "LIKEPLACE_MEM": memId, "LIKEPLACE_PLACE": placeNum},
+    		         
+    		         success:function(placeData) {
+    		        	 alert("fdsfdsa")
+    		        	 },
+    		        error:function() {
+    		            alert("ㅏ안된당");
+    		         }
+    		  
+    		         });
+    		  
+    	  
+    	});
       
       });
       

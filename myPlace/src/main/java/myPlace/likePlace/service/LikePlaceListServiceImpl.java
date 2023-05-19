@@ -20,4 +20,17 @@ public class LikePlaceListServiceImpl implements LikePlaceService{
 		return likePlaceDAO.selectLikePlaceList(map);
 	}
 
+	@Override
+	public void insertLikePlace(Map<String, Object> map) throws Exception {
+		likePlaceDAO.insertLikePlace(map);
+	}
+
+//	@Override
+//	public void disLikePlace(Map<String, Object> map) throws Exception {
+//		likePlaceDAO.disLikePlace(map);
+//		
+//	}
+
+	
+
 }
