@@ -7,7 +7,9 @@
 		<![CDATA[
 			SELECT
 				P.PLACE_NUM,
-				P.PLACE_NAME
+				P.PLACE_NAME,
+				P.PLACE_LAT,
+				P.PLACE_LNG
 			FROM
 				PLACE P
 			JOIN

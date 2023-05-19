@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +16,8 @@ import org.apache.commons.logging.LogFactory;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -82,25 +85,15 @@ public class PlaceController {
 		}
 		return map;
 	}
-	
-	@RequestMapping(value="/place")
-	public ModelAndView mapPage(@RequestParam Map<String, Object> map)throws Exception{
-		log.debug("###### 맵 페이지 ######");
-		
-		ModelAndView mv = new ModelAndView("place/place");
-		
-		List<Map<String, Object>> list = placeService.selectPlaceList(map);
-		log.debug("###### list: " + list);
-		//mv.addObject("placeList", list);
-		
-		ObjectMapper objectMapper = new ObjectMapper();
-	    String placeData = objectMapper.writeValueAsString(list);
-	    mv.addObject("placeData", placeData);
-	    //mv.addObject("placeList", placeData);
-	    log.debug("###### placeData: " + placeData);
 
-		return mv;
-	}
-	
+	@RequestMapping(value="/place")
+	   public ResponseEntity<List<Map<String, Object>>> mapPage(@RequestParam Map<String, Object> map)throws Exception{
+	      log.debug("###### 맵 페이지 ######");
+	      
+	      List<Map<String, Object>> list = placeService.selectPlaceList(map);
+	      log.debug("###### list: " + list);
+	      
+	       return new ResponseEntity<>(list, HttpStatus.OK);
+	   }   
 	
 }

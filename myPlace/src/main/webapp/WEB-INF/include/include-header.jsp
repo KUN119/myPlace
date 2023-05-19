@@ -1,6 +1,3 @@
-incleude-header.jsp에 다음 내용 복붙해주세요~
-
-
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -26,23 +23,16 @@ incleude-header.jsp에 다음 내용 복붙해주세요~
 <body>
   
    <div class="row">
-      
-       
-       <div class="col-8">
-       <a href="/myPlace/mainPage">
-       <img src="./resources/assets/img/myPlace.png" width="200px" height="100px"></a>
-       </div>
-       
+   
+      <div class="col-8">
+         <a href="/myPlace/mainPage">
+         <img src="./resources/assets/img/myPlace.png" width="200px" height="100px"></a>
+      </div>      
   
-        
-  
-        <div class="col-md-4 justify-content-end align-items-end">
-        
-			<%=session.getAttribute("MEM_NAME")%> 님 안녕하세요
-		
-          <button type="button" class="btn btn-outline-primary">Sign-up</button>
-          <button type="button" class="btn btn-outline-primary"><a href = '/myPlacd/loginForm'>logout</a></button>
-          
+      <div class="col-md-4 justify-content-end align-items-end">
+         <%=session.getAttribute("MEM_NAME")%> 님 안녕하세요
+         <button type="button" class="btn btn-outline-primary">Sign-up</button>
+         <button type="button" class="btn btn-outline-primary" id="logoutBtn">logout</button>
         </div>
         
     </div> 
@@ -53,6 +43,13 @@ incleude-header.jsp에 다음 내용 복붙해주세요~
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
 <script>
+$(document).ready(function() {
+	// session이 존재하지 않으면 로그인 페이지로 이동
+	if('<%=session.getAttribute("MEM_ID")%>' == "null"){
+		location.href = 'loginForm';
+	}
+});
+
 $("#logoutBtn").click(function(e){
    e.stopPropagation();
    
@@ -75,5 +72,7 @@ $("#logoutBtn").click(function(e){
    });
    
 });
-</script> 
+</script>
+
+
 </html>
