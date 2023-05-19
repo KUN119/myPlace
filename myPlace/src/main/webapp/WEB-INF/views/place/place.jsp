@@ -2,8 +2,36 @@
     pageEncoding="UTF-8"%>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
-
 <html>
+<style>
+div h2{
+	color:blue;
+	padding: 5px;
+	margin-top: 0;
+	font-family: "NotoSansKR";
+}
+div h5{
+	padding: 5px;
+	margin-top: 0;
+	font-family: "NotoSansKR";
+}
+
+.info {
+	ght: auto;
+            width: auto;
+            padding: 5px;
+            margin-top: -15p	font-size: 12px;
+		padding: 5px;
+        }
+
+.info .title {
+		font-weight: bold;
+        }
+ .ifw {
+            heix;
+        }
+        
+</style>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
@@ -31,15 +59,15 @@
 	
 	var positions = []
 	
-	for(var k = 0; k<data.length; k++){
+	for(var i = 0; i<data.length; i++){
 		positions.push(
 			{
-				"title": data[k].PLACE_NAME, 
-				"latlng": new kakao.maps.LatLng(data[k].PLACE_LAT, data[k].PLACE_LNG)
+				"title": data[i].PLACE_NAME, 
+				"latlng": new kakao.maps.LatLng(data[i].PLACE_LAT, data[i].PLACE_LNG),
+				"addr": data[i].PLACE_ADDR
 			}
 		);
 	}
-	console.log(positions);
 	
 	// 일반 지도와 스카이뷰로 지도 타입을 전환할 수 있는 지도타입 컨트롤을 생성합니다
 	var mapTypeControl = new kakao.maps.MapTypeControl();
@@ -63,17 +91,38 @@
 	    
 	    // 마커 이미지를 생성합니다    
 	    var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize); 
-	    
-	    // 마커를 생성합니다
-	    var marker = new kakao.maps.Marker({
-	        map: map, // 마커를 표시할 지도
-	        position: positions[i].latlng, // 마커를 표시할 위치
-	        title : positions[i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
-	        image : markerImage // 마커 이미지 
-	    });
 	}
 	////////////////////////////////여러 개의 마커 표시 끝///////////////////////////////////////////////
 
-
+	for (var i = 0; i < positions.length; i++) {
+		var marker = new kakao.maps.Marker({
+		    map: map,
+		    position: positions[i].latlng,
+		    clickable: true
+		});
+		
+		var iwContent = '<div class="bold"><h2>'+data[i].PLACE_NAME+'</h2><h5>'+data[i].PLACE_ADDR+'</h5></div>', // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+		    iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
+		
+		var infowindow = new kakao.maps.InfoWindow({
+		    content: iwContent,
+		    removable: iwRemoveable
+		});
+		
+		kakao.maps.event.addListener(marker, 'click', makeOverListener(map, marker, infowindow));
+	}	
+	
+	// 인포윈도우를 표시하는 클로저를 만드는 함수
+	function makeOverListener(map, marker, infowindow) {
+	    return function () {
+	        infowindow.open(map, marker);
+	    };
+	}
+	// 인포윈도우를 닫는 클로저를 만드는 함수
+	function makeOutListener(infowindow) {
+	    return function () {
+	        infowindow.close();
+	    };
+	}
 </script>
 </html>
