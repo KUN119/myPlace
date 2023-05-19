@@ -43,7 +43,7 @@ public class MainController {
 		List<Map<String, Object>> boardList = new ArrayList<Map<String,Object>>();
 		
 		boardList = boardService.selectBoardList(map); 
-		
+		System.out.println(boardList);
 		
 		return boardList;
 	}
@@ -51,7 +51,7 @@ public class MainController {
 	 @RequestMapping(value = "/boardCount", method = RequestMethod.POST)
 	   @ResponseBody
 	   public String boardCount(@RequestParam Map<String, Object> map) throws Exception {
-		 
+		 log.debug(map);
 		 
 		 String boardCount = boardService.boardCount(map);
 		 System.out.println(boardCount);

@@ -3,21 +3,29 @@
 
 <mapper namespace="board">
 	<!-- 게시판 목록 -->
-		<select id="selectBoardList" parameterType="hashmap" resultType="hashmap"> 
-			<![CDATA[
-			SELECT 
-				BOARD_NUM,
-				BOARD_WRITER,
-				BOARD_TITLE,
-				BOARD_CONTENT,
-				BOARD_DATE,
-				BOARD_PLACE
-			FROM
-				BOARD
-			WHERE 
-				BOARD_DEL_GB='N' AND BOARD_PLACE = #{BOARD_PLACE}
-			ORDER BY BOARD_NUM DESC
-			]]>
+				<select id="selectBoardList" parameterType="hashmap" resultType="hashmap"> 
+		    <![CDATA[
+					    SELECT
+			    BOARD_NUM,
+			    BOARD_WRITER,
+			    BOARD_TITLE,
+			    BOARD_CONTENT,
+			    BOARD_DATE,
+			    BOARD_PLACE
+			FROM (
+			    SELECT
+			        BOARD_NUM,
+			        BOARD_WRITER,
+			        BOARD_TITLE,
+			        BOARD_CONTENT,
+			        BOARD_DATE,
+			        BOARD_PLACE,
+			        ROW_NUMBER() OVER (ORDER BY BOARD_NUM DESC) AS rn
+			    FROM BOARD
+			    WHERE BOARD_DEL_GB = 'N' AND BOARD_PLACE = #{BOARD_PLACE}
+			)     
+			WHERE rn BETWEEN #{startIdx} AND #{endIdx}
+		    ]]>
 		</select>
 		
 		<select id="boardPaging" parameterType="hashmap" resultType="String">
