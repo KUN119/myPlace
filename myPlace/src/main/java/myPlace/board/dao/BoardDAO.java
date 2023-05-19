@@ -1,11 +1,13 @@
 package myPlace.board.dao;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
 import myPlace.common.dao.AbstractDAO;
+
 
 @Repository("boardDAO")
 public class BoardDAO extends AbstractDAO {
@@ -38,4 +40,10 @@ public class BoardDAO extends AbstractDAO {
 	public int selectBoardNum(String id) throws Exception{
 		return (int) selectOne("board.selectBoardNum", id);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public String boardCount(Map<String, Object> map) throws Exception{
+		return (String) selectOne("board.boardPaging", map);
+	}
+	
 }

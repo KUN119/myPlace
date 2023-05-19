@@ -1,6 +1,7 @@
 package myPlace.main.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -43,7 +44,18 @@ public class MainController {
 		
 		boardList = boardService.selectBoardList(map); 
 		
+		
 		return boardList;
 	}
 
+	 @RequestMapping(value = "/boardCount", method = RequestMethod.POST)
+	   @ResponseBody
+	   public String boardCount(@RequestParam Map<String, Object> map) throws Exception {
+		 
+		 
+		 String boardCount = boardService.boardCount(map);
+		 System.out.println(boardCount);
+		 
+		 return boardCount;
+	 }
 }
