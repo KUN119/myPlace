@@ -6,31 +6,32 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"></script>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"></script>
+	
 <style>
-	.likePlace{
-		display: flex;
-		justify-content: center;
-		align-items:center;
-		font-size: 20px;
-		width:100%;
-		margin: 10px;
-		border: solid 1px #0d6efd;
-		border-radius: 5px;
-	}
+.likePlace{
+	display: flex;
+	justify-content: center;
+	align-items:center;
+	font-size: 20px;
+	width:100%;
+	margin: 10px;
+	border: solid 1px #0d6efd;
+	border-radius: 5px;
+}
 </style>
+
 </head>
 <body>
 	<div style="display: flex; width:220px; flex-direction:column; align-items: center; z-index: 1">
 		<h3 style="margin-left: 13%; color: black;"><%=(String)session.getAttribute("MEM_ID")%>님의 장소</h3>
 		<hr style="border: solid 1px rgb(73, 73, 73); width: 80%; margin-left: 5%;">
-		
 		<div id="placeList" style="display:flex; flex-direction:column; align-items:center; height: 80%;">
 			<!-- 장소 리스트 추가되는 위치 -->
 		</div>
 	</div>
-	
+
 	<script type="text/javascript">
 	$(document).ready(function(){
 		var MEM_ID = '<%=(String)session.getAttribute("MEM_ID")%>';
