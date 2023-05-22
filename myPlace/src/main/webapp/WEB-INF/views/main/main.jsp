@@ -27,9 +27,21 @@ h5{
 	<title>MyPlace</title>
 	
 	<style>
+	.board_show{
+		top: 70%!important;
+	}
+	
+	.board_hide{
+		position: absolute;
+		top: 100%;	
+		height:30%;
+		width: 100%;
+		transition: all .3s ease-out;
+		background-color: orange; /* 임시 속성(추후 삭제) */
+	}
 	.mainContent{
 	   display: flex;
-	   height: calc(100vh - 10px);
+	   height: calc(100vh - 120px);
 	}
 	
 	.sidebarArea{
@@ -49,46 +61,49 @@ h5{
 		<%@ include file="/WEB-INF/include/include-sidebar.jsp"%>
 	</div>
 	
-	<div class="col-10" id="content">
-		<div id="mapArea" style="display:flex; flex-direction:column; justify-content:center; align-items: center; height:70%;">
+	<div class="col-10" id="content" style="overflow: hidden; width:85%; position: relative;">
+		<div id="mapArea" style="display:flex; flex-direction:column; justify-content:center; align-items: center; width:100%; height:100%; position: absolute;">
+			<!-- 지도 영역 start -->
 			<div id="map" style="width:100%; height:100%; border: solid 2px black; z-index: 0;"></div>
-		</div>
-		<div style="height:30%;">
-			<div class="col-10" id="boardArea">
-				<div class="table-responsive">
-					<form id = "frm" style="display: flex; flex-direction: column; align-items: center;">
-					<button type="button" value="게시판생성" id="boardBtn">게시글 불러오기</button>
-						<table class="table-responsive" style=" border:1px solid #ccc; margin-left: auto; margin-right: auto;">
-							<colgroup>
-								<col width="15%"/>
-								<col width="20%"/>
-								<col width="40%"/>
-								<col width="40%"/>
-							</colgroup>
-							<h2>게시판</h2>
-							<thead>
-								<tr>
-									<th scope="col" style="border-right: 1px solid #ccc; border-bottom: 1px solid #ccc;">글번호</th>
-									<th scope="col" style="border-right: 1px solid #ccc; border-bottom: 1px solid #ccc;">작성자</th>
-									<th scope="col" style="border-right: 1px solid #ccc; border-bottom: 1px solid #ccc;">제목</th>
-									<th scope="col" style="border-right: 1px solid #ccc; border-bottom: 1px solid #ccc;">작성일</th>
-								</tr>
-							</thead>
-							<tbody id="board">
-								<tr>
-									<td colspan="4">조회된 결과가 없습니다.</td>
-								</tr>
-							</tbody>
-						</table>
-						
-						<div id="pagingArea" style="display: flex;">
-							<!-- pageNum이 추가되는 위치 -->
-						</div>
-						
-					</form>
-					<a href="#this" class="btn" id="write">글쓰기</a>
+			<!-- 지도 영역 end -->
+
+			<!-- 게시판 영역 start -->
+			<div class="board_hide">
+				<div class="col-10" id="boardArea">
+					<div class="table-responsive">
+						<form id = "frm">
+						<!-- <button type="button" value="게시판생성" id="boardBtn">게시글 불러오기</button> -->
+							<table class="table-responsive" style=" border:1px solid #ccc; margin-left: auto; margin-right: auto;">
+								<colgroup>
+									<col width="15%"/>
+									<col width="20%"/>
+									<col width="40%"/>
+									<col width="40%"/>
+								</colgroup>
+								<caption>리뷰</caption>
+								<thead>
+									<tr>
+										<th scope="col" style="border-right: 1px solid #ccc; border-bottom: 1px solid #ccc;">글번호</th>
+										<th scope="col" style="border-right: 1px solid #ccc; border-bottom: 1px solid #ccc;">작성자</th>
+										<th scope="col" style="border-right: 1px solid #ccc; border-bottom: 1px solid #ccc;">제목</th>
+										<th scope="col" style="border-right: 1px solid #ccc; border-bottom: 1px solid #ccc;">작성일</th>
+									</tr>
+								</thead>
+								<tbody id="board">
+									<tr>
+										<td colspan="4">조회된 결과가 없습니다.</td>
+									</tr>
+								</tbody>
+							</table>
+							<div id="pagingArea" style="display: flex;">
+								<!-- pageNum이 추가되는 위치 -->
+							</div>
+						</form>
+						<a href="#this" class="btn" id="write">글쓰기</a>
+					</div>
 				</div>
 			</div>
+			<!-- 게시판 영역 end -->
 		</div>
 	</div>
 </div>
@@ -157,8 +172,7 @@ $(document).ready(function(){
          e.preventDefault();
          fn_openBoardWrite();
       });   
-	
-     
+
    });
 
    function fn_openBoardWrite(){
@@ -220,7 +234,8 @@ $(document).ready(function(){
 </script>  
 <!-- 카카오 맵 기능 -->
 <script type="text/javascript">
-$(document).ready(function(){
+   $(document).ready(function(){
+	  var boardShow = false; // board영역의 보이는지 여부를 나타내는 변수
       ////////////////////////////////지도 생성///////////////////////////////////////////////
       var container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
       var options = { //지도를 생성할 때 필요한 기본 옵션
@@ -229,8 +244,13 @@ $(document).ready(function(){
       };
       
       var map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
+      
       ////////////////////////////////지도 생성 끝///////////////////////////////////////////////
- 
+      
+      /* 중심으로 이동하는 기능 */
+      // 이동할 위도 경도 위치를 생성합니다 
+      
+      
       /* @@@@@ sidebar에서 동작하는 기능 start @@@@@ */
       /* 클릭한 LIKEPLACE를 지도의 중심으로 위치시킨다. */
       $(document).on("click", ".likePlace", function(e) {
@@ -239,16 +259,15 @@ $(document).ready(function(){
            var likePlaceLat = $(this).find('[name="likePlaceLat"]').val();
            var likePlaceLng = $(this).find('[name="likePlaceLng"]').val();
          
-         var moveLatLon = new kakao.maps.LatLng(likePlaceLat, likePlaceLng);	
-         // 지도 중심을 이동 시킵니다
-         map.setCenter(moveLatLon);
-         map.setLevel(3);
-         // setCenter 직후 setLevel을 실행 시 마커가 가운데에 위치하지 않아서 setCenter를 한 번 더 실행
-         map.setCenter(moveLatLon);
-          
-         });
-      /* @@@@@ sidebar에서 동작하는 기능 end @@@@@ */
-      
+			var moveLatLon = new kakao.maps.LatLng(likePlaceLat, likePlaceLng);
+			// 지도 중심을 이동 시킵니다
+			map.setCenter(moveLatLon);
+			map.setLevel(3);
+			// setCenter 직후 setLevel을 실행 시 마커가 가운데에 위치하지 않아서 setCenter를 한 번 더 실행
+			map.setCenter(moveLatLon);
+		});
+		/* @@@@@ sidebar에서 동작하는 기능 end @@@@@ */
+		
       $.ajax({
          url: '/myPlace/place',
          type:'POST',
@@ -299,6 +318,8 @@ $(document).ready(function(){
                          clickable: true
                      });
                      
+                     var placeNum = placeData[i].PLACE_NUM;
+                     
                      //좋아요
                      var iwContent = '<div class="bold"><h2>'+placeData[i].PLACE_NAME
 						+ '&nbsp;<i class="fa-solid fa-heart" style="color: #ff0000;"></i>'
@@ -315,16 +336,17 @@ $(document).ready(function(){
                          removable: iwRemoveable
                      });
                      
-                     
                      kakao.maps.event.addListener(marker, 'click', makeOverListener(map, marker, infowindow, placeNum));
-                     
                   }
 	              
                   // 인포윈도우를 표시하는 클로저를 만드는 함수
                   function makeOverListener(map, marker, infowindow, placeNum) {
                       return function () {
                           infowindow.open(map, marker);
-                          
+                          //alert(placeNum);
+                          $(".board_hide").addClass('board_show'); // board_show 클래스 추가(top:70%를 우선 적용)
+                          boardShow = true;
+
                           $("#likeUser").on("click", function(e){  // 브랜드 회원정보 수정
                       		e.preventDefault();
 
@@ -359,6 +381,15 @@ $(document).ready(function(){
                     alert("서버 오류");
                  }
             });
+		
+		/* @@@@@ 지도를 클릭하면 게시판 사라짐 start @@@@@ */
+		$("#map").on("mousedown", function(e) {
+			e.preventDefault();
+			if (!$(this).hasClass('board_show')) {
+				$(".board_hide").removeClass('board_show'); // board_show 클래스를 제거
+			}
+		});
+		/* @@@@@ 지도를 클릭하면 게시판 사라짐 end @@@@@ */
    
       //////////////////////////////////////////////////////////////////////////////////////////
       //하트클릭 
@@ -387,9 +418,7 @@ $(document).ready(function(){
     		            alert("ㅏ안된당");
     		         }
     		  
-    		         });
-    		  
-    	  
+    		         }); 
     	});
       
       });  

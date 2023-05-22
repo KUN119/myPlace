@@ -139,8 +139,6 @@
                   <button class="btn_Join" type="button" id="joinBtn">회원가입</button>
                </div>
             </div>
-        
-         
       </div>
    </div>
    
@@ -157,119 +155,61 @@
 $(document).ready(function() {
    
    // session이 존재하면 메인화면으로 보내기
-   if(<%=(String)session.getAttribute("MEM_ID")%> != null){
+   <% if(session.getAttribute("MEM_ID") != null) { %>
       alert("메인으로 이동");
       location.href = 'mainPage';
-   }
+   <% } %>
    
-   // 로그인 버튼 클릭
-   $("#loginBtn").on("click", function(e) {
-      e.preventDefault();
-      
-      if($("#loginId").val() == ""){
-         alert("아이디를 입력하세요.");
-         $("#loginId").focus();
-      }else if($("#loginPass1").val() == ""){
-         alert("비밀번호를 입력하세요.");
-         $("#loginPass1").focus();
-      }else{
-         fn_loginForm();
-      }
-      
-   });
+	// 회원가입 버튼 클릭
+	$("#joinBtn").on("click", function(e) {
+		e.preventDefault();
+		window.location.href = "joinForm";
+		});
    
-   // 회원가입 버튼 클릭
-   $("#joinBtn").on("click", function(e) {
-      e.preventDefault();
-      window.location.href = "joinForm";
-   });
+	// 로그인 버튼 클릭
+	$("#loginBtn").on("click", function(e) {
+		e.preventDefault();
+		
+		if($("#loginId").val() == ""){
+			alert("아이디를 입력하세요.");
+			$("#loginId").focus();
+		}else if($("#loginPass1").val() == ""){
+			alert("비밀번호를 입력하세요.");
+			$("#loginPass1").focus();
+		}else{
+			fn_loginForm();
+			}
+		});
    
-   function fn_loginForm() {
-      var MEM_ID = $('#loginId').val();
-      var MEM_PW = $('#loginPass1').val();
-      
-      var formData = {
-            "MEM_ID" : MEM_ID,
-            "MEM_PW" : MEM_PW
-            };
-   
-   // session이 존재하면 메인화면으로 보내기
-   if(<%=(String)session.getAttribute("MEM_ID")%> != null){
-      alert("메인으로 이동");
-      location.href = 'mainPage';
-   }
-   
-   // 로그인 버튼 클릭
-   $("#loginBtn").on("click", function(e) {
-      e.preventDefault();
-      
-      if($("#loginId").val() == ""){
-         alert("아이디를 입력하세요.");
-         $("#loginId").focus();
-      }else if($("#loginPass1").val() == ""){
-         alert("비밀번호를 입력하세요.");
-         $("#loginPass1").focus();
-      }else{
-         fn_loginForm();
-      }
-      
-   });
-   
-   // 회원가입 버튼 클릭
-   $("#joinBtn").on("click", function(e) {
-      e.preventDefault();
-      window.location.href = "joinForm";
-   });
-   
-   function fn_loginForm() {
-      var MEM_ID = $('#loginId').val();
-      var MEM_PW = $('#loginPass1').val();
-      
-      var formData = {
-            "MEM_ID" : MEM_ID,
-            "MEM_PW" : MEM_PW
-            };
+	function fn_loginForm() {
+		var MEM_ID = $('#loginId').val();
+		var MEM_PW = $('#loginPass1').val();
+		
+		var formData = {
+			"MEM_ID" : MEM_ID,
+			"MEM_PW" : MEM_PW
+			};
 
-      $.ajax({
-         url: '/myPlace/loginCheck',
-         type: 'POST',
-         data: formData,
-         success: function(data) {
-            
-            console.log(data);
-            if(data=="idFail"){
-               alert("아이디를 확인해주세요.");
-            } else if(data=="pwFail"){
-               alert("비밀번호를 확인해주세요.");
-            } else if(data=="success"){
-               location.href='mainPage';
-            }
-         },
-         error: function(xhr, status, error) {
-            console.log('실패');
-         }
-      }); 
-   };
-      $.ajax({
-         url: '/myPlace/loginCheck',
-         type: 'POST',
-         data: formData,
-         success: function(data) {
-            
-            console.log(data);
-            if(data=="idFail"){
-               alert("아이디를 확인해주세요.");
-            } else if(data=="pwFail"){
-               alert("비밀번호를 확인해주세요.");
-            } else if(data=="success"){
-               location.href='mainPage';
-            }
-         },
-         error: function(xhr, status, error) {
-            console.log('실패');
-         }
-      }); 
-   };
+	      $.ajax({
+	         url: '/myPlace/loginCheck',
+	         type: 'POST',
+	         data: formData,
+	         success: function(data) {
+	            
+	            console.log(data);
+	            if(data=="idFail"){
+	               alert("아이디를 확인해주세요.");
+	            } else if(data=="pwFail"){
+	               alert("비밀번호를 확인해주세요.");
+	            } else if(data=="success"){
+	               location.href='mainPage';
+	            }
+	         },
+	         error: function(xhr, status, error) {
+	            console.log('실패');
+	         }
+	      }); 
+	   };
 });
 
 </script>
