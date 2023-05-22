@@ -20,5 +20,16 @@
 				L.LIKEPLACE_MEM = #{MEM_ID}
 		]]>
 	</select>
+	
+	<!-- 장소를 좋아하는 사람의 아이디 출력 -->
+	<select id="selectIdInLikePlace" parameterType="hashmap" resultType="hashmap"> 
+		<![CDATA[
+			SELECT M.MEM_ID
+			FROM LIKEPLACE LP, PLACE P, MEMBER M 
+			WHERE LP.LIKEPLACE_MEM = M.MEM_ID
+			AND LP.LIKEPLACE_PLACE = P.PLACE_NUM
+			AND LP.LIKEPLACE_PLACE = #{PLACE_NUM}
+		]]>
+	</select>
 
 </mapper>

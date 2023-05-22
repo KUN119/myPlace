@@ -20,4 +20,9 @@ public class LikePlaceListServiceImpl implements LikePlaceService{
 		return likePlaceDAO.selectLikePlaceList(map);
 	}
 
+	@Override
+	public List<Map<String, Object>> selectIdInLikePlace(Map<String, Object> map) throws Exception {
+		return likePlaceDAO.selectIdInLikePlace(map);
+	}
+
 }

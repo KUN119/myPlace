@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,8 +15,6 @@ import org.apache.commons.logging.LogFactory;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -93,5 +90,19 @@ public class PlaceController {
 		log.debug("###### list: " + list);
 		
 	    return new ResponseEntity<>(list, HttpStatus.OK);
-	}	
+	}
+	
+	@RequestMapping(value="/placeRank")
+	public List<Map<String, Object>> placeRank(@RequestParam Map<String, Object> map) throws Exception{
+		log.debug("###### placeRank ######");
+		log.debug("###### map ######:" + map);
+		
+		List<Map<String, Object>> placeRank = placeService.selectMonthlyPlaceRank(map);
+		
+		log.debug("placeRank: " + placeRank);
+		
+		return placeRank; 
+	}
+	
+	
 }

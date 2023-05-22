@@ -6,5 +6,7 @@ import java.util.Map;
 public interface LikePlaceService {
 
 	public List<Map<String, Object>> selectLikePlaceList(Map<String, Object> map) throws Exception;
+	
+	public List<Map<String, Object>> selectIdInLikePlace(Map<String, Object> map) throws Exception;
 
 }

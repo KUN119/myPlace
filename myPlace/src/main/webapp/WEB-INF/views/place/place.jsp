@@ -101,8 +101,17 @@ div h5{
 		    clickable: true
 		});
 		
-		var iwContent = '<div class="bold"><h2>'+data[i].PLACE_NAME+'</h2><h5>'+data[i].PLACE_ADDR+'</h5></div>', // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
-		    iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
+		var iwContent = '<div class="bold"><h2>'+data[i].PLACE_NAME+'</h2><h5>'+data[i].PLACE_ADDR+'</h5></div>' // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+						+ '<div class="row mb-4">'
+			  		    + '<div id="goodsLikeDiv" class="col-lg-3 align-self-center">'
+					  	+ '<p class="h6">'
+					  	+ '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">'
+						+ '<path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>'
+						+ '</svg>&nbsp;'
+						+ '</p>'
+					    + '</div>'
+					    + '</div>',
+			iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
 		
 		var infowindow = new kakao.maps.InfoWindow({
 		    content: iwContent,

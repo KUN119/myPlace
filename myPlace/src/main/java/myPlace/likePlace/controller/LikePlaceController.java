@@ -5,13 +5,18 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
 import myPlace.likePlace.service.LikePlaceService;
 
 @RestController
 public class LikePlaceController {
+	
+	Log log = LogFactory.getLog(this.getClass());
 	
 	@Resource(name="likePlaceService")
 	private LikePlaceService likePlaceService;
@@ -24,5 +29,17 @@ public class LikePlaceController {
         System.out.println(likePlaceList);
         
         return likePlaceList;
+    }
+	
+	@RequestMapping(value="/idInLikePlace")
+	public List<Map<String, Object>> IdInLikePlace(@RequestParam Map<String, Object>map) throws Exception{
+		log.debug("###### idInLikePlace ######");
+		log.debug("###### map ######:" + map);
+		
+        List<Map<String,Object>> idInLikePlace = likePlaceService.selectIdInLikePlace(map);
+        
+        log.debug("idInLikePlace:" + idInLikePlace);
+        
+        return idInLikePlace;
     }
 }

@@ -25,4 +25,9 @@ public class PlaceServiceImpl implements PlaceService{
 		return placeDAO.selectPlaceList(map);
 	}
 
+	@Override
+	public List<Map<String, Object>> selectMonthlyPlaceRank(Map<String, Object> map) throws Exception {
+		return placeDAO.selectMonthlyPlaceRank(map);
+	}
+
 }

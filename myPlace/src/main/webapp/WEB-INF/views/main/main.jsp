@@ -4,6 +4,11 @@
     
 <!DOCTYPE html>
 <html>
+<style>
+h5{
+	word-break:break-all;
+	}
+</style>
 <head>
    <link rel="stylesheet" href="resources/assets/vendor/bootstrap/css/bootstrap.min.css">
 	<!-- 구글 웹 폰트 -->
@@ -11,6 +16,9 @@
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
 	<!-- 구글 웹 폰트 끝 -->
+	<!--  아이콘 추가하기 -->
+	<script src="https://kit.fontawesome.com/54cc554368.js" crossorigin="anonymous"></script>
+	<!--  아이콘 추가하기 끝 -->
  	<link rel="stylesheet" href="resources/assets/vendor/bootstrap/css/bootstrap.min.css">
 	<!-- jQuery -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
@@ -80,7 +88,6 @@
 
 <script type="text/javascript">
 $(document).ready(function(){
-      
 	$("#boardBtn").on("click", function(e) {
 		e.preventDefault();
 		$.ajax({
@@ -143,7 +150,7 @@ $(document).ready(function(){
 </script>  
 <!-- 카카오 맵 기능 -->
 <script type="text/javascript">
-   $(document).ready(function(){
+$(document).ready(function(){
       ////////////////////////////////지도 생성///////////////////////////////////////////////
       var container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
       var options = { //지도를 생성할 때 필요한 기본 옵션
@@ -152,13 +159,8 @@ $(document).ready(function(){
       };
       
       var map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
-      
       ////////////////////////////////지도 생성 끝///////////////////////////////////////////////
-      
-      /* 중심으로 이동하는 기능 */
-      // 이동할 위도 경도 위치를 생성합니다 
-      
-      
+ 
       /* @@@@@ sidebar에서 동작하는 기능 start @@@@@ */
       /* 클릭한 LIKEPLACE를 지도의 중심으로 위치시킨다. */
       $(document).on("click", ".likePlace", function(e) {
@@ -195,7 +197,6 @@ $(document).ready(function(){
                         }
                      );
                }
-               console.log(positions);
                // 일반 지도와 스카이뷰로 지도 타입을 전환할 수 있는 지도타입 컨트롤을 생성합니다
                var mapTypeControl = new kakao.maps.MapTypeControl();
                
@@ -219,7 +220,7 @@ $(document).ready(function(){
                   
                   // 마커 이미지를 생성합니다    
                   var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize); 
-                  }
+               }
                ////////////////////////////////여러 개의 마커 표시 끝///////////////////////////////////////////////
                for (var i = 0; i < positions.length; i++) {
                      var marker = new kakao.maps.Marker({
@@ -228,8 +229,16 @@ $(document).ready(function(){
                          clickable: true
                      });
                      
-                     var iwContent = '<div class="bold"><h2>'+placeData[i].PLACE_NAME+'</h2><h5>'+placeData[i].PLACE_ADDR+'</h5></div>' // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
-                              + '<input type="hidden" name="likePlaceLng" value="' + placeData[i].PLACE_NUM + '">',
+                     var placeNum = placeData[i].PLACE_NUM
+                     
+                     var iwContent = '<div class="bold"><h2>'+placeData[i].PLACE_NAME
+//                     			+ '&nbsp;<i class="fa-solid fa-heart" style="color: #ff0000;"></i>'
+//                    			+ '&nbsp;<i class="fa-solid fa-heart" style="color: #000000;"></i>'
+                     			+ '&nbsp;<i type="button" class="fa-solid fa-user" id="likeUser"></i></i></h2>'
+                     			+ '<h5>'+placeData[i].PLACE_ADDR+'</h5></div>' // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+                     			
+                                + '<input type="hidden" id="pn" name="likePlaceLng" value="' + placeNum + '">'
+                              
                          iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
                      
                      var infowindow = new kakao.maps.InfoWindow({
@@ -237,35 +246,50 @@ $(document).ready(function(){
                          removable: iwRemoveable
                      });
                      
-                     kakao.maps.event.addListener(marker, 'click', makeOverListener(map, marker, infowindow));
-                  }   
-                  
+                     
+                     kakao.maps.event.addListener(marker, 'click', makeOverListener(map, marker, infowindow, placeNum));
+                     
+                  }
+	              
                   // 인포윈도우를 표시하는 클로저를 만드는 함수
-                  function makeOverListener(map, marker, infowindow) {
+                  function makeOverListener(map, marker, infowindow, placeNum) {
                       return function () {
                           infowindow.open(map, marker);
                           
+                          $("#likeUser").on("click", function(e){  // 브랜드 회원정보 수정
+                      		e.preventDefault();
+
+                            var formData = new FormData();
+                            formData.append("PLACE_NUM", placeNum);
+                            
+                            $.ajax({
+                     	         url:'/myPlace/idInLikePlace',
+                     	         type:'POST',
+                     	         data:formData,
+                     	         processData: false,
+                     	         contentType: false,
+                     	         success:function(idInLikePlace) {
+                     	        	 alert(idInLikePlace)
+                     	         },
+                     	         error:function() {
+                                      alert("서버 오류");
+                                }
+                     	  	});
+                      	});
                       };
                   }
+                 	  
                   // 인포윈도우를 닫는 클로저를 만드는 함수
                   function makeOutListener(infowindow) {
                       return function () {
                           infowindow.close();
                       };
                   }
-                 },
-                 error:function() {
-                    alert("서버 오류");
-                 }
-            });
-   
-      //////////////////////////////////////////////////////////////////////////////////////////
-      
+                  
+         }
       });
-      
-   
-   
-   </script>
+});     
+</script>
 </body>
 
 <%@ include file="/WEB-INF/include/include-footer.jsp" %>
