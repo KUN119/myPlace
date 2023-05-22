@@ -31,6 +31,20 @@ public class LikePlaceController {
         return likePlaceList;
     }
 	
+	@RequestMapping(value="/addLikePlace")
+    public void AddLikePlace(@RequestParam Map<String, Object> map) throws Exception{
+		
+		
+		likePlaceService.insertLikePlace(map);
+		}
+	
+//	@RequestMapping(value="/addLikePlace")
+//    public void disLikePlace(@RequestParam Map<String, Object> map) throws Exception{
+//		
+//		likePlaceService.disLikePlace(map);
+//		}
+	
+	
 	@RequestMapping(value="/idInLikePlace")
 	public List<Map<String, Object>> IdInLikePlace(@RequestParam Map<String, Object>map) throws Exception{
 		log.debug("###### idInLikePlace ######");

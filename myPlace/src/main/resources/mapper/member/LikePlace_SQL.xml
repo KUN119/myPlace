@@ -2,8 +2,70 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="likePlace">
-	<!-- 게시판 목록 -->
-	<select id="selectLikePlaceList" parameterType="hashmap" resultType="hashmap"> 
+
+<!-- 게시판 목록 -->
+    <select id="selectLikePlaceList" parameterType="hashmap" resultType="hashmap"> 
+      <![CDATA[
+         SELECT
+            P.PLACE_NUM,
+            P.PLACE_NAME,
+            P.PLACE_LAT,
+            P.PLACE_LNG
+         FROM
+            PLACE P
+         JOIN
+            LIKEPLACE L
+         ON
+            P.PLACE_NUM = L.LIKEPLACE_PLACE
+         WHERE
+            L.LIKEPLACE_MEM = #{MEM_ID}
+      ]]>
+   </select> 
+	
+
+	<!-- 찜하기 -->
+	 <insert id="insertLikePlace" parameterType="hashmap">
+		<![CDATA[
+			INSERT INTO LIKEPLACE (
+			                    LIKEPLACE_NUM,
+			                    LIKEPLACE_MEM,
+			                    LIKEPLACE_PLACE
+			                    
+			                    )
+							VALUES (
+								LIKEPLACE_SEQ.NEXTVAL,
+			                     #{LIKEPLACE_MEM},
+      							#{LIKEPLACE_PLACE}
+			                    )
+		]]>
+	</insert>    
+	
+	<!-- 찜취소 -->
+   <!-- <delete id="deleteLikePlace" parameterType="hashmap">
+    <![CDATA[
+        DELETE FROM LIKEPLACE
+        WHERE LIKEPLACE_MEM = #{LIKEPLACE_MEM}
+        AND LIKEPLACE_PLACE = #{LIKEPLACE_PLACE}
+    ]]>
+</delete> -->
+	
+	
+	<!-- 찜한 상품인지 확인 -->
+	<!-- <select id="selectGoodsLike" parameterType="hashmap" resultType="hashmap"> 
+		<![CDATA[
+			SELECT
+					GOODS_LIKE_NUM,
+			    	GOODS_LIKE_USER,
+			    	GOODS_LIKE_PARENT
+			FROM
+					GOODS_LIKE
+			WHERE
+					GOODS_LIKE_USER = #{session_MEM_NUM}
+		]]>
+	</select> -->
+	
+	<!-- 찜 목록 -->
+	<!-- <select id="selectLikePlaceList" parameterType="hashmap" resultType="hashmap"> 
 		<![CDATA[
 			SELECT
 				P.PLACE_NUM,
@@ -19,8 +81,17 @@
 			WHERE
 				L.LIKEPLACE_MEM = #{MEM_ID}
 		]]>
-	</select>
+	</select> -->
 	
+	<!-- 찜 취소 -->
+		<!-- <delete id="deleteLikePlaceList" parameterType="hashmap">
+		<![CDATA[
+		DELETE FROM LIKEPLACE
+		WHERE GOODS_LIKE_PRONUM = #{TOTAL_GOODS_NUM}
+		      AND GOODS_LIKE_USER=#{MEM_NUM}
+		]]>
+		</delete> -->
+
 	<!-- 장소를 좋아하는 사람의 아이디 출력 -->
 	<select id="selectIdInLikePlace" parameterType="hashmap" resultType="hashmap"> 
 		<![CDATA[

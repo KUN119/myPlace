@@ -299,16 +299,15 @@ $(document).ready(function(){
                          clickable: true
                      });
                      
-                     var placeNum = placeData[i].PLACE_NUM
-                     
+                     //좋아요
                      var iwContent = '<div class="bold"><h2>'+placeData[i].PLACE_NAME
-//                     			+ '&nbsp;<i class="fa-solid fa-heart" style="color: #ff0000;"></i>'
-//                    			+ '&nbsp;<i class="fa-solid fa-heart" style="color: #000000;"></i>'
-                     			+ '&nbsp;<i type="button" class="fa-solid fa-user" id="likeUser"></i></i></h2>'
-                     			+ '<h5>'+placeData[i].PLACE_ADDR+'</h5></div>' // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
-                     			
-                                + '<input type="hidden" id="pn" name="likePlaceLng" value="' + placeNum + '">'
-                              
+						+ '&nbsp;<i class="fa-solid fa-heart" style="color: #ff0000;"></i>'
+						+ '&nbsp;<i name="likeBtn" class="fa-solid fa-heart" style="color: #000000;"></i>'
+						+ '&nbsp;<i type="button" class="fa-solid fa-user" id="likeUser"></i></i></h2>'
+						+ '<h5>'+placeData[i].PLACE_ADDR+'</h5></div>' // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+                     
+                     	+ '<input class="likePlaceNum" type="hidden" value="' + placeData[i].PLACE_NUM + '">'
+
                          iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
                      
                      var infowindow = new kakao.maps.InfoWindow({
@@ -355,11 +354,46 @@ $(document).ready(function(){
                           infowindow.close();
                       };
                   }
-                  
-         }
-      });
-});     
-</script>
+                 },
+                 error:function() {
+                    alert("서버 오류");
+                 }
+            });
+   
+      //////////////////////////////////////////////////////////////////////////////////////////
+      //하트클릭 
+      $(document).on('click', '.fa-heart', function(e) {
+    	  
+    	  e.preventDefault();
+    	  var memId = '<%=(String)session.getAttribute("MEM_ID")%>'
+    	  
+          /* var placeNum = $(this).siblings('.likePlaceNum').val(); */
+
+    	  
+    	  /* alert(typeof placeNum) */
+    	  
+    	  var placeNum = "1"
+    	  
+    	  
+    		  $.ajax({
+    		         url: '/myPlace/addLikePlace',
+    		         type:'POST',
+    		         data:{ "LIKEPLACE_MEM": memId, "LIKEPLACE_PLACE": placeNum},
+    		         
+    		         success:function(placeData) {
+    		        	 alert("fdsfdsa")
+    		        	 },
+    		        error:function() {
+    		            alert("ㅏ안된당");
+    		         }
+    		  
+    		         });
+    		  
+    	  
+    	});
+      
+      });  
+   </script>
 </body>
 
 <%@ include file="/WEB-INF/include/include-footer.jsp" %>
