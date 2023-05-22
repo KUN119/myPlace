@@ -36,6 +36,10 @@ h5{
 		display: flex;
 		flex-direction: column;
 	}
+	.pageNum{
+		margin: 5px;
+		cursor: pointer;
+	}
 	</style>
 </head>
 <%@ include file="/WEB-INF/include/include-header.jsp" %>
@@ -52,8 +56,8 @@ h5{
 		<div style="height:30%;">
 			<div class="col-10" id="boardArea">
 				<div class="table-responsive">
-					<form id = "frm">
-					<!-- <button type="button" value="게시판생성" id="boardBtn">게시글 불러오기</button> -->
+					<form id = "frm" style="display: flex; flex-direction: column; align-items: center;">
+					<button type="button" value="게시판생성" id="boardBtn">게시글 불러오기</button>
 						<table class="table-responsive" style=" border:1px solid #ccc; margin-left: auto; margin-right: auto;">
 							<colgroup>
 								<col width="15%"/>
@@ -61,7 +65,7 @@ h5{
 								<col width="40%"/>
 								<col width="40%"/>
 							</colgroup>
-							<caption>리뷰</caption>
+							<h2>게시판</h2>
 							<thead>
 								<tr>
 									<th scope="col" style="border-right: 1px solid #ccc; border-bottom: 1px solid #ccc;">글번호</th>
@@ -76,6 +80,11 @@ h5{
 								</tr>
 							</tbody>
 						</table>
+						
+						<div id="pagingArea" style="display: flex;">
+							<!-- pageNum이 추가되는 위치 -->
+						</div>
+						
 					</form>
 					<a href="#this" class="btn" id="write">글쓰기</a>
 				</div>
@@ -88,38 +97,55 @@ h5{
 
 <script type="text/javascript">
 $(document).ready(function(){
+	
 	$("#boardBtn").on("click", function(e) {
-		e.preventDefault();
-		$.ajax({
-			url: '/myPlace/boardPlace',
-			type: 'POST',
-			data: { "BOARD_PLACE": 1 },
-			dataType: "json",
-			success: function(result) {
-				// 게시물 데이터를 반복하여 테이블 행으로 추가
-				$("#board").html("");
+	      e.preventDefault();
+	      
+	      var boardPerPage = 5; // 페이지당 게시글 수
+	      
+	      /* 페이지 수를 형성해주는 ajax start */
+	      $.ajax({
+	          url: '/myPlace/boardCount',
+	          type: 'POST',
+	          data: {
+	             "BOARD_PLACE": 1,
+	          },
+	          dataType: "json",
+	          success: function(result) {
+	        	var x = parseInt(result/boardPerPage) 	//몫을 int 값으로 정수만 출력
+	         	var y = parseFloat(result/boardPerPage) // 몫을 float 값으로 소수까지 출력
+	         	var pageNum;
+	         	var pagingHTML = "";
+	         	
+	         	if( y-x > 0){		// y-x > 0 이라면 나누어 떨어지지 않는 수 이므로 x 페이징에 +1 를 해야함
+	         		pageNum = x+1;
+	         	}else {  			// y-x = 0 이라면 pageNum 에 +1 을 할 필요가 없음.
+	         		pageNum = x;
+	         	}
 				
-				for (var i = 0; i < result.length; i++) {
-					var map = result[i];
-					var tableHTML = "";
+	         	$("#pagingArea").html("");
+	         	
+	         	for (var i = 1; i <= pageNum; i++) {
+					pagingHTML = '<div class="pageNum">' + i + '</div>';
 					
-					tableHTML += '<tr>'
-					tableHTML += '	<td class="boardNum" name="boardNum2">' + map["BOARD_NUM"] + '</td>'
-					tableHTML += '	<td>' + map["BOARD_WRITER"] + '</td>'
-					tableHTML += '	<td class="title" name="title">' + map["BOARD_TITLE"] + '</td>'
-					tableHTML += '	<td>' + map["BOARD_DATE"] + '</td>'
-					tableHTML += '</tr>'
-					
-					// 테이블 HTML을 요소에 추가
-					$("#board").append(tableHTML);
+					$("#pagingArea").append(pagingHTML);
 					}
-				},
-				error: function(xhr, status, error) {
-					console.log('실패');
-					}
-				});
-		});
-      
+	         	}
+	        });
+	      /* 페이지 수를 형성해주는 ajax end */
+	    
+	     /* 클릭한 place의 게시글을 불러오는 기능 start */
+		fn_selectPage(1);
+	  	/* 클릭한 place의 게시글을 불러오는 기능 end */
+	      
+	});
+	
+	$(document).on("click.", ".pageNum", function(e) {
+		e.preventDefault();
+		var currentPage = $(this).text();
+		fn_selectPage(currentPage);
+	});
+	
       $(document).on("click", ".title", function(e) {
           e.preventDefault();
           var boardDetail = $(this).siblings('.boardNum').text();
@@ -131,7 +157,8 @@ $(document).ready(function(){
          e.preventDefault();
          fn_openBoardWrite();
       });   
-
+	
+     
    });
 
    function fn_openBoardWrite(){
@@ -146,6 +173,49 @@ $(document).ready(function(){
       comSubmit.setUrl(url);
       comSubmit.submit();
     }
+   
+   /* 클릭한 place의 게시글을 불러오는 기능 */
+   function fn_selectPage(selectedPage){
+		var boardPerPage = 5;  //한페이지당 출력할 게시물의 수
+		var currentPage = selectedPage; // 현재 페이지 번호
+		var startIdx = currentPage * boardPerPage - ( boardPerPage -1);
+		var endIdx = currentPage * boardPerPage;
+		
+		var formData = { "BOARD_PLACE": 1,
+		    	  				  "startIdx" : startIdx,
+		    					  "endIdx" : endIdx};
+	  	$.ajax({
+	      url: '/myPlace/boardPlace',
+	      type: 'POST',
+	      data: formData,
+	      dataType: "json",
+	      success: function(data) {
+	         // 게시물 데이터를 반복하여 테이블 행으로 추가
+	         $("#board").html("");
+	         
+	         for (var i = 0; i < data.length; i++) {
+	           var map = data[i];
+	           var tableHTML = "";
+
+	            tableHTML += '<tr>'; 	
+	            tableHTML += '<td class="boardNum" name="boardNum2">' + map["BOARD_NUM"] + '</td>';
+	            tableHTML += '<td>' + map["BOARD_WRITER"] + '</td>';
+	            tableHTML += '<td class="title" name="title">' + map["BOARD_TITLE"] + '</td>';
+	            tableHTML += '<td>' + map["BOARD_DATE"] + '</td>';
+	            tableHTML += '</tr>';
+
+	            // 테이블 HTML을 요소에 추가
+	            $("#board").append(tableHTML);
+	         }
+
+	      },
+	      error: function(xhr, status, error) {
+	         console.log('실패');
+	      }
+	   });
+   }
+   
+  
    
 </script>  
 <!-- 카카오 맵 기능 -->
