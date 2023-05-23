@@ -23,6 +23,4 @@ public class PlaceDAO extends AbstractDAO{
 	public List<Map<String, Object>> selectMonthlyPlaceRank(Map<String, Object> map) throws Exception{
 		return (List<Map<String, Object>>)selectList("place.selectMonthlyPlaceRank", map);
 	}
-	
-
 }

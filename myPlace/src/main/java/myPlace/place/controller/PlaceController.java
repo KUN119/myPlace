@@ -20,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import lombok.RequiredArgsConstructor;
 import myPlace.place.service.PlaceService;
@@ -92,10 +93,18 @@ public class PlaceController {
 	    return new ResponseEntity<>(list, HttpStatus.OK);
 	}
 	
+	@RequestMapping(value="/placeRankForm")
+	public ModelAndView placeRankForm(@RequestParam Map<String, Object> map) throws Exception{
+		log.debug("###### placeRankForm ######");
+		
+		ModelAndView mv = new ModelAndView("place/placeRankForm");
+		
+		return mv; 
+	} 
+	
 	@RequestMapping(value="/placeRank")
 	public List<Map<String, Object>> placeRank(@RequestParam Map<String, Object> map) throws Exception{
 		log.debug("###### placeRank ######");
-		log.debug("###### map ######:" + map);
 		
 		List<Map<String, Object>> placeRank = placeService.selectMonthlyPlaceRank(map);
 		
@@ -103,6 +112,4 @@ public class PlaceController {
 		
 		return placeRank; 
 	}
-	
-	
 }
