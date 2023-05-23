@@ -41,13 +41,13 @@
 	</insert>    
 	
 	<!-- 찜취소 -->
-   <!-- <delete id="deleteLikePlace" parameterType="hashmap">
+    <delete id="disLikePlace" parameterType="hashmap">
     <![CDATA[
         DELETE FROM LIKEPLACE
         WHERE LIKEPLACE_MEM = #{LIKEPLACE_MEM}
         AND LIKEPLACE_PLACE = #{LIKEPLACE_PLACE}
     ]]>
-</delete> -->
+</delete> 
 	
 	
 	<!-- 찜한 상품인지 확인 -->

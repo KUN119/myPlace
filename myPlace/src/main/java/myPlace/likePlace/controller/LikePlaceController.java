@@ -38,11 +38,11 @@ public class LikePlaceController {
 		likePlaceService.insertLikePlace(map);
 		}
 	
-//	@RequestMapping(value="/addLikePlace")
-//    public void disLikePlace(@RequestParam Map<String, Object> map) throws Exception{
-//		
-//		likePlaceService.disLikePlace(map);
-//		}
+	@RequestMapping(value="/disLikePlace")
+    public void disLikePlace(@RequestParam Map<String, Object> map) throws Exception{
+		
+		likePlaceService.disLikePlace(map);
+		}
 	
 	
 	@RequestMapping(value="/idInLikePlace")

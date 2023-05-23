@@ -19,9 +19,9 @@ public class LikePlaceDAO extends AbstractDAO {
 		insert("likePlace.insertLikePlace", map);
 	}
 	
-//	public void disLikePlace(Map<String, Object> map) throws Exception {
-//		delete("likePlace.deleteLikePlace", map);
-//	}
+	public void disLikePlace(Map<String, Object> map) throws Exception {
+		delete("likePlace.disLikePlace", map);
+	}
 
 	@SuppressWarnings("unchecked")
 	public List<Map<String, Object>> selectIdInLikePlace(Map<String, Object> map) throws Exception{

@@ -322,8 +322,8 @@ $(document).ready(function(){
                      
                      //좋아요
                      var iwContent = '<div class="bold"><h2>'+placeData[i].PLACE_NAME
-						+ '&nbsp;<i class="fa-solid fa-heart" style="color: #ff0000;"></i>'
-						+ '&nbsp;<i name="likeBtn" class="fa-solid fa-heart" style="color: #000000;"></i>'
+						+ '&nbsp;<i class="fa-solid fa-heart dislikeBtn" style="color: #ff0000;"></i>'
+						+ '&nbsp;<i class="fa-solid fa-heart likeBtn" style="color: #000000;"></i>'
 						+ '&nbsp;<i type="button" class="fa-solid fa-user" id="likeUser"></i></i></h2>'
 						+ '<h5>'+placeData[i].PLACE_ADDR+'</h5></div>' // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
                      
@@ -392,8 +392,8 @@ $(document).ready(function(){
 		/* @@@@@ 지도를 클릭하면 게시판 사라짐 end @@@@@ */
    
       //////////////////////////////////////////////////////////////////////////////////////////
-      //하트클릭 
-      $(document).on('click', '.fa-heart', function(e) {
+      //검정하트클릭 
+      $(document).on('click', '.likeBtn', function(e) {
     	  
     	  e.preventDefault();
     	  var memId = '<%=(String)session.getAttribute("MEM_ID")%>'
@@ -412,7 +412,9 @@ $(document).ready(function(){
     		         data:{ "LIKEPLACE_MEM": memId, "LIKEPLACE_PLACE": placeNum},
     		         
     		         success:function(placeData) {
-    		        	 alert("fdsfdsa")
+    		        	 alert("내장소 저장");
+    		        	 $('.likeBtn').hide();
+    		             $('.dislikeBtn').show();
     		        	 },
     		        error:function() {
     		            alert("ㅏ안된당");
@@ -420,6 +422,38 @@ $(document).ready(function(){
     		  
     		         }); 
     	});
+		
+    //빨강하트클릭 
+      $(document).on('click', '.dislikeBtn', function(e) {
+    	  
+    	  e.preventDefault();
+    	  var memId = '<%=(String)session.getAttribute("MEM_ID")%>'
+    	  
+          /* var placeNum = $(this).siblings('.likePlaceNum').val(); */
+
+    	  
+    	  /* alert(typeof placeNum) */
+    	  
+    	  var placeNum = "1"
+    	  
+    	  
+    		  $.ajax({
+    		         url: '/myPlace/disLikePlace',
+    		         type:'POST',
+    		         data:{ "LIKEPLACE_MEM": memId, "LIKEPLACE_PLACE": placeNum},
+    		         
+    		         success:function(placeData) {
+    		        	 alert("내장소 저장취소");
+    		        	 $('.dislikeBtn').hide();
+    		             $('.likeBtn').show();
+    		        	 },
+    		        error:function() {
+    		            alert("ㅏ안된당");
+    		         }
+    		  
+    		         }); 
+    	});
+    
       
       });  
    </script>
