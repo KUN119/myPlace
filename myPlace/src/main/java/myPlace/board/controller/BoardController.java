@@ -33,12 +33,14 @@ public class BoardController {
         return mv;
     }
 	
-	@RequestMapping(value="/boardWrite")
-	public ModelAndView BoardWrite(@RequestParam Map<String, Object> map) throws Exception{
-		ModelAndView mv = new ModelAndView("/board/boardWrite");
-		
-		return mv;
-	}
+		@RequestMapping(value="/boardWrite")
+		public ModelAndView BoardWrite(@RequestParam Map<String, Object> map) throws Exception{
+			ModelAndView mv = new ModelAndView("/board/boardWrite");
+			
+			mv.addObject("map",map);
+			
+			return mv;
+		}
 	
 	// 게시글 작성 메서드
 	@RequestMapping(value="/insertBoard")
