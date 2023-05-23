@@ -27,9 +27,6 @@
 	</div>
 </body>
 
-<!-- Jquery -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
 <script>
 $(document).ready(function() {
 	// session이 존재하지 않으면 로그인 페이지로 이동

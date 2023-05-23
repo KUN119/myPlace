@@ -31,6 +31,10 @@
 				<td>${map2.BOARD_DATE }</td>
 			</tr>
 			<tr>
+				<th scope="row">장소</th>
+				<td>${map2.BOARD_PLACE }</td>
+			</tr>
+			<tr>
 				<th scope="row">제목</th>
 				<td colspan="3">${map2.BOARD_TITLE }</td>
 			</tr>

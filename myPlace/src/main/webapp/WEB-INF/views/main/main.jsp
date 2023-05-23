@@ -1,117 +1,132 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-    
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
 <!DOCTYPE html>
 <html>
 <style>
-h5{
-   word-break:break-all;
-   }
+h5 {
+	word-break: break-all;
+}
+.cursor_pointer{
+	cursor: pointer; 
+}
+
 </style>
 <head>
-   <link rel="stylesheet" href="resources/assets/vendor/bootstrap/css/bootstrap.min.css">
-   <!-- 구글 웹 폰트 -->
-   <link rel="preconnect" href="https://fonts.googleapis.com">
-   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-   <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
-   <!-- 구글 웹 폰트 끝 -->
-   <!--  아이콘 추가하기 -->
-   <script src="https://kit.fontawesome.com/54cc554368.js" crossorigin="anonymous"></script>
-   <!--  아이콘 추가하기 끝 -->
-    <link rel="stylesheet" href="resources/assets/vendor/bootstrap/css/bootstrap.min.css">
-   <!-- jQuery -->
-   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-   <script src="<c:url value='/resources/assets/js/common.js'/>" charset="utf-8"></script>
-   <meta charset="UTF-8">
-   <title>MyPlace</title>
-   
-   <style>
-   .board_show{
-      top: 70%!important;
-   }
-   
-   .board_hide{
-      position: absolute;
-      top: 100%;   
-      height:30%;
-      width: 100%;
-      transition: all .3s ease-out;
-      background-color: orange; /* 임시 속성(추후 삭제) */
-   }
-   .mainContent{
-      display: flex;
-      height: calc(100vh - 120px);
-   }
-   
-   .sidebarArea{
-      display: flex;
-      flex-direction: column;
-   }
-   .pageNum{
-      margin: 5px;
-      cursor: pointer;
-   }
-   </style>
+<link rel="stylesheet"
+	href="resources/assets/vendor/bootstrap/css/bootstrap.min.css">
+<!-- 구글 웹 폰트 -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+	href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap"
+	rel="stylesheet">
+<!-- 구글 웹 폰트 끝 -->
+<!--  아이콘 추가하기 -->
+<script src="https://kit.fontawesome.com/54cc554368.js"
+	crossorigin="anonymous"></script>
+<!--  아이콘 추가하기 끝 -->
+<link rel="stylesheet"
+	href="resources/assets/vendor/bootstrap/css/bootstrap.min.css">
+<!-- jQuery -->
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="<c:url value='/resources/assets/js/common.js'/>"
+	charset="utf-8"></script>
+<meta charset="UTF-8">
+<title>MyPlace</title>
+
+<style>
+.board_show {
+	top: 70% !important;
+}
+
+.board_hide {
+	position: absolute;
+	top: 100%;
+	height: 30%;
+	width: 100%;
+	transition: all .3s ease-out;
+	border: solid 2px #66B2FF;
+	border-radius: 0 0 7px 7px;
+	background-color: #fff;
+}
+
+.mainContent {
+	display: flex;
+	height: calc(100vh - 120px);
+}
+
+.sidebarArea {
+	display: flex;
+	flex-direction: column;
+}
+
+.pageNum {
+	margin: 5px;
+	cursor: pointer;
+}
+</style>
 </head>
-<%@ include file="/WEB-INF/include/include-header.jsp" %>
+<%@ include file="/WEB-INF/include/include-header.jsp"%>
 <body>
-<div class="mainContent" id="mainContent">
-   <div class="sidebarArea">
-      <%@ include file="/WEB-INF/include/include-sidebar.jsp"%>
-   </div>
-   
-   <div class="col-10" id="content" style="overflow: hidden; width:85%; position: relative;">
-      <div id="mapArea" style="display:flex; flex-direction:column; justify-content:center; align-items: center; width:100%; height:100%; position: absolute;">
-         <!-- 지도 영역 start -->
-         <div id="map" style="width:100%; height:100%; border: solid 2px black; z-index: 0;"></div>
-         <!-- 지도 영역 end -->
+	<div class="mainContent" id="mainContent">
+		<div class="sidebarArea">
+			<%@ include file="/WEB-INF/include/include-sidebar.jsp"%>
+		</div>
 
-         <!-- 게시판 영역 start -->
-         <div class="board_hide">
-            <div class="col-10" id="boardArea">
-               <div class="table-responsive">
-                  <form id = "frm">
-                  <!-- <button type="button" value="게시판생성" id="boardBtn">게시글 불러오기</button> -->
-                     <table class="table-responsive" style=" border:1px solid #ccc; margin-left: auto; margin-right: auto;">
-                        <colgroup>
-                           <col width="15%"/>
-                           <col width="20%"/>
-                           <col width="40%"/>
-                           <col width="40%"/>
-                        </colgroup>
-                        <caption>리뷰</caption>
-                        <thead>
-                           <tr>
-                              <th scope="col" style="border-right: 1px solid #ccc; border-bottom: 1px solid #ccc;">글번호</th>
-                              <th scope="col" style="border-right: 1px solid #ccc; border-bottom: 1px solid #ccc;">작성자</th>
-                              <th scope="col" style="border-right: 1px solid #ccc; border-bottom: 1px solid #ccc;">제목</th>
-                              <th scope="col" style="border-right: 1px solid #ccc; border-bottom: 1px solid #ccc;">작성일</th>
-                           </tr>
-                        </thead>
-                        <tbody id="board">
-                           <tr>
-                              <td colspan="4">조회된 결과가 없습니다.</td>
-                           </tr>
-                        </tbody>
-                     </table>
-                     <div id="pagingArea" style="display: flex;">
-                        <!-- pageNum이 추가되는 위치 -->
-                     </div>
-                  </form>
-                  <div id="addWriteBtn">
-                     <!--  글쓰기 버튼이 추가되는 위치 -->
-                     <div class="btn" id="write">글쓰기</div>
-                  </div>
-               </div>
-            </div>
-         </div>
-         <!-- 게시판 영역 end -->
-      </div>
-   </div>
-</div>
+		<div class="col-10" id="content"
+			style="overflow: hidden; width: 85%; position: relative;">
+			<div id="mapArea" style="display: flex; flex-direction: column; justify-content: center; align-items: center; width: 100%; height: 100%; position: absolute;">
+				<!-- 지도 영역 start -->
+				<div id="map" style="width: 100%; height: 100%; border: solid 2px #98A8F8; border-radius: 7px; z-index: 0;"></div>
+				<!-- 지도 영역 end -->
 
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=269b5ee55a61404f07167949c5348f27"></script>
+				<!-- 게시판 영역 start -->
+				<div class="board_hide">
+					<div id="boardArea" style="display: flex; justify-content: center;">
+						<div class="table-responsive">
+							<!-- <button type="button" value="게시판생성" id="boardBtn">게시글 불러오기</button> -->
+							<table class="table-responsive"
+								style="border: 1px solid #ccc; margin-left: auto; margin-right: auto;">
+								<colgroup>
+									<col width="15%" />
+									<col width="20%" />
+									<col width="40%" />
+									<col width="40%" />
+								</colgroup>
+								<div>&nbsp;</div>
+								<thead>
+									<tr style="background-color: #BFEAF5; border: 2px solid #fff;">
+										<th scope="col" style="text-align:center; border-right: 2px solid #fff; border-bottom: 1px solid #ccc;">글번호</th>
+										<th scope="col" style="text-align:center; border-right: 2px solid #fff; border-bottom: 1px solid #ccc;">작성자</th>
+										<th scope="col" style="text-align:center; border-right: 2px solid #fff; border-bottom: 1px solid #ccc; width:500px;">제목</th>
+										<th scope="col" style="text-align:center; border-right: 2px solid #fff; border-bottom: 1px solid #ccc;">작성일</th>
+									</tr>
+								</thead>
+								<tbody id="board">
+									<tr>
+										<td colspan="4">조회된 결과가 없습니다.</td>
+									</tr>
+								</tbody>
+							</table>
+							<div id="pagingArea" style="display: flex; justify-content: center;">
+								<!-- pageNum이 추가되는 위치 -->
+							</div>
+							<div id="addWriteBtn" style="display: flex; justify-content: center;">
+								<!--  글쓰기 버튼이 추가되는 위치 -->
+								<div class="btn" id="write">글쓰기</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- 게시판 영역 end -->
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=269b5ee55a61404f07167949c5348f27"></script>
 
 <script type="text/javascript">
 
@@ -153,11 +168,11 @@ h5{
                     var map = data[i];
                     var tableHTML = "";
 
-                     tableHTML += '<tr>';    
-                     tableHTML += '<td class="boardNum" name="boardNum2">' + map["BOARD_NUM"] + '</td>';
-                     tableHTML += '<td>' + map["BOARD_WRITER"] + '</td>';
-                     tableHTML += '<td class="title" name="title">' + map["BOARD_TITLE"] + '</td>';
-                     tableHTML += '<td>' + map["BOARD_DATE"] + '</td>';
+                     tableHTML += '<tr style="background-color: #EAFDFC; border: 3px solid #fff">';    
+                     tableHTML += '<td class="boardNum" name="boardNum2" style="text-align:center;">' + map["BOARD_NUM"] + '</td>';
+                     tableHTML += '<td style="text-align:center;">' + map["BOARD_WRITER"] + '</td>';
+                     tableHTML += '<td class="title cursor_pointer" name="title">' + map["BOARD_TITLE"] + '</td>';
+                     tableHTML += '<td style="text-align:center;">' + map["BOARD_DATE"] + '</td>';
                      tableHTML += '</tr>';
 
                      // 테이블 HTML을 요소에 추가
@@ -184,11 +199,7 @@ h5{
       
       var map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
       
-      ////////////////////////////////지도 생성 끝///////////////////////////////////////////////
-      
-      /* 중심으로 이동하는 기능 */
-      // 이동할 위도 경도 위치를 생성합니다 
-      
+      ////////////////////////////////지도 생성 끝///////////////////////////////////////////////      
       
       /* @@@@@ sidebar에서 동작하는 기능 start @@@@@ */
       /* 클릭한 LIKEPLACE를 지도의 중심으로 위치시킨다. */
@@ -481,5 +492,5 @@ h5{
    </script>
 </body>
 
-<%@ include file="/WEB-INF/include/include-footer.jsp" %>
+<%@ include file="/WEB-INF/include/include-footer.jsp"%>
 </html>

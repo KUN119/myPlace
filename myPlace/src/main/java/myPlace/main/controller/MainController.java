@@ -1,5 +1,6 @@
 package myPlace.main.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -42,7 +43,17 @@ public class MainController {
 	public List<Map<String, Object>> boardPlace(@RequestParam Map<String, Object> map)throws Exception{
 		List<Map<String, Object>> boardList = new ArrayList<Map<String,Object>>();
 		
-		boardList = boardService.selectBoardList(map); 
+		boardList = boardService.selectBoardList(map);
+		
+		// 결과 데이터 중 DATE타입의 데이터를 지정한 방식으로 포맷팅
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		
+		for (Map<String, Object> boardDate : boardList) {
+		    Object boardDataValue = boardDate.get("BOARD_DATE");
+		    String formattedDate = dateFormat.format(boardDataValue);
+		    boardDate.put("BOARD_DATE", formattedDate);
+		}
+	
 		System.out.println(boardList);
 		
 		return boardList;

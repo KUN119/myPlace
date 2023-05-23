@@ -20,13 +20,13 @@
          </colgroup>
          <caption>게시글 작성</caption>
          <tbody>
-            <tr>
+         	<tr>
                <th scope="row">작성자</th>
                <th id="boardWriter">${sessionScope.MEM_ID}</th>
             </tr>
             <tr>
                <th scope="row">장소</th>
-               <th id="boardPlace">${map.BOARD_NUM}</th>
+               <th id="boardPlace">${map.BOARD_PLACE}</th>
             </tr>
             <tr>
                <th scope="row">제목</th>
