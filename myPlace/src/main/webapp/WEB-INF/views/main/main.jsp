@@ -6,180 +6,116 @@
 <html>
 <style>
 h5{
-	word-break:break-all;
-	}
+   word-break:break-all;
+   }
 </style>
 <head>
    <link rel="stylesheet" href="resources/assets/vendor/bootstrap/css/bootstrap.min.css">
-	<!-- 구글 웹 폰트 -->
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
-	<!-- 구글 웹 폰트 끝 -->
-	<!--  아이콘 추가하기 -->
-	<script src="https://kit.fontawesome.com/54cc554368.js" crossorigin="anonymous"></script>
-	<!--  아이콘 추가하기 끝 -->
- 	<link rel="stylesheet" href="resources/assets/vendor/bootstrap/css/bootstrap.min.css">
-	<!-- jQuery -->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-	<script src="<c:url value='/resources/assets/js/common.js'/>" charset="utf-8"></script>
-	<meta charset="UTF-8">
-	<title>MyPlace</title>
-	
-	<style>
-	.board_show{
-		top: 70%!important;
-	}
-	
-	.board_hide{
-		position: absolute;
-		top: 100%;	
-		height:30%;
-		width: 100%;
-		transition: all .3s ease-out;
-		background-color: orange; /* 임시 속성(추후 삭제) */
-	}
-	.mainContent{
-	   display: flex;
-	   height: calc(100vh - 120px);
-	}
-	
-	.sidebarArea{
-		display: flex;
-		flex-direction: column;
-	}
-	.pageNum{
-		margin: 5px;
-		cursor: pointer;
-	}
-	</style>
+   <!-- 구글 웹 폰트 -->
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
+   <!-- 구글 웹 폰트 끝 -->
+   <!--  아이콘 추가하기 -->
+   <script src="https://kit.fontawesome.com/54cc554368.js" crossorigin="anonymous"></script>
+   <!--  아이콘 추가하기 끝 -->
+    <link rel="stylesheet" href="resources/assets/vendor/bootstrap/css/bootstrap.min.css">
+   <!-- jQuery -->
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+   <script src="<c:url value='/resources/assets/js/common.js'/>" charset="utf-8"></script>
+   <meta charset="UTF-8">
+   <title>MyPlace</title>
+   
+   <style>
+   .board_show{
+      top: 70%!important;
+   }
+   
+   .board_hide{
+      position: absolute;
+      top: 100%;   
+      height:30%;
+      width: 100%;
+      transition: all .3s ease-out;
+      background-color: orange; /* 임시 속성(추후 삭제) */
+   }
+   .mainContent{
+      display: flex;
+      height: calc(100vh - 120px);
+   }
+   
+   .sidebarArea{
+      display: flex;
+      flex-direction: column;
+   }
+   .pageNum{
+      margin: 5px;
+      cursor: pointer;
+   }
+   </style>
 </head>
 <%@ include file="/WEB-INF/include/include-header.jsp" %>
 <body>
 <div class="mainContent" id="mainContent">
-	<div class="sidebarArea">
-		<%@ include file="/WEB-INF/include/include-sidebar.jsp"%>
-	</div>
-	
-	<div class="col-10" id="content" style="overflow: hidden; width:85%; position: relative;">
-		<div id="mapArea" style="display:flex; flex-direction:column; justify-content:center; align-items: center; width:100%; height:100%; position: absolute;">
-			<!-- 지도 영역 start -->
-			<div id="map" style="width:100%; height:100%; border: solid 2px black; z-index: 0;"></div>
-			<!-- 지도 영역 end -->
+   <div class="sidebarArea">
+      <%@ include file="/WEB-INF/include/include-sidebar.jsp"%>
+   </div>
+   
+   <div class="col-10" id="content" style="overflow: hidden; width:85%; position: relative;">
+      <div id="mapArea" style="display:flex; flex-direction:column; justify-content:center; align-items: center; width:100%; height:100%; position: absolute;">
+         <!-- 지도 영역 start -->
+         <div id="map" style="width:100%; height:100%; border: solid 2px black; z-index: 0;"></div>
+         <!-- 지도 영역 end -->
 
-			<!-- 게시판 영역 start -->
-			<div class="board_hide">
-				<div class="col-10" id="boardArea">
-					<div class="table-responsive">
-						<form id = "frm">
-						<!-- <button type="button" value="게시판생성" id="boardBtn">게시글 불러오기</button> -->
-							<table class="table-responsive" style=" border:1px solid #ccc; margin-left: auto; margin-right: auto;">
-								<colgroup>
-									<col width="15%"/>
-									<col width="20%"/>
-									<col width="40%"/>
-									<col width="40%"/>
-								</colgroup>
-								<caption>리뷰</caption>
-								<thead>
-									<tr>
-										<th scope="col" style="border-right: 1px solid #ccc; border-bottom: 1px solid #ccc;">글번호</th>
-										<th scope="col" style="border-right: 1px solid #ccc; border-bottom: 1px solid #ccc;">작성자</th>
-										<th scope="col" style="border-right: 1px solid #ccc; border-bottom: 1px solid #ccc;">제목</th>
-										<th scope="col" style="border-right: 1px solid #ccc; border-bottom: 1px solid #ccc;">작성일</th>
-									</tr>
-								</thead>
-								<tbody id="board">
-									<tr>
-										<td colspan="4">조회된 결과가 없습니다.</td>
-									</tr>
-								</tbody>
-							</table>
-							<div id="pagingArea" style="display: flex;">
-								<!-- pageNum이 추가되는 위치 -->
-							</div>
-						</form>
-						<a href="#this" class="btn" id="write">글쓰기</a>
-					</div>
-				</div>
-			</div>
-			<!-- 게시판 영역 end -->
-		</div>
-	</div>
+         <!-- 게시판 영역 start -->
+         <div class="board_hide">
+            <div class="col-10" id="boardArea">
+               <div class="table-responsive">
+                  <form id = "frm">
+                  <!-- <button type="button" value="게시판생성" id="boardBtn">게시글 불러오기</button> -->
+                     <table class="table-responsive" style=" border:1px solid #ccc; margin-left: auto; margin-right: auto;">
+                        <colgroup>
+                           <col width="15%"/>
+                           <col width="20%"/>
+                           <col width="40%"/>
+                           <col width="40%"/>
+                        </colgroup>
+                        <caption>리뷰</caption>
+                        <thead>
+                           <tr>
+                              <th scope="col" style="border-right: 1px solid #ccc; border-bottom: 1px solid #ccc;">글번호</th>
+                              <th scope="col" style="border-right: 1px solid #ccc; border-bottom: 1px solid #ccc;">작성자</th>
+                              <th scope="col" style="border-right: 1px solid #ccc; border-bottom: 1px solid #ccc;">제목</th>
+                              <th scope="col" style="border-right: 1px solid #ccc; border-bottom: 1px solid #ccc;">작성일</th>
+                           </tr>
+                        </thead>
+                        <tbody id="board">
+                           <tr>
+                              <td colspan="4">조회된 결과가 없습니다.</td>
+                           </tr>
+                        </tbody>
+                     </table>
+                     <div id="pagingArea" style="display: flex;">
+                        <!-- pageNum이 추가되는 위치 -->
+                     </div>
+                  </form>
+                  <div id="addWriteBtn">
+                     <!--  글쓰기 버튼이 추가되는 위치 -->
+                     <div class="btn" id="write">글쓰기</div>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <!-- 게시판 영역 end -->
+      </div>
+   </div>
 </div>
 
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=269b5ee55a61404f07167949c5348f27"></script>
 
 <script type="text/javascript">
-$(document).ready(function(){
-	
-	$("#boardBtn").on("click", function(e) {
-	      e.preventDefault();
-	      
-	      var boardPerPage = 5; // 페이지당 게시글 수
-	      
-	      /* 페이지 수를 형성해주는 ajax start */
-	      $.ajax({
-	          url: '/myPlace/boardCount',
-	          type: 'POST',
-	          data: {
-	             "BOARD_PLACE": 1,
-	          },
-	          dataType: "json",
-	          success: function(result) {
-	        	var x = parseInt(result/boardPerPage) 	//몫을 int 값으로 정수만 출력
-	         	var y = parseFloat(result/boardPerPage) // 몫을 float 값으로 소수까지 출력
-	         	var pageNum;
-	         	var pagingHTML = "";
-	         	
-	         	if( y-x > 0){		// y-x > 0 이라면 나누어 떨어지지 않는 수 이므로 x 페이징에 +1 를 해야함
-	         		pageNum = x+1;
-	         	}else {  			// y-x = 0 이라면 pageNum 에 +1 을 할 필요가 없음.
-	         		pageNum = x;
-	         	}
-				
-	         	$("#pagingArea").html("");
-	         	
-	         	for (var i = 1; i <= pageNum; i++) {
-					pagingHTML = '<div class="pageNum">' + i + '</div>';
-					
-					$("#pagingArea").append(pagingHTML);
-					}
-	         	}
-	        });
-	      /* 페이지 수를 형성해주는 ajax end */
-	    
-	     /* 클릭한 place의 게시글을 불러오는 기능 start */
-		fn_selectPage(1);
-	  	/* 클릭한 place의 게시글을 불러오는 기능 end */
-	      
-	});
-	
-	$(document).on("click.", ".pageNum", function(e) {
-		e.preventDefault();
-		var currentPage = $(this).text();
-		fn_selectPage(currentPage);
-	});
-	
-      $(document).on("click", ".title", function(e) {
-          e.preventDefault();
-          var boardDetail = $(this).siblings('.boardNum').text();
-          var url = "/myPlace/boardDetail?BOARD_NUM=" + boardDetail;
-          window.location.href = url;
-      });
-     
-      $("#write").on("click", function(e){ //글쓰기 버튼
-         e.preventDefault();
-         fn_openBoardWrite();
-      });   
 
-   });
-
-   function fn_openBoardWrite(){
-      var comSubmit = new ComSubmit("frm");
-      comSubmit.setUrl("<c:url value='/boardWrite' />");
-      comSubmit.submit();
-   }
+   
    
    function fn_openBoardDetail(element) {
       var url = "<c:url value='/boardDetail?BOARD_NUM=" + element + "'/>"; // BOARD_NUM 값을 URL에 추가
@@ -188,54 +124,57 @@ $(document).ready(function(){
       comSubmit.submit();
     }
    
-   /* 클릭한 place의 게시글을 불러오는 기능 */
-   function fn_selectPage(selectedPage){
-		var boardPerPage = 5;  //한페이지당 출력할 게시물의 수
-		var currentPage = selectedPage; // 현재 페이지 번호
-		var startIdx = currentPage * boardPerPage - ( boardPerPage -1);
-		var endIdx = currentPage * boardPerPage;
-		
-		var formData = { "BOARD_PLACE": 1,
-		    	  				  "startIdx" : startIdx,
-		    					  "endIdx" : endIdx};
-	  	$.ajax({
-	      url: '/myPlace/boardPlace',
-	      type: 'POST',
-	      data: formData,
-	      dataType: "json",
-	      success: function(data) {
-	         // 게시물 데이터를 반복하여 테이블 행으로 추가
-	         $("#board").html("");
-	         
-	         for (var i = 0; i < data.length; i++) {
-	           var map = data[i];
-	           var tableHTML = "";
-
-	            tableHTML += '<tr>'; 	
-	            tableHTML += '<td class="boardNum" name="boardNum2">' + map["BOARD_NUM"] + '</td>';
-	            tableHTML += '<td>' + map["BOARD_WRITER"] + '</td>';
-	            tableHTML += '<td class="title" name="title">' + map["BOARD_TITLE"] + '</td>';
-	            tableHTML += '<td>' + map["BOARD_DATE"] + '</td>';
-	            tableHTML += '</tr>';
-
-	            // 테이블 HTML을 요소에 추가
-	            $("#board").append(tableHTML);
-	         }
-
-	      },
-	      error: function(xhr, status, error) {
-	         console.log('실패');
-	      }
-	   });
-   }
-   
-  
-   
 </script>  
 <!-- 카카오 맵 기능 -->
 <script type="text/javascript">
    $(document).ready(function(){
-	  var boardShow = false; // board영역의 보이는지 여부를 나타내는 변수
+      
+      /* 클릭한 place의 게시글을 불러오는 기능 start */
+         function fn_selectPage(selectedPage, placeNum){
+            var boardPerPage = 5;  //한페이지당 출력할 게시물의 수
+            var pagePerGroup = 5; // 그룹당 표시할 페이지 수    
+            var currentPage = selectedPage; // 현재 페이지 번호
+            var startIdx = currentPage * boardPerPage - ( boardPerPage -1);
+            var endIdx = currentPage * boardPerPage;
+            
+            var formData = { "BOARD_PLACE": placeNum,
+                                   "startIdx" : startIdx,
+                                 "endIdx" : endIdx};
+              $.ajax({
+               url: '/myPlace/boardPlace',
+               type: 'POST',
+               data: formData,
+               dataType: "json",
+               success: function(data) {
+                  // 게시물 데이터를 반복하여 테이블 행으로 추가
+                  $("#board").html("");
+                  
+                  for (var i = 0; i < data.length; i++) {
+                    var map = data[i];
+                    var tableHTML = "";
+
+                     tableHTML += '<tr>';    
+                     tableHTML += '<td class="boardNum" name="boardNum2">' + map["BOARD_NUM"] + '</td>';
+                     tableHTML += '<td>' + map["BOARD_WRITER"] + '</td>';
+                     tableHTML += '<td class="title" name="title">' + map["BOARD_TITLE"] + '</td>';
+                     tableHTML += '<td>' + map["BOARD_DATE"] + '</td>';
+                     tableHTML += '</tr>';
+
+                     // 테이블 HTML을 요소에 추가
+                     $("#board").append(tableHTML);
+                  }
+
+               },
+               error: function(xhr, status, error) {
+                  console.log('실패');
+               }
+            });
+         }
+         /* 클릭한 place의 게시글을 불러오는 기능 end */
+      
+
+      
+     var boardShow = false; // board영역의 보이는지 여부를 나타내는 변수
       ////////////////////////////////지도 생성///////////////////////////////////////////////
       var container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
       var options = { //지도를 생성할 때 필요한 기본 옵션
@@ -259,15 +198,15 @@ $(document).ready(function(){
            var likePlaceLat = $(this).find('[name="likePlaceLat"]').val();
            var likePlaceLng = $(this).find('[name="likePlaceLng"]').val();
          
-			var moveLatLon = new kakao.maps.LatLng(likePlaceLat, likePlaceLng);
-			// 지도 중심을 이동 시킵니다
-			map.setCenter(moveLatLon);
-			map.setLevel(3);
-			// setCenter 직후 setLevel을 실행 시 마커가 가운데에 위치하지 않아서 setCenter를 한 번 더 실행
-			map.setCenter(moveLatLon);
-		});
-		/* @@@@@ sidebar에서 동작하는 기능 end @@@@@ */
-		
+         var moveLatLon = new kakao.maps.LatLng(likePlaceLat, likePlaceLng);
+         // 지도 중심을 이동 시킵니다
+         map.setCenter(moveLatLon);
+         map.setLevel(3);
+         // setCenter 직후 setLevel을 실행 시 마커가 가운데에 위치하지 않아서 setCenter를 한 번 더 실행
+         map.setCenter(moveLatLon);
+      });
+      /* @@@@@ sidebar에서 동작하는 기능 end @@@@@ */
+      
       $.ajax({
          url: '/myPlace/place',
          type:'POST',
@@ -322,12 +261,12 @@ $(document).ready(function(){
                      
                      //좋아요
                      var iwContent = '<div class="bold"><h2>'+placeData[i].PLACE_NAME
-						+ '&nbsp;<i class="fa-solid fa-heart" style="color: #ff0000;"></i>'
-						+ '&nbsp;<i name="likeBtn" class="fa-solid fa-heart" style="color: #000000;"></i>'
-						+ '&nbsp;<i type="button" class="fa-solid fa-user" id="likeUser"></i></i></h2>'
-						+ '<h5>'+placeData[i].PLACE_ADDR+'</h5></div>' // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+                  + '&nbsp;<i class="fa-solid fa-heart" style="color: #ff0000;"></i>'
+                  + '&nbsp;<i name="likeBtn" class="fa-solid fa-heart" style="color: #000000;"></i>'
+                  + '&nbsp;<i type="button" class="fa-solid fa-user" id="likeUser"></i></i></h2>'
+                  + '<h5>'+placeData[i].PLACE_ADDR+'</h5></div>' // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
                      
-                     	+ '<input class="likePlaceNum" type="hidden" value="' + placeData[i].PLACE_NUM + '">'
+                        + '<input class="likePlaceNum" type="hidden" value="' + placeData[i].PLACE_NUM + '">'
 
                          iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
                      
@@ -338,39 +277,103 @@ $(document).ready(function(){
                      
                      kakao.maps.event.addListener(marker, 'click', makeOverListener(map, marker, infowindow, placeNum));
                   }
-	              
-                  // 인포윈도우를 표시하는 클로저를 만드는 함수
-                  function makeOverListener(map, marker, infowindow, placeNum) {
-                      return function () {
-                          infowindow.open(map, marker);
-                          //alert(placeNum);
-                          $(".board_hide").addClass('board_show'); // board_show 클래스 추가(top:70%를 우선 적용)
-                          boardShow = true;
-
-                          $("#likeUser").on("click", function(e){  // 브랜드 회원정보 수정
-                      		e.preventDefault();
-
-                            var formData = new FormData();
-                            formData.append("PLACE_NUM", placeNum);
-                            
-                            $.ajax({
-                     	         url:'/myPlace/idInLikePlace',
-                     	         type:'POST',
-                     	         data:formData,
-                     	         processData: false,
-                     	         contentType: false,
-                     	         success:function(idInLikePlace) {
-                     	        	 alert(idInLikePlace)
-                     	         },
-                     	         error:function() {
-                                      alert("서버 오류");
-                                }
-                     	  	});
-                      	});
-                      };
-                  }
-                 	  
-                  // 인포윈도우를 닫는 클로저를 만드는 함수
+                 
+            /* @@@@@@@@@@ 인포윈도우를 표시하는 클로저를 만드는 함수 start @@@@@@@@@@ */
+            function makeOverListener(map, marker, infowindow, placeNum) {
+               return function () {
+                  infowindow.open(map, marker);
+                  
+                  /* 마커 클릭 시 해당하는 장소의 게시글들을 불러오는 기능 start */
+                  var boardPerPage = 5; // 페이지당 게시글 수
+         		  var pagePerBoard = 5; //페이징 할 때 묶을 페이지 수 
+                  alert(placeNum);
+                  
+                  $.ajax({
+                     url: '/myPlace/boardCount',
+                     type: 'POST',
+                     data: {
+                        "BOARD_PLACE": placeNum,
+                     },
+                     dataType: "json",
+                     success: function(result) {
+                    	 // var x = parseInt(result/boardPerPage)    //몫을 int 값으로 정수만 출력
+                         // var y = parseFloat(result/boardPerPage) // 몫을 float 값으로 소수까지 출력
+                         var pageNum = Math.ceil(result/pagePerBoard); // 게시글 수를 5로 나누고 소수점 아래를 올림하여 정수로 나타냄
+                         var A = Math.ceil(pageNum/5); 
+                         var pageList = [];
+                         var dataList = [];
+                         var currentPNG; // 현재 pageNumGroup. 처음엔 1
+                         var pagingHTML = "";
+                         /* 
+                        if( y-x > 0){      // y-x > 0 이라면 나누어 떨어지지 않는 수 이므로 x 페이징에 +1 를 해야함
+                           pageNum = x+1;
+                        }else {           // y-x = 0 이라면 pageNum 에 +1 을 할 필요가 없음.
+                           pageNum = x;
+                        }
+                         */
+                         
+                        var pageNumGroup = [];
+                        for (var i = 1; i <= pageNum; i++) {
+                       	 pageNumGroup.push(i);
+                        }
+                        
+                        currentPNG = 1;
+                        
+                        createPageNum(currentPNG);
+          
+                        // 페이지 번호를 추가
+						function createPageNum(currentPNG){
+							$("#pagingArea").html("");
+							var startPageNum = currentPNG * 5 - 4
+                        	
+							for (var i = startPageNum; i < startPageNum + 5; i++) {
+	                           pagingHTML = '<div class="pageNum">' + i + '</div>';
+	                           
+	                           alert(pagingHTML)
+	                           
+	                           $("#pagingArea").append(pagingHTML);
+	                        }	
+						}
+                        	
+ 
+                     }
+                  });
+          
+                  /* 클릭한 page의 게시글 5개를 불러오는 기능 start */
+                  fn_selectPage(1, placeNum);
+                  /* 클릭한 page의 게시글 5개를 불러오는 기능 end */
+                  
+                  /* 마커 클릭 시 해당하는 장소의 게시글들을 불러오는 기능 end */
+                  
+                  $("#addWriteBtn").html('<div class="btn" id="write" name="' + placeNum + '">글쓰기</div>');
+                  
+                  $(".board_hide").addClass('board_show'); // board_show 클래스 추가(top:70%를 우선 적용)
+                  boardShow = true;
+         
+                  $("#likeUser").on("click", function(e){  // 브랜드 회원정보 수정
+                     e.preventDefault();
+         
+                     var formData = new FormData();
+                     formData.append("PLACE_NUM", placeNum);
+                    
+                     $.ajax({
+                        url:'/myPlace/idInLikePlace',
+                        type:'POST',
+                        data:formData,
+                        processData: false,
+                        contentType: false,
+                        success:function(idInLikePlace) {
+                           alert(idInLikePlace)
+                        },
+                        error:function() {
+                           alert("서버 오류");
+                        }
+                     });
+                  });
+               };
+            }
+            /* @@@@@@@@@@ 인포윈도우를 표시하는 클로저를 만드는 함수 end @@@@@@@@@@ */
+   
                   function makeOutListener(infowindow) {
                       return function () {
                           infowindow.close();
@@ -381,45 +384,64 @@ $(document).ready(function(){
                     alert("서버 오류");
                  }
             });
-		
-		/* @@@@@ 지도를 클릭하면 게시판 사라짐 start @@@@@ */
-		$("#map").on("mousedown", function(e) {
-			e.preventDefault();
-			if (!$(this).hasClass('board_show')) {
-				$(".board_hide").removeClass('board_show'); // board_show 클래스를 제거
-			}
-		});
-		/* @@@@@ 지도를 클릭하면 게시판 사라짐 end @@@@@ */
    
-      //////////////////////////////////////////////////////////////////////////////////////////
-      //하트클릭 
-      $(document).on('click', '.fa-heart', function(e) {
-    	  
-    	  e.preventDefault();
-    	  var memId = '<%=(String)session.getAttribute("MEM_ID")%>'
-    	  
-          /* var placeNum = $(this).siblings('.likePlaceNum').val(); */
+      /* @@@@@ 지도를 클릭하면 게시판 사라짐 start @@@@@ */
+      $("#map").on("mousedown", function(e) {
+         e.preventDefault();
+         if (!$(this).hasClass('board_show')) {
+            $(".board_hide").removeClass('board_show'); // board_show 클래스를 제거
+         }
+      });
+      /* @@@@@ 지도를 클릭하면 게시판 사라짐 end @@@@@ */
+      
+      /* 게시판 클릭 기능 */
+         $(document).on("click", ".pageNum", function(e) {
+            e.preventDefault();
+            var currentPage = $(this).text();
+            var placeNum = $("#write").attr("name");
+            alert(placeNum);
+            fn_selectPage(currentPage, placeNum);
+         });
+      
+         $(document).on("click", ".title", function(e) {
+            e.preventDefault();
+            var boardDetail = $(this).siblings('.boardNum').text();
+            var url = "/myPlace/boardDetail?BOARD_NUM=" + boardDetail;
+            window.location.href = url;
+         });
+        
+      $(document).on("click", "#write", function(e){
+         e.preventDefault();
+         
+         var placeNum = $("#write").attr("name");
+         
+         window.location.href = '/myPlace/boardWrite?BOARD_NUM='+ placeNum;
+         
+      });
+      /* 게시판 클릭 기능 */
 
-    	  
-    	  /* alert(typeof placeNum) */
-    	  
-    	  var placeNum = "1"
-    	  
-    	  
-    		  $.ajax({
-    		         url: '/myPlace/addLikePlace',
-    		         type:'POST',
-    		         data:{ "LIKEPLACE_MEM": memId, "LIKEPLACE_PLACE": placeNum},
-    		         
-    		         success:function(placeData) {
-    		        	 alert("fdsfdsa")
-    		        	 },
-    		        error:function() {
-    		            alert("ㅏ안된당");
-    		         }
-    		  
-    		         }); 
-    	});
+         
+      /* @@@@@@@@@@ 하트클릭 @@@@@@@@@@ */ 
+      $(document).on('click', '.fa-heart', function(e) {
+         e.preventDefault();
+         var memId = '<%=(String)session.getAttribute("MEM_ID")%>'
+         var placeNum = $(this).siblings('.likePlaceNum').val();
+         var placeNum = "1"
+         
+         $.ajax({
+            url: '/myPlace/addLikePlace',
+            type:'POST',
+            data:{ "LIKEPLACE_MEM": memId, "LIKEPLACE_PLACE": placeNum},
+            
+            success:function(placeData) {
+               alert("fdsfdsa")
+            },
+               error:function() {
+               alert("ㅏ안된당");
+            }
+         });
+      });
+      /* @@@@@@@@@@ 하트클릭 @@@@@@@@@@ */
       
       });  
    </script>
