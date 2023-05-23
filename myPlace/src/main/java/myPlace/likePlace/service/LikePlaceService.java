@@ -11,7 +11,7 @@ public interface LikePlaceService {
 
 	public void insertLikePlace(Map<String, Object> map) throws Exception;
 	
-//	public void disLikePlace(Map<String, Object> map) throws Exception;
+	public void disLikePlace(Map<String, Object> map) throws Exception;
 	
 	
 
