@@ -11,7 +11,7 @@
 	
 <style>
 .likePlace{
-	display: flex;
+	display: flex!important;
 	justify-content: center;
 	align-items:center;
 	font-size: 20px;
@@ -26,8 +26,8 @@
 </head>
 <body>
 	<div style="display: flex; width:220px; flex-direction:column; align-items: center; z-index: 1">
-		<h3 style="margin-left: 13%; color: black;"><%=(String)session.getAttribute("MEM_ID")%>님의 장소</h3>
-		<hr style="border: solid 1px rgb(73, 73, 73); width: 80%; margin-left: 5%;">
+		<%-- <h3 style="margin-left: 13%; color: black;"><%=(String)session.getAttribute("MEM_ID")%>님의 장소</h3> --%>
+		<!-- <hr style="border: solid 1px rgb(73, 73, 73); width: 80%; margin-left: 5%;"> -->
 		<div id="placeList" style="display:flex; flex-direction:column; align-items:center; height: 80%;">
 			<!-- 장소 리스트 추가되는 위치 -->
 		</div>
@@ -48,7 +48,7 @@
 					var map = data[i]; // 각 리스트 요소인 맵을 객체로 정의
 					var htmls = "";
 					
-					htmls += '<div class="likePlace" style="height: 50px; margin: 5px;">';
+					htmls += '<div class="likePlace btn btn-outline-primary" style="height: 70px; margin: 5px;">';
 					htmls += map["PLACE_NAME"];
 					htmls += '<input type="hidden" name="likePlaceNum" value="';
 					htmls += map["PLACE_NUM"];

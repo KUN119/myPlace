@@ -12,12 +12,32 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"></script>
 
+<style>
+/* 구글 폰트 적용 */
+@import url(//fonts.googleapis.com/earlyaccess/nanumpenscript.css);
+
+.title_1{
+	font-family: 'Jeju Gothic', cursive;
+	font-size: 40px;
+	display: flex;
+	align-items: center;
+	justify-content:flex-end;
+	color: #0d6efd;
+}
+
+</style>
+
 </head>
 <body>
 	<div style="display: flex; padding: 0 15px 0 15px; justify-content: space-between;">
-		<div class="col-8">
+		<div class="title_1">
+			<%=session.getAttribute("MEM_ID")%>'s place
+		</div>
+		<div>
 			<a href="/myPlace/mainPage">
-			<img src="./resources/assets/img/myPlace.png" width="200px" height="100px"></a>
+				<!-- myPlace 로고 -->
+				<img src="./resources/assets/img/myPlace.png" width="200px" height="100px">
+			</a>
 		</div>
 		<div style="display: flex; justify-content:flex-end; align-items: center;">
 			<%=session.getAttribute("MEM_NAME")%> 님 안녕하세요

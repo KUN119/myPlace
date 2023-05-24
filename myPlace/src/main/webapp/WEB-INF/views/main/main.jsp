@@ -4,15 +4,6 @@
 
 <!DOCTYPE html>
 <html>
-<style>
-h5 {
-	word-break: break-all;
-}
-.cursor_pointer{
-	cursor: pointer; 
-}
-
-</style>
 <head>
 <link rel="stylesheet"
 	href="resources/assets/vendor/bootstrap/css/bootstrap.min.css">
@@ -38,6 +29,40 @@ h5 {
 <title>MyPlace</title>
 
 <style>
+/* 구글 폰트 적용 */
+@import url(//fonts.googleapis.com/earlyaccess/nanumpenscript.css);
+
+h5 {
+	word-break: break-all;
+}
+.cursor_pointer{
+	cursor: pointer; 
+}
+
+/* 글쓰기 버튼 관련 start*/
+.btn_write{
+	cursor: pointer;
+	border: 2px solid #BFEAF5;
+	border-radius: 10px;
+	padding: 7px 15px;
+	background-color: #EAFDFC;
+	transition: background-color 0.2s ease; /* 배경색이 서서히 바뀌도록 transition 속성 설정 */
+	
+}
+.btn_write:hover {
+    color: #0d6efd;
+    background-color: #BFEAF5;
+    border-color: #BFEAF5;
+}
+/* 글쓰기 버튼 관련 end */
+
+/* 버튼을 클릭할 때 추가하는 속성, 나머지는 해제 */
+.btn_place_selected{
+	color: #fff!important;
+	background-color: #0d6efd!important;
+	border-color: #0d6efd!important;
+}
+
 .board_show {
 	top: 70% !important;
 }
@@ -47,6 +72,9 @@ h5 {
 	top: 100%;
 	height: 30%;
 	width: 100%;
+	display: flex;
+	justify-content:center;
+	align-items:center;
 	transition: all .3s ease-out;
 	border: solid 2px #66B2FF;
 	border-radius: 0 0 7px 7px;
@@ -85,6 +113,9 @@ h5 {
 
 				<!-- 게시판 영역 start -->
 				<div class="board_hide">
+					<div style="width: auto;">
+					
+					</div>
 					<div id="boardArea" style="display: flex; justify-content: center;">
 						<div class="table-responsive">
 							<!-- <button type="button" value="게시판생성" id="boardBtn">게시글 불러오기</button> -->
@@ -114,10 +145,12 @@ h5 {
 							<div id="pagingArea" style="display: flex; justify-content: center;">
 								<!-- pageNum이 추가되는 위치 -->
 							</div>
-							<div id="addWriteBtn" style="display: flex; justify-content: center;">
-								<!--  글쓰기 버튼이 추가되는 위치 -->
-								<div class="btn" id="write">글쓰기</div>
-							</div>
+						</div>
+					</div>
+					<div style="width: auto;">
+						<div id="addWriteBtn" style="display: flex; justify-content: center; padding-left: 50px;">
+							<!--  글쓰기 버튼이 추가되는 위치 -->
+							<div class="btn" id="write">글쓰기</div>
 						</div>
 					</div>
 				</div>
@@ -130,14 +163,12 @@ h5 {
 
 <script type="text/javascript">
 
-   
-   
    function fn_openBoardDetail(element) {
       var url = "<c:url value='/boardDetail?BOARD_NUM=" + element + "'/>"; // BOARD_NUM 값을 URL에 추가
       var comSubmit = new ComSubmit("frm");
       comSubmit.setUrl(url);
       comSubmit.submit();
-    }
+	}
    
 </script>  
 <!-- 카카오 맵 기능 -->
@@ -201,22 +232,23 @@ h5 {
       
       ////////////////////////////////지도 생성 끝///////////////////////////////////////////////      
       
-      /* @@@@@ sidebar에서 동작하는 기능 start @@@@@ */
-      /* 클릭한 LIKEPLACE를 지도의 중심으로 위치시킨다. */
-      $(document).on("click", ".likePlace", function(e) {
-         e.preventDefault();
-           var likePlaceNum = $(this).find('[name="likePlaceNum"]').val();
-           var likePlaceLat = $(this).find('[name="likePlaceLat"]').val();
-           var likePlaceLng = $(this).find('[name="likePlaceLng"]').val();
-         
-         var moveLatLon = new kakao.maps.LatLng(likePlaceLat, likePlaceLng);
-         // 지도 중심을 이동 시킵니다
-         map.setCenter(moveLatLon);
-         map.setLevel(3);
-         // setCenter 직후 setLevel을 실행 시 마커가 가운데에 위치하지 않아서 setCenter를 한 번 더 실행
-         map.setCenter(moveLatLon);
-      });
-      /* @@@@@ sidebar에서 동작하는 기능 end @@@@@ */
+	/* @@@@@ sidebar에서 동작하는 기능 start @@@@@ */
+		/* 클릭한 LIKEPLACE를 지도의 중심으로 위치시킨다. */
+		$(document).on("click", ".likePlace", function(e) {
+			e.preventDefault();
+			var likePlaceNum = $(this).find('[name="likePlaceNum"]').val();
+			var likePlaceLat = $(this).find('[name="likePlaceLat"]').val();
+			var likePlaceLng = $(this).find('[name="likePlaceLng"]').val();
+			
+			var moveLatLon = new kakao.maps.LatLng(likePlaceLat, likePlaceLng);
+			// 지도 중심을 이동 시킵니다
+			map.setCenter(moveLatLon);
+			map.setLevel(3);
+			// setCenter 직후 setLevel을 실행 시 마커가 가운데에 위치하지 않아서 setCenter를 한 번 더 실행
+			map.setCenter(moveLatLon);
+		});
+		
+	/* @@@@@ sidebar에서 동작하는 기능 end @@@@@ */
       
       $.ajax({
          url: '/myPlace/place',
@@ -340,8 +372,6 @@ h5 {
 							for (var i = startPageNum; i < startPageNum + 5; i++) {
 	                           pagingHTML = '<div class="pageNum">' + i + '</div>';
 	                           
-	                           alert(pagingHTML)
-	                           
 	                           $("#pagingArea").append(pagingHTML);
 	                        }	
 						}
@@ -356,7 +386,7 @@ h5 {
                   
                   /* 마커 클릭 시 해당하는 장소의 게시글들을 불러오는 기능 end */
                   
-                  $("#addWriteBtn").html('<div class="btn" id="write" name="' + placeNum + '">글쓰기</div>');
+                  $("#addWriteBtn").html('<div class="btn_write" id="write" name="' + placeNum + '">글쓰기</div>');
                   
                   $(".board_hide").addClass('board_show'); // board_show 클래스 추가(top:70%를 우선 적용)
                   boardShow = true;
@@ -415,20 +445,22 @@ h5 {
          });
       
          $(document).on("click", ".title", function(e) {
-            e.preventDefault();
-            var boardDetail = $(this).siblings('.boardNum').text();
-            var url = "/myPlace/boardDetail?BOARD_NUM=" + boardDetail;
-            window.location.href = url;
-         });
+             e.preventDefault();
+             
+             var placeNum = $("#write").attr("name");
+             var boardDetail = $(this).siblings('.boardNum').text();
+             var url = "/myPlace/boardDetail?BOARD_NUM=" + boardDetail + "&BOARD_PLACE=" + placeNum;
+             window.location.href = url;
+          });
         
-      $(document).on("click", "#write", function(e){
-         e.preventDefault();
-         
-         var placeNum = $("#write").attr("name");
-         
-         window.location.href = '/myPlace/boardWrite?BOARD_NUM='+ placeNum;
-         
-      });
+		$(document).on("click", "#write", function(e){
+		   e.preventDefault();
+		   
+		   var placeNum = $("#write").attr("name");
+		   
+		   window.location.href = '/myPlace/boardWrite?BOARD_PLACE='+ placeNum;
+		   
+		});
       /* 게시판 클릭 기능 */
 
          
@@ -488,7 +520,15 @@ h5 {
     
       /* @@@@@@@@@@ 하트클릭 @@@@@@@@@@ */
       
-      });  
+      });
+   
+	$(document).on("click", ".likePlace", function(e) {
+		// 모든 likePlace 요소에서 btn_write_selected 클래스 제거
+		$(".likePlace").removeClass("btn_place_selected");
+		// 클릭한 버튼에만 abc 클래스 추가
+		$(this).addClass("btn_place_selected");
+	});
+   
    </script>
 </body>
 
