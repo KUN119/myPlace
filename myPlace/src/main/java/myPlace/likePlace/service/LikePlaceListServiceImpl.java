@@ -31,11 +31,14 @@ public class LikePlaceListServiceImpl implements LikePlaceService{
 		
 	}
 
-	
-
 	@Override
 	public List<Map<String, Object>> selectIdInLikePlace(Map<String, Object> map) throws Exception {
 		return likePlaceDAO.selectIdInLikePlace(map);
+	}
+
+	@Override
+	public List<Map<String, Object>> selectLikePlace(Map<String, Object> map) throws Exception {
+		return likePlaceDAO.selectLikePlace(map);
 	}
 
 }

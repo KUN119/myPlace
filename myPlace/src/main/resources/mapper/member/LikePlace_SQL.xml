@@ -26,7 +26,7 @@
 	<!-- 찜하기 -->
 	 <insert id="insertLikePlace" parameterType="hashmap">
 		<![CDATA[
-			INSERT INTO LIKEPLACE (
+			INSERT INTO LIKEPLACE (        
 			                    LIKEPLACE_MEM,
 			                    LIKEPLACE_PLACE
 			                    
@@ -46,6 +46,18 @@
         AND LIKEPLACE_PLACE = #{LIKEPLACE_PLACE}
     ]]>
 </delete> 
+
+	<!-- 찜한 목록 -->
+	<select id="selectLikePlace" parameterType="hashmap" resultType="hashmap">
+	<![CDATA[
+        SELECT 
+        	LIKEPLACE_PLACE
+        FROM
+        	LIKEPLACE
+        WHERE
+        	LIKEPLACE_MEM = #{MEM_ID}
+    ]]>
+    </select>
 	
 	
 	<!-- 찜한 상품인지 확인 -->
@@ -81,14 +93,7 @@
 		]]>
 	</select> -->
 	
-	<!-- 찜 취소 -->
-		<!-- <delete id="deleteLikePlaceList" parameterType="hashmap">
-		<![CDATA[
-		DELETE FROM LIKEPLACE
-		WHERE GOODS_LIKE_PRONUM = #{TOTAL_GOODS_NUM}
-		      AND GOODS_LIKE_USER=#{MEM_NUM}
-		]]>
-		</delete> -->
+	
 
 	<!-- 장소를 좋아하는 사람의 아이디 출력 -->
 	<select id="selectIdInLikePlace" parameterType="hashmap" resultType="hashmap"> 

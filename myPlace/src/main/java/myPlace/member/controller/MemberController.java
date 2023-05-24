@@ -1,5 +1,7 @@
 package myPlace.member.controller;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -13,6 +15,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import myPlace.likePlace.service.LikePlaceService;
 import myPlace.member.service.MemberService;
 
 @RestController
@@ -22,6 +27,9 @@ public class MemberController {
 	
 	@Resource(name="memberService")
 	private MemberService memberService;
+	
+	@Resource(name="likePlaceService")
+	private LikePlaceService likePlaceService;
 	
 	@RequestMapping(value="/loginForm")
 	public ModelAndView loginForm(@RequestParam Map<String, Object>map) throws Exception{
@@ -44,8 +52,18 @@ public class MemberController {
 		log.debug("###### 로그인 체크 ######");
 		
 		String result = "";
-		
+		List<Map<String, Object>> list = new ArrayList<>();
 		Map<String, Object> member = memberService.selectId(map);
+		list = likePlaceService.selectLikePlace(map);
+
+		ObjectMapper objectMapper = new ObjectMapper();
+		String jsonList = null;
+		
+		jsonList = objectMapper.writeValueAsString(list);
+		
+		
+		
+		
 		log.debug("아이디 : " + (String) map.get("MEM_ID"));
 		
 		// 회원 정보가 존재하지 않을 경우
@@ -63,6 +81,7 @@ public class MemberController {
 			// 세션 부여
 			session.setAttribute("MEM_ID", member.get("MEM_ID"));
 			session.setAttribute("MEM_NAME", member.get("MEM_NAME"));
+			session.setAttribute("PLACE_LIST", jsonList);
 		}
 		log.debug("reuslt:" + result);
 		return result;
