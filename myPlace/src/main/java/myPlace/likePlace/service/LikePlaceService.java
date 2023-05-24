@@ -13,6 +13,6 @@ public interface LikePlaceService {
 	
 	public void disLikePlace(Map<String, Object> map) throws Exception;
 	
-	
+	public List<Map<String, Object>> selectLikePlace(Map<String, Object> map) throws Exception;
 
 }

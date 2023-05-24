@@ -27,5 +27,10 @@ public class LikePlaceDAO extends AbstractDAO {
 	public List<Map<String, Object>> selectIdInLikePlace(Map<String, Object> map) throws Exception{
 		return (List<Map<String, Object>>) selectList("likePlace.selectIdInLikePlace", map);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Map<String, Object>> selectLikePlace(Map<String, Object> map) throws Exception{
+		return (List<Map<String, Object>>)selectList("likePlace.selectLikePlace", map);
+	}
 
 }
