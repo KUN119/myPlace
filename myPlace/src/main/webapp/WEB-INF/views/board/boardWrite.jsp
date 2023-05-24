@@ -99,7 +99,7 @@ $(document).ready(function(){
  
 function fn_openBoardList(){
    var comSubmit = new ComSubmit();
-   comSubmit.setUrl("<c:url value='/myPlace/boardList' />");
+   comSubmit.setUrl("<c:url value='/mainPage' />");
    comSubmit.submit();
 }
 

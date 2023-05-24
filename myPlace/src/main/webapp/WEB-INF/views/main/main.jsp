@@ -111,8 +111,16 @@ h5 {
 									</tr>
 								</tbody>
 							</table>
-							<div id="pagingArea" style="display: flex; justify-content: center;">
-								<!-- pageNum이 추가되는 위치 -->
+							<div  style="display: flex; justify-content: center;">
+								<div id="prevBtn">
+									
+								</div>
+								<div id="pagingArea" style="display: flex; justify-content: center;" >
+									<!-- pageNum이 추가되는 위치 -->
+								</div>
+								<div id="nextBtnHTML">
+									 <!--  nextBtn 이 추가되는 위치 -->
+								</div>
 							</div>
 							<div id="addWriteBtn" style="display: flex; justify-content: center;">
 								<!--  글쓰기 버튼이 추가되는 위치 -->
@@ -297,7 +305,6 @@ h5 {
                   /* 마커 클릭 시 해당하는 장소의 게시글들을 불러오는 기능 start */
                   var boardPerPage = 5; // 페이지당 게시글 수
          		  var pagePerBoard = 5; //페이징 할 때 묶을 페이지 수 
-                  alert(placeNum);
                   
                   $.ajax({
                      url: '/myPlace/boardCount',
@@ -309,8 +316,16 @@ h5 {
                      success: function(result) {
                     	 // var x = parseInt(result/boardPerPage)    //몫을 int 값으로 정수만 출력
                          // var y = parseFloat(result/boardPerPage) // 몫을 float 값으로 소수까지 출력
-                         var pageNum = Math.ceil(result/pagePerBoard); // 게시글 수를 5로 나누고 소수점 아래를 올림하여 정수로 나타냄
-                         var A = Math.ceil(pageNum/5); 
+                         
+                         var pageNum = Math.ceil(result/pagePerBoard); // 게시글 수를 pagePerBoard로 나누고 소수점 아래를 올림하여 정수로 나타냄
+                         var A = Math.ceil(pageNum/5); // 게시글 페이지 덩어리 ( 1~5, 6~10)
+                         var B = pageNum%5  // 덩어리(몫)을 구한 후 나머지 값을 구하는 식 (남은 페이징 출력)
+                         
+						if(result==0){
+							pageNum = 1
+							A = 1
+                       	 }
+                         
                          var pageList = [];
                          var dataList = [];
                          var currentPNG; // 현재 pageNumGroup. 처음엔 1
@@ -321,32 +336,75 @@ h5 {
                         }else {           // y-x = 0 이라면 pageNum 에 +1 을 할 필요가 없음.
                            pageNum = x;
                         }
-                         */
-                         
+                         */	
+
                         var pageNumGroup = [];
                         for (var i = 1; i <= pageNum; i++) {
                        	 pageNumGroup.push(i);
                         }
-                        
+                        alert(A)
                         currentPNG = 1;
                         
-                        createPageNum(currentPNG);
-          
+                        
+          				
+                        selectPageBoard(A, currentPNG);   // A = 2, currentPNG = 1
+                        
+                        function selectPageBoard(A, currentPNG) {
+                        	  $("#nextBtnHTML").html("");
+
+                        	  var pagingHTML = '<button id="nextBtn">></button>';
+                        	  $("#nextBtnHTML").append(pagingHTML);
+
+                        	  // 다음 버튼 클릭 시 페이지 이동
+                        	
+	                        	  $("#nextBtn").click(function() {
+	                        		  if(A!=currentPNG){
+			                        	    currentPNG++; // currentPNG 값을 증가시킴
+			                   				
+			                        	    createPageNum(currentPNG); // 증가된 currentPNG 값을 인자로 createPageNum 함수 호출
+	                        		  }
+	                        	  });
+
+                        	  
+                        }
+
+                        	
+                   
+
+                        	  /* if (A > currentPNG) {
+                        	    var pagingHTML = '<button id="nextBtn">다음</button>';
+                        	    $("#nextBtnHTML").append(pagingHTML);
+
+                        	    // 다음 버튼 클릭 시 페이지 이동
+                        	    $("#nextBtn").click(function() {
+                        	      createPageNum(currentPNG);
+                        	    });
+                        	  } */
+                        	
+                       
+                        
+                        
                         // 페이지 번호를 추가
 						function createPageNum(currentPNG){
 							$("#pagingArea").html("");
 							var startPageNum = currentPNG * 5 - 4
-                        	
-							for (var i = startPageNum; i < startPageNum + 5; i++) {
-	                           pagingHTML = '<div class="pageNum">' + i + '</div>';
-	                           
-	                           alert(pagingHTML)
-	                           
-	                           $("#pagingArea").append(pagingHTML);
-	                        }	
+							
+							
+							if(A==currentPNG) {
+								for(var i = startPageNum; i< startPageNum+B; i++ ){
+									pagingHTML = '<div class="pageNum">' + i + '</div>';	                           
+			                           $("#pagingArea").append(pagingHTML);
+								}
+							}else {
+								for (var i = startPageNum; i < startPageNum+5; i++) {
+		                           pagingHTML = '<div class="pageNum">' + i + '</div>';	                           
+		                           $("#pagingArea").append(pagingHTML);
+		                        }
+							} 
 						}
-                        	
- 
+                        
+					     createPageNum(currentPNG);
+                        
                      }
                   });
           
@@ -410,7 +468,6 @@ h5 {
             e.preventDefault();
             var currentPage = $(this).text();
             var placeNum = $("#write").attr("name");
-            alert(placeNum);
             fn_selectPage(currentPage, placeNum);
          });
       
