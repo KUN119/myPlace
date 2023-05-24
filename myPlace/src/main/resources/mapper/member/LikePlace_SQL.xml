@@ -27,13 +27,11 @@
 	 <insert id="insertLikePlace" parameterType="hashmap">
 		<![CDATA[
 			INSERT INTO LIKEPLACE (
-			                    LIKEPLACE_NUM,
 			                    LIKEPLACE_MEM,
 			                    LIKEPLACE_PLACE
 			                    
 			                    )
 							VALUES (
-								LIKEPLACE_SEQ.NEXTVAL,
 			                     #{LIKEPLACE_MEM},
       							#{LIKEPLACE_PLACE}
 			                    )

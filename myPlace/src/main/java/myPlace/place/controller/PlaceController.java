@@ -99,17 +99,17 @@ public class PlaceController {
 		
 		ModelAndView mv = new ModelAndView("place/placeRankForm");
 		
-		return mv; 
+		return mv;
 	} 
 	
 	@RequestMapping(value="/placeRank")
 	public List<Map<String, Object>> placeRank(@RequestParam Map<String, Object> map) throws Exception{
 		log.debug("###### placeRank ######");
+		log.debug("###### map ######:" + map);
 		
 		List<Map<String, Object>> placeRank = placeService.selectMonthlyPlaceRank(map);
-		
 		log.debug("placeRank: " + placeRank);
 		
-		return placeRank; 
+		return placeRank;
 	}
 }

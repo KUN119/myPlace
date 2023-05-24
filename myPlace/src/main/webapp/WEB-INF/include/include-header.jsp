@@ -23,6 +23,8 @@
 			<%=session.getAttribute("MEM_NAME")%> 님 안녕하세요
 			&nbsp;
 			<button type="button" class="btn btn-outline-primary" id="logoutBtn">logout</button>
+			&nbsp;&nbsp;
+			<button type="button" class="btn btn-outline-primary" onClick="location.href='/myPlace/placeRankForm'">월별 랭킹</button>
 		</div>
 	</div>
 </body>
@@ -58,6 +60,4 @@ $("#logoutBtn").click(function(e){
    
 });
 </script>
-
-
 </html>

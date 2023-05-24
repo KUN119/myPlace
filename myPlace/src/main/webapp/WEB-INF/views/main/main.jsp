@@ -415,18 +415,20 @@ h5 {
          });
       
          $(document).on("click", ".title", function(e) {
-            e.preventDefault();
-            var boardDetail = $(this).siblings('.boardNum').text();
-            var url = "/myPlace/boardDetail?BOARD_NUM=" + boardDetail;
-            window.location.href = url;
-         });
+             e.preventDefault();
+             
+             var placeNum = $("#write").attr("name");
+             var boardDetail = $(this).siblings('.boardNum').text();
+             var url = "/myPlace/boardDetail?BOARD_NUM=" + boardDetail + "&BOARD_PLACE=" + placeNum;
+             window.location.href = url;
+          });
         
       $(document).on("click", "#write", function(e){
          e.preventDefault();
          
          var placeNum = $("#write").attr("name");
          
-         window.location.href = '/myPlace/boardWrite?BOARD_NUM='+ placeNum;
+         window.location.href = '/myPlace/boardWrite?BOARD_PLACE='+ placeNum;
          
       });
       /* 게시판 클릭 기능 */
