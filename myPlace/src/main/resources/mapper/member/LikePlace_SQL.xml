@@ -7,7 +7,6 @@
     <select id="selectLikePlaceList" parameterType="hashmap" resultType="hashmap"> 
       <![CDATA[
          SELECT
-            P.PLACE_NUM,
             P.PLACE_NAME,
             P.PLACE_LAT,
             P.PLACE_LNG
