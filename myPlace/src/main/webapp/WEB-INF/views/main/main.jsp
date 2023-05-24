@@ -4,6 +4,15 @@
 
 <!DOCTYPE html>
 <html>
+<style>
+h5 {
+	word-break: break-all;
+}
+.cursor_pointer{
+	cursor: pointer; 
+}
+
+</style>
 <head>
 <link rel="stylesheet"
 	href="resources/assets/vendor/bootstrap/css/bootstrap.min.css">
@@ -29,40 +38,6 @@
 <title>MyPlace</title>
 
 <style>
-/* 구글 폰트 적용 */
-@import url(//fonts.googleapis.com/earlyaccess/nanumpenscript.css);
-
-h5 {
-	word-break: break-all;
-}
-.cursor_pointer{
-	cursor: pointer; 
-}
-
-/* 글쓰기 버튼 관련 start*/
-.btn_write{
-	cursor: pointer;
-	border: 2px solid #BFEAF5;
-	border-radius: 10px;
-	padding: 7px 15px;
-	background-color: #EAFDFC;
-	transition: background-color 0.2s ease; /* 배경색이 서서히 바뀌도록 transition 속성 설정 */
-	
-}
-.btn_write:hover {
-    color: #0d6efd;
-    background-color: #BFEAF5;
-    border-color: #BFEAF5;
-}
-/* 글쓰기 버튼 관련 end */
-
-/* 버튼을 클릭할 때 추가하는 속성, 나머지는 해제 */
-.btn_place_selected{
-	color: #fff!important;
-	background-color: #0d6efd!important;
-	border-color: #0d6efd!important;
-}
-
 .board_show {
 	top: 70% !important;
 }
@@ -72,9 +47,6 @@ h5 {
 	top: 100%;
 	height: 30%;
 	width: 100%;
-	display: flex;
-	justify-content:center;
-	align-items:center;
 	transition: all .3s ease-out;
 	border: solid 2px #66B2FF;
 	border-radius: 0 0 7px 7px;
@@ -95,6 +67,15 @@ h5 {
 	margin: 5px;
 	cursor: pointer;
 }
+
+.likeBtn {
+	color: #000000;
+}
+
+.dislikeBtn {
+	color: #ff0000;
+}
+
 </style>
 </head>
 <%@ include file="/WEB-INF/include/include-header.jsp"%>
@@ -113,9 +94,6 @@ h5 {
 
 				<!-- 게시판 영역 start -->
 				<div class="board_hide">
-					<div style="width: auto;">
-					
-					</div>
 					<div id="boardArea" style="display: flex; justify-content: center;">
 						<div class="table-responsive">
 							<!-- <button type="button" value="게시판생성" id="boardBtn">게시글 불러오기</button> -->
@@ -142,17 +120,9 @@ h5 {
 									</tr>
 								</tbody>
 							</table>
-							<div  style="display: flex; justify-content: center;">
-								<div id="prevBtn">
-									
-								</div>
-                        <div id="pagingArea" style="display: flex; justify-content: center;">
-                           <!-- pageNum이 추가되는 위치 -->
-                        </div>
-                        <div id="nextBtnHTML">
-                           <!--  nextBtn 이 추가되는 위치 -->
-                       </div>
-                     </div>
+							<div id="pagingArea" style="display: flex; justify-content: center;">
+								<!-- pageNum이 추가되는 위치 -->
+							</div>
 							<div id="addWriteBtn" style="display: flex; justify-content: center;">
 								<!--  글쓰기 버튼이 추가되는 위치 -->
 								<div class="btn" id="write">글쓰기</div>
@@ -169,13 +139,14 @@ h5 {
 
 <script type="text/javascript">
 
-
+   
+   
    function fn_openBoardDetail(element) {
       var url = "<c:url value='/boardDetail?BOARD_NUM=" + element + "'/>"; // BOARD_NUM 값을 URL에 추가
       var comSubmit = new ComSubmit("frm");
       comSubmit.setUrl(url);
       comSubmit.submit();
-	}
+    }
    
 </script>  
 <!-- 카카오 맵 기능 -->
@@ -239,23 +210,24 @@ h5 {
       
       ////////////////////////////////지도 생성 끝///////////////////////////////////////////////      
       
-	/* @@@@@ sidebar에서 동작하는 기능 start @@@@@ */
-		/* 클릭한 LIKEPLACE를 지도의 중심으로 위치시킨다. */
-		$(document).on("click", ".likePlace", function(e) {
-			e.preventDefault();
-			var likePlaceNum = $(this).find('[name="likePlaceNum"]').val();
-			var likePlaceLat = $(this).find('[name="likePlaceLat"]').val();
-			var likePlaceLng = $(this).find('[name="likePlaceLng"]').val();
-			
-			var moveLatLon = new kakao.maps.LatLng(likePlaceLat, likePlaceLng);
-			// 지도 중심을 이동 시킵니다
-			map.setCenter(moveLatLon);
-			map.setLevel(3);
-			// setCenter 직후 setLevel을 실행 시 마커가 가운데에 위치하지 않아서 setCenter를 한 번 더 실행
-			map.setCenter(moveLatLon);
-		});
-		
-	/* @@@@@ sidebar에서 동작하는 기능 end @@@@@ */
+      /* @@@@@ sidebar에서 동작하는 기능 start @@@@@ */
+      /* 클릭한 LIKEPLACE를 지도의 중심으로 위치시킨다. */
+      $(document).on("click", ".likePlace", function(e) {
+         e.preventDefault();
+           var likePlaceNum = $(this).find('[name="likePlaceNum"]').val();
+           var likePlaceLat = $(this).find('[name="likePlaceLat"]').val();
+           var likePlaceLng = $(this).find('[name="likePlaceLng"]').val();
+         
+         var moveLatLon = new kakao.maps.LatLng(likePlaceLat, likePlaceLng);
+         // 지도 중심을 이동 시킵니다
+         map.setCenter(moveLatLon);
+         map.setLevel(3);
+         // setCenter 직후 setLevel을 실행 시 마커가 가운데에 위치하지 않아서 setCenter를 한 번 더 실행
+         map.setCenter(moveLatLon);
+      });
+      /* @@@@@ sidebar에서 동작하는 기능 end @@@@@ */
+      
+      var placeNum;
       
       $.ajax({
          url: '/myPlace/place',
@@ -307,18 +279,50 @@ h5 {
                          clickable: true
                      });
                      
-                     var placeNum = placeData[i].PLACE_NUM;
+                     placeNum = placeData[i].PLACE_NUM;
                      
-                     //좋아요
-                     var iwContent = '<div class="bold"><h2>'+placeData[i].PLACE_NAME
-                  + '&nbsp;<i class="fa-solid fa-heart dislikeBtn" style="color: #ff0000;"></i>'
-						+ '&nbsp;<i class="fa-solid fa-heart likeBtn" style="color: #000000;"></i>'
-						+ '&nbsp;<i type="button" class="fa-solid fa-user" id="likeUser"></i></i></h2>'
-						+ '<h5>'+placeData[i].PLACE_ADDR+'</h5></div>' // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+                     var iwContent = '';
                      
-                        + '<input class="likePlaceNum" type="hidden" value="' + placeData[i].PLACE_NUM + '">'
+                     
+                     /* @@@@@ 좋아요 여부에 따라서 하트가 바뀌는 기능 start */
+                     var jsonList = '<%= session.getAttribute("PLACE_LIST") %>';
 
-                         iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
+                      // JSON 문자열을 JavaScript 객체로 변환
+                      var data = JSON.parse(jsonList);
+                      
+                      var liked = false; // 변수를 추가하여 기본값을 false로 설정
+                      
+                      // 변환된 JavaScript 객체 사용 예시
+                      for (var a = 0; a < data.length; a++) {
+                   	    var map2 = data[a];
+                   	    if (map2["LIKEPLACE_PLACE"] == placeNum) {
+                   	    	// 좋아하는 장소가 있는 경우 하트를 빨간색으로 설정
+                   	    	//좋아요
+		                     iwContent = '<div class="bold"><h2>'+placeData[i].PLACE_NAME
+		                 		+ '&nbsp;<i class="fa-solid fa-heart dislikeBtn" ></i>' //빨간하트
+			                    + '<input class="likePlaceNum" type="hidden" value="' + placeData[i].PLACE_NUM + '">'
+								+ '&nbsp;<i type="button" class="fa-solid fa-user" id="likeUser"></i></i></h2>'
+								+ '<h5>'+placeData[i].PLACE_ADDR+'</h5></div>' // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+		                        liked = true; // 좋아요 상태를 true로 설정
+		                        break; // 이미 좋아하는 장소를 찾았으므로 루프를 종료
+                   	    } 
+                      }
+                      
+                      if (!liked){
+                   	    	// 좋아하는 장소가 없는 경우 하트를 검은색으로 설정
+                   	    	//좋아요
+		                     iwContent = '<div class="bold"><h2>'+placeData[i].PLACE_NAME
+								+ '&nbsp;<i class="fa-solid fa-heart likeBtn" ></i>' //까만하트
+								+ '<input class="likePlaceNum" type="hidden" value="' + placeData[i].PLACE_NUM + '">'
+								+ '&nbsp;<i type="button" class="fa-solid fa-user" id="likeUser"></i></i></h2>'
+								+ '<h5>'+placeData[i].PLACE_ADDR+'</h5></div>' // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+		                        
+                   	        }
+                      
+                      /* @@@@@ 좋아요 여부에 따라서 하트가 바뀌는 기능 end */
+                     
+
+                     var iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
                      
                      var infowindow = new kakao.maps.InfoWindow({
                          content: iwContent,
@@ -332,11 +336,12 @@ h5 {
             function makeOverListener(map, marker, infowindow, placeNum) {
                return function () {
                   infowindow.open(map, marker);
-                  
-                  /* 마커 클릭 시 해당하는 장소의 게시글들을 불러오는 기능 start */
-                  var boardPerPage = 5; // 페이지당 게시글 수
-         		  var pagePerBoard = 5; //페이징 할 때 묶을 페이지 수 
-                  
+ 
+	               /* 마커 클릭 시 해당하는 장소의 게시글들을 불러오는 기능 start */
+	                  var boardPerPage = 5; // 페이지당 게시글 수
+	         		  var pagePerBoard = 5; //페이징 할 때 묶을 페이지 수
+	         		  
+	               
                   $.ajax({
                      url: '/myPlace/boardCount',
                      type: 'POST',
@@ -347,16 +352,8 @@ h5 {
                      success: function(result) {
                     	 // var x = parseInt(result/boardPerPage)    //몫을 int 값으로 정수만 출력
                          // var y = parseFloat(result/boardPerPage) // 몫을 float 값으로 소수까지 출력
-                         
-                         var pageNum = Math.ceil(result/pagePerBoard); // 게시글 수를 pagePerBoard로 나누고 소수점 아래를 올림하여 정수로 나타냄
-                         var A = Math.ceil(pageNum/5); // 게시글 페이지 덩어리 ( 1~5, 6~10)
-                         var B = pageNum%5  // 덩어리(몫)을 구한 후 나머지 값을 구하는 식 (남은 페이징 출력)
-                         
-						if(result==0){
-							pageNum = 1
-							A = 1
-                       	 }
-                         
+                         var pageNum = Math.ceil(result/pagePerBoard); // 게시글 수를 5로 나누고 소수점 아래를 올림하여 정수로 나타냄
+                         var A = Math.ceil(pageNum/5); 
                          var pageList = [];
                          var dataList = [];
                          var currentPNG; // 현재 pageNumGroup. 처음엔 1
@@ -367,75 +364,32 @@ h5 {
                         }else {           // y-x = 0 이라면 pageNum 에 +1 을 할 필요가 없음.
                            pageNum = x;
                         }
-                         */	
-
+                         */
+                         
                         var pageNumGroup = [];
                         for (var i = 1; i <= pageNum; i++) {
                        	 pageNumGroup.push(i);
                         }
-                        alert(A)
+                        
                         currentPNG = 1;
                         
-                        
-          				
-                        selectPageBoard(A, currentPNG);   // A = 2, currentPNG = 1
-                        
-                        function selectPageBoard(A, currentPNG) {
-                        	  $("#nextBtnHTML").html("");
-
-                        	  var pagingHTML = '<button id="nextBtn">></button>';
-                        	  $("#nextBtnHTML").append(pagingHTML);
-
-                        	  // 다음 버튼 클릭 시 페이지 이동
-                        	
-	                        	  $("#nextBtn").click(function() {
-	                        		  if(A!=currentPNG){
-			                        	    currentPNG++; // currentPNG 값을 증가시킴
-			                   				
-			                        	    createPageNum(currentPNG); // 증가된 currentPNG 값을 인자로 createPageNum 함수 호출
-	                        		  }
-	                        	  });
-
-                        	  
-                        }
-
-                        	
-                   
-
-                        	  /* if (A > currentPNG) {
-                        	    var pagingHTML = '<button id="nextBtn">다음</button>';
-                        	    $("#nextBtnHTML").append(pagingHTML);
-
-                        	    // 다음 버튼 클릭 시 페이지 이동
-                        	    $("#nextBtn").click(function() {
-                        	      createPageNum(currentPNG);
-                        	    });
-                        	  } */
-                        	
-                       
-                        
-                        
+                        createPageNum(currentPNG);
+          
                         // 페이지 번호를 추가
 						function createPageNum(currentPNG){
 							$("#pagingArea").html("");
 							var startPageNum = currentPNG * 5 - 4
-							
-							
-							if(A==currentPNG) {
-								for(var i = startPageNum; i< startPageNum+B; i++ ){
-									pagingHTML = '<div class="pageNum">' + i + '</div>';	                           
-			                           $("#pagingArea").append(pagingHTML);
-								}
-							}else {
-								for (var i = startPageNum; i < startPageNum+5; i++) {
-		                           pagingHTML = '<div class="pageNum">' + i + '</div>';	                           
-		                           $("#pagingArea").append(pagingHTML);
-		                        }
-							} 
+                        	
+							for (var i = startPageNum; i < startPageNum + 5; i++) {
+	                           pagingHTML = '<div class="pageNum">' + i + '</div>';
+	                           
+	                          
+	                           
+	                           $("#pagingArea").append(pagingHTML);
+	                        }	
 						}
-                        
-					     createPageNum(currentPNG);
-                        
+                        	
+ 
                      }
                   });
           
@@ -445,7 +399,7 @@ h5 {
                   
                   /* 마커 클릭 시 해당하는 장소의 게시글들을 불러오는 기능 end */
                   
-                  $("#addWriteBtn").html('<div class="btn_write" id="write" name="' + placeNum + '">글쓰기</div>');
+                  $("#addWriteBtn").html('<div class="btn" id="write" name="' + placeNum + '">글쓰기</div>');
                   
                   $(".board_hide").addClass('board_show'); // board_show 클래스 추가(top:70%를 우선 적용)
                   boardShow = true;
@@ -472,6 +426,7 @@ h5 {
                   });
                };
             }
+            
             /* @@@@@@@@@@ 인포윈도우를 표시하는 클로저를 만드는 함수 end @@@@@@@@@@ */
    
                   function makeOutListener(infowindow) {
@@ -499,6 +454,7 @@ h5 {
             e.preventDefault();
             var currentPage = $(this).text();
             var placeNum = $("#write").attr("name");
+            alert(placeNum);
             fn_selectPage(currentPage, placeNum);
          });
       
@@ -522,12 +478,14 @@ h5 {
       /* 게시판 클릭 기능 */
 
          
-      /* @@@@@@@@@@ 검정하트클릭 @@@@@@@@@@ */ 
+       /* @@@@@@@@@@ 검정하트클릭 @@@@@@@@@@ */ 
       $(document).on('click', '.likeBtn', function(e) {
          e.preventDefault();
+         $(this).addClass('dislikeBtn');
+         $(this).removeClass('likeBtn');
          var memId = '<%=(String)session.getAttribute("MEM_ID")%>'
          var placeNum = $(this).siblings('.likePlaceNum').val();
-         var placeNum = "1"
+         
          
          $.ajax({
             url: '/myPlace/addLikePlace',
@@ -536,8 +494,8 @@ h5 {
             
             success:function(placeData) {
                alert("내장소 저장");
-    		        	 $('.likeBtn').hide();
-    		             $('.dislikeBtn').show();
+               
+    		             
     		        	 },
     		        error:function() {
     		            alert("ㅏ안된당");
@@ -550,15 +508,12 @@ h5 {
       $(document).on('click', '.dislikeBtn', function(e) {
     	  
     	  e.preventDefault();
+    	  $(this).addClass('likeBtn');
+          $(this).removeClass('dislikeBtn');
+    	  
     	  var memId = '<%=(String)session.getAttribute("MEM_ID")%>'
     	  
-          /* var placeNum = $(this).siblings('.likePlaceNum').val(); */
-
-    	  
-    	  /* alert(typeof placeNum) */
-    	  
-    	  var placeNum = "1"
-    	  
+          var placeNum = $(this).siblings('.likePlaceNum').val();
     	  
     		  $.ajax({
     		         url: '/myPlace/disLikePlace',
@@ -567,26 +522,17 @@ h5 {
     		         
     		         success:function(placeData) {
     		        	 alert("내장소 저장취소");
-    		        	 $('.dislikeBtn').hide();
-    		             $('.likeBtn').show();
+    		        	 
             },
                error:function() {
                alert("ㅏ안된당");
             }
          });
-      });
+      }); 
     
       /* @@@@@@@@@@ 하트클릭 @@@@@@@@@@ */
       
-      });
-   
-	$(document).on("click", ".likePlace", function(e) {
-		// 모든 likePlace 요소에서 btn_write_selected 클래스 제거
-		$(".likePlace").removeClass("btn_place_selected");
-		// 클릭한 버튼에만 abc 클래스 추가
-		$(this).addClass("btn_place_selected");
-	});
-   
+      });  
    </script>
 </body>
 
