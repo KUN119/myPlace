@@ -166,9 +166,11 @@
 	<form action="" id="monthlyRankForm">
 		<h1><i class="fa-sharp fa-solid fa-ranking-star" style="color: #3d2fa7;"></i>월간 좋아요 TOP3</h1>
 		<div class="dropdown">
+		
 			<button type="button" class="dropdown-toggle">
 	          날짜를 선택해주세요..
 	        </button>
+	        
 	        <ul class="dropdown-menu">
 				<li class="dropdown-item">
 		            <button type="button" value="1" class="dropdown-option">
@@ -235,7 +237,10 @@
 		
 		<button type="submit" class="next-button" id="search" disabled>검색</button>
 		
-		<div id="rankArea"></div>
+		<div id="rankArea">
+			<!-- rank 추가되는 위치 -->
+		</div>
+		
     </form>
 </body>
 
@@ -243,13 +248,24 @@
 
 <script type="text/javascript">
 $(document).ready(function(){
-	
-	const dropdownForm = document.querySelector(".drowpdown");
 	const dropdownBtn = document.querySelector(".dropdown-toggle");
 	const menuList = document.querySelector(".dropdown-menu");
-	const itemList = document.querySelector(".dropdown-item");
-	const optionBtn = document.querySelectorAll(".dropdown-option");
-	const submit = document.querySelector(".next-button");
+	var month;
+	
+	/* 월을 선택 했을 때 val 가져오기 */
+	$(document).on("click", ".dropdown-option", function(e){
+		e.preventDefault();
+		month = $(this).val();
+		monthName = $(this).text();
+		$(".dropdown-toggle").text(monthName)
+		$(".next-button").removeAttr("disabled");
+	});
+	
+	/* 검색 눌렀을 때 fn_rank() 실행 */
+	$(document).on("click", ".next-button", function(e){
+		e.preventDefault();
+		fn_rank(month);
+	});
 	
 	dropdownBtn.addEventListener("click", function () {
 	  menuList.classList.toggle("show");
@@ -258,26 +274,6 @@ $(document).ready(function(){
 	// menuList는 사라진다
 	dropdownBtn.addEventListener("blur", function () {
 	  menuList.classList.remove("show");
-	});
-	
-	optionBtn.forEach(function (item) {
-		item.addEventListener("click", function (e) {
-	    	// 선택한 값 지정
-		    const selectValue = e.currentTarget.textContent.trim();
-		    // 지정 값 출력
-		    dropdownBtn.textContent = selectValue;
-		    // 색깔 변화
-		    e.currentTarget.classList.add("selected");
-		    // 버튼 생성
-		    submit.removeAttribute("disabled");
-		    
-		    submit.addEventListener("click", function (e) {
-	            e.preventDefault();
-	            var selectedOption = document.querySelector(".dropdown-item button.selected");
-	            var month = selectedOption.value;
-	            fn_rank(month);
-	        });
-	  	});
 	});
 	
 	function fn_rank(month) {
@@ -292,17 +288,31 @@ $(document).ready(function(){
 			processData: false,
 			contentType: false,
 			success : function(data, status, xhr) {
-				for(var i=0; i<3; i++){
-					var map = data[i];
-					var html = "";
-					html += '<div style="display: flex; flex-direction: row; justify-content: space-between;">' + map["PLACE_NAME"] 
+				$("#rankArea *").remove();
+				
+				var str = "";
+				$.each(data, function(key, value){
+					str +='<div class="rankReset" style="display: flex; flex-direction: row; justify-content: space-between;" data-num="'+value.PLACE_NUM+'">' + value.PLACE_NAME 
 						+ 	'<div style="display: flex; justify-content: flex-end;">' 
 						+ 		'<i class="fa-solid fa-heart" style="color: #ff0000;"></i>'
-						+ 		map["CNT"] +'<br/>'
+						+ 		value.CNT +'<br/>'
 						+ 	'</div>'
 						+ '</div>';
-					
-					$("#rankArea").append(html);
+						
+					if(key==2){
+						return false;
+					}
+				});
+				$("#rankArea").append(str);
+				
+				$(".rankReset").on("click", function(e){
+					e.preventDefault();
+					var placeNum = $(this).data('num');
+					fn_goToMap(placeNum);
+				})
+				
+				function fn_goToMap(placeNum){
+					 placeNum
 				}
 			},
 			error: function(xhr, status, error){

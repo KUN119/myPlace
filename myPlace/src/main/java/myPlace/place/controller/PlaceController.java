@@ -17,6 +17,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -111,5 +112,15 @@ public class PlaceController {
 		log.debug("placeRank: " + placeRank);
 		
 		return placeRank;
+	}
+	
+	@GetMapping(value="/placeSearch")
+	public ModelAndView placeSearch(@RequestParam Map<String, Object> map) throws Exception{
+		log.debug("###### placeSearch ######");
+		log.debug("###### placeSearch map ######:" + map);
+		
+		ModelAndView mv = new ModelAndView("main/main");
+		
+		return mv;
 	}
 }

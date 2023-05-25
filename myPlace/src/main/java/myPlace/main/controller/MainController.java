@@ -2,7 +2,6 @@ package myPlace.main.controller;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -33,6 +32,7 @@ public class MainController {
 	@RequestMapping(value="/mainPage")
 	public ModelAndView mainPage(@RequestParam Map<String, Object> map)throws Exception{
       log.debug("###### 메인 페이지 ######");
+      log.debug("###### 메인 페이지 map ######:" + map);
       ModelAndView mv = new ModelAndView("main/main");
       
       return mv;
