@@ -120,9 +120,17 @@ h5 {
 									</tr>
 								</tbody>
 							</table>
-							<div id="pagingArea" style="display: flex; justify-content: center;">
-								<!-- pageNum이 추가되는 위치 -->
-							</div>
+							<div  style="display: flex; justify-content: center;">
+								<div id="prevBtnHTML">
+									
+								</div>
+                        <div id="pagingArea" style="display: flex; justify-content: center;">
+                           <!-- pageNum이 추가되는 위치 -->
+                        </div>
+                        <div id="nextBtnHTML">
+                           <!--  nextBtn 이 추가되는 위치 -->
+                       </div>
+                     </div>
 							<div id="addWriteBtn" style="display: flex; justify-content: center;">
 								<!--  글쓰기 버튼이 추가되는 위치 -->
 								<div class="btn" id="write">글쓰기</div>
@@ -151,8 +159,10 @@ h5 {
 </script>  
 <!-- 카카오 맵 기능 -->
 <script type="text/javascript">
+	
    $(document).ready(function(){
-      
+	   var CC; //currentPage
+	   var AA = 1; // 현재 페이지 덩어리
       /* 클릭한 place의 게시글을 불러오는 기능 start */
          function fn_selectPage(selectedPage, placeNum){
             var boardPerPage = 5;  //한페이지당 출력할 게시물의 수
@@ -160,6 +170,8 @@ h5 {
             var currentPage = selectedPage; // 현재 페이지 번호
             var startIdx = currentPage * boardPerPage - ( boardPerPage -1);
             var endIdx = currentPage * boardPerPage;
+            
+            CC = currentPage
             
             var formData = { "BOARD_PLACE": placeNum,
                                    "startIdx" : startIdx,
@@ -187,7 +199,7 @@ h5 {
                      // 테이블 HTML을 요소에 추가
                      $("#board").append(tableHTML);
                   }
-
+                  
                },
                error: function(xhr, status, error) {
                   console.log('실패');
@@ -195,6 +207,14 @@ h5 {
             });
          }
          /* 클릭한 place의 게시글을 불러오는 기능 end */
+         
+         $(document).on("click", ".title", function(e) {
+                      e.preventDefault();
+                      var placeNum = $("#write").attr("name");
+                      var boardDetail = $(this).siblings('.boardNum').text();
+                      var url = "/myPlace/boardDetail?BOARD_NUM=" + boardDetail + "&BOARD_PLACE=" + placeNum + "&AA=" +AA + "&currentPage=" + CC;
+                      window.location.href = url;
+                   });
       
 
       
@@ -352,11 +372,18 @@ h5 {
                      success: function(result) {
                     	 // var x = parseInt(result/boardPerPage)    //몫을 int 값으로 정수만 출력
                          // var y = parseFloat(result/boardPerPage) // 몫을 float 값으로 소수까지 출력
-                         var pageNum = Math.ceil(result/pagePerBoard); // 게시글 수를 5로 나누고 소수점 아래를 올림하여 정수로 나타냄
-                         var A = Math.ceil(pageNum/5); 
+                         var pageNum = Math.ceil(result/pagePerBoard); // 게시글 수를 pagePerBoard로 나누고 소수점 아래를 올림하여 정수로 나타냄
+                         var A = Math.ceil(pageNum/5); // 총 게시글 페이지 덩어리 ( 1~5, 6~10)
+                         var B = pageNum%5  // 덩어리(몫)을 구한 후 나머지 값을 구하는 식 (남은 페이징 출력)
+                         
+						if(result==0){
+							pageNum = 1
+							A = 1
+                       	 }
+                         
                          var pageList = [];
                          var dataList = [];
-                         var currentPNG; // 현재 pageNumGroup. 처음엔 1
+                         var currentPNG; // 현재 pageNumGroup. 현재페이지 덩어리 처음엔 1
                          var pagingHTML = "";
                          /* 
                         if( y-x > 0){      // y-x > 0 이라면 나누어 떨어지지 않는 수 이므로 x 페이징에 +1 를 해야함
@@ -370,29 +397,84 @@ h5 {
                         for (var i = 1; i <= pageNum; i++) {
                        	 pageNumGroup.push(i);
                         }
+
+                        currentPNG = 1; 						
                         
-                        currentPNG = 1;
+                        selectPageBoard(A, currentPNG);   // A = 2, currentPNG = 1
                         
-                        createPageNum(currentPNG);
-          
+                        function selectPageBoard(A, currentPNG) {
+                        	  $("#prevBtnHTML").html("");
+                        	  var pagingHTML = '<div id="prevBtn"><</div>';
+                        	  $("#prevBtnHTML").append(pagingHTML);
+                        	
+                        	  $("#nextBtnHTML").html("");
+							  var pagingHTML = '<div id="nextBtn">></div>';
+                        	  $("#nextBtnHTML").append(pagingHTML);
+
+                        	  // 다음 버튼 클릭 시 페이지 이동
+                        	
+	                        	  $("#nextBtn").click(function() {
+	                        		  if(A!=currentPNG){
+			                        	    currentPNG++; // currentPNG 값을 증가시킴
+			                   				
+			                        	    createPageNum(currentPNG); // 증가된 currentPNG 값을 인자로 createPageNum 함수 호출
+			                        	    
+			                        	    AA = currentPNG
+	                        		  }
+	                        	  });
+                        	  
+	                        	  $("#prevBtn").click(function() {
+	                        		    if (A == currentPNG) {
+	                        		        if (currentPNG > 1) {
+	                        		            currentPNG--;
+	                        		            createPageNum(currentPNG);
+	                        		            AA = currentPNG
+	                        		        }
+	                        		    }
+	                        		});
+	                        	  $("#prevBtn, #nextBtn").css("cursor", "pointer");
+                        	  
+                        }
+
+
+                        	  /* if (A > currentPNG) {
+                        	    var pagingHTML = '<button id="nextBtn">다음</button>';
+                        	    $("#nextBtnHTML").append(pagingHTML);
+
+                        	    // 다음 버튼 클릭 시 페이지 이동
+                        	    $("#nextBtn").click(function() {
+                        	      createPageNum(currentPNG);
+                        	    });
+                        	  } */
+                        	
+                                        
                         // 페이지 번호를 추가
 						function createPageNum(currentPNG){
 							$("#pagingArea").html("");
 							var startPageNum = currentPNG * 5 - 4
-                        	
-							for (var i = startPageNum; i < startPageNum + 5; i++) {
-	                           pagingHTML = '<div class="pageNum">' + i + '</div>';
-	                           
-	                          
-	                           
-	                           $("#pagingArea").append(pagingHTML);
-	                        }	
+							
+							
+							if(A==currentPNG) {
+								for(var i = startPageNum; i< startPageNum+B; i++ ){
+									pagingHTML = '<div class="pageNum">' + i + '</div>';	                           
+			                           $("#pagingArea").append(pagingHTML);
+								}
+							}else {
+								for (var i = startPageNum; i < startPageNum+5; i++) {
+		                           pagingHTML = '<div class="pageNum">' + i + '</div>';	                           
+		                           $("#pagingArea").append(pagingHTML);
+		                        }
+							} 
 						}
-                        	
- 
+					     createPageNum(currentPNG);
+                        
+					    
+					     
                      }
                   });
           
+                 
+         		  
                   /* 클릭한 page의 게시글 5개를 불러오는 기능 start */
                   fn_selectPage(1, placeNum);
                   /* 클릭한 page의 게시글 5개를 불러오는 기능 end */
@@ -458,21 +540,13 @@ h5 {
             fn_selectPage(currentPage, placeNum);
          });
       
-         $(document).on("click", ".title", function(e) {
-             e.preventDefault();
-             
-             var placeNum = $("#write").attr("name");
-             var boardDetail = $(this).siblings('.boardNum').text();
-             var url = "/myPlace/boardDetail?BOARD_NUM=" + boardDetail + "&BOARD_PLACE=" + placeNum;
-             window.location.href = url;
-          });
+         
         
       $(document).on("click", "#write", function(e){
          e.preventDefault();
          
          var placeNum = $("#write").attr("name");
-         
-         window.location.href = '/myPlace/boardWrite?BOARD_PLACE='+ placeNum;
+         window.location.href = '/myPlace/boardWrite?BOARD_PLACE='+ placeNum + "&AA=" + AA + "&currentPage=" + CC;
          
       });
       /* 게시판 클릭 기능 */
