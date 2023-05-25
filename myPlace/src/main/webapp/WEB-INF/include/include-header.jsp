@@ -23,6 +23,11 @@
 	align-items: center;
 	justify-content:flex-end;
 	color: #0d6efd;
+	
+	transition: color 1.5s ease; /* 배경색이 서서히 바뀌도록 transition 속성 설정 */
+}
+.title_people{
+	color: #28DF99!important;	
 }
 
 </style>

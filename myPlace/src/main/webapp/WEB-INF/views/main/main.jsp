@@ -19,25 +19,54 @@ h5 {
 <!-- 구글 웹 폰트 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link
-	href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap"
-	rel="stylesheet">
+<link rel="stylesheet" href="resources/assets/vendor/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap">
 <!-- 구글 웹 폰트 끝 -->
+
 <!--  아이콘 추가하기 -->
-<script src="https://kit.fontawesome.com/54cc554368.js"
-	crossorigin="anonymous"></script>
+<script src="https://kit.fontawesome.com/54cc554368.js" crossorigin="anonymous"></script>
 <!--  아이콘 추가하기 끝 -->
-<link rel="stylesheet"
-	href="resources/assets/vendor/bootstrap/css/bootstrap.min.css">
+
 <!-- jQuery -->
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-<script src="<c:url value='/resources/assets/js/common.js'/>"
-	charset="utf-8"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="<c:url value='/resources/assets/js/common.js'/>" charset="utf-8"></script>
 <meta charset="UTF-8">
 <title>MyPlace</title>
 
 <style>
+/* 구글 폰트 적용 */
+@import url(//fonts.googleapis.com/earlyaccess/nanumpenscript.css);
+
+h5 {
+	word-break: break-all;
+}
+.cursor_pointer{
+	cursor: pointer; 
+}
+
+/* 글쓰기 버튼 관련 start*/
+.btn_write{
+	cursor: pointer;
+	border: 2px solid #BFEAF5;
+	border-radius: 10px;
+	padding: 7px 15px;
+	background-color: #EAFDFC;
+	transition: background-color 0.2s ease; /* 배경색이 서서히 바뀌도록 transition 속성 설정 */
+}
+.btn_write:hover {
+    color: #0d6efd;
+    background-color: #BFEAF5;
+    border-color: #BFEAF5;
+}
+/* 글쓰기 버튼 관련 end */
+
+/* 버튼을 클릭할 때 추가하는 속성, 나머지는 해제 */
+.btn_place_selected{
+	color: #fff!important;
+	background-color: #0d6efd!important;
+	border-color: #0d6efd!important;
+}
+
 .board_show {
 	top: 70% !important;
 }
@@ -281,17 +310,7 @@ h5 {
                //마커의 이미지
                var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png"; 
                
-               ////////////////////////////////여러 개의 마커 표시 시작///////////////////////////////////////////////
-               //장소들의 길이만큼 반복해서 여러개의 마커 표시
-               for (var i = 0; i < positions.length; i ++) {
-                
-                  // 마커 이미지의 이미지 크기 입니다
-                  var imageSize = new kakao.maps.Size(24, 35);
-                  
-                  // 마커 이미지를 생성합니다    
-                  var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize); 
-               }
-               ////////////////////////////////여러 개의 마커 표시 끝///////////////////////////////////////////////
+			////////////////////////////////여러 개의 마커 표시 끝///////////////////////////////////////////////
                for (var i = 0; i < positions.length; i++) {
                      var marker = new kakao.maps.Marker({
                          map: map,
@@ -312,32 +331,31 @@ h5 {
                       
                       var liked = false; // 변수를 추가하여 기본값을 false로 설정
                       
-                      // 변환된 JavaScript 객체 사용 예시
-                      for (var a = 0; a < data.length; a++) {
-                   	    var map2 = data[a];
-                   	    if (map2["LIKEPLACE_PLACE"] == placeNum) {
-                   	    	// 좋아하는 장소가 있는 경우 하트를 빨간색으로 설정
-                   	    	//좋아요
-		                     iwContent = '<div class="bold"><h2>'+placeData[i].PLACE_NAME
-		                 		+ '&nbsp;<i class="fa-solid fa-heart dislikeBtn" ></i>' //빨간하트
-			                    + '<input class="likePlaceNum" type="hidden" value="' + placeData[i].PLACE_NUM + '">'
-								+ '&nbsp;<i type="button" class="fa-solid fa-user" id="likeUser"></i></i></h2>'
-								+ '<h5>'+placeData[i].PLACE_ADDR+'</h5></div>' // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
-		                        liked = true; // 좋아요 상태를 true로 설정
-		                        break; // 이미 좋아하는 장소를 찾았으므로 루프를 종료
-                   	    } 
-                      }
-                      
-                      if (!liked){
-                   	    	// 좋아하는 장소가 없는 경우 하트를 검은색으로 설정
-                   	    	//좋아요
-		                     iwContent = '<div class="bold"><h2>'+placeData[i].PLACE_NAME
-								+ '&nbsp;<i class="fa-solid fa-heart likeBtn" ></i>' //까만하트
-								+ '<input class="likePlaceNum" type="hidden" value="' + placeData[i].PLACE_NUM + '">'
-								+ '&nbsp;<i type="button" class="fa-solid fa-user" id="likeUser"></i></i></h2>'
-								+ '<h5>'+placeData[i].PLACE_ADDR+'</h5></div>' // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
-		                        
-                   	        }
+						// 변환된 JavaScript 객체 사용 예시
+						for (var a = 0; a < data.length; a++) {
+							var map2 = data[a];
+							if (map2["LIKEPLACE_PLACE"] == placeNum) {
+	                   	    	// 좋아하는 장소가 있는 경우 하트를 빨간색으로 설정
+								iwContent = '<div class="bold"><h2 style="display: flex;">'
+									+ '<div id="placeName">' + placeData[i].PLACE_NAME + '</div>'
+									+ '&nbsp;<i class="fa-solid fa-heart dislikeBtn" ></i>' //빨간하트
+									+ '<input class="likePlaceNum" type="hidden" value="' + placeData[i].PLACE_NUM + '">'
+									+ '&nbsp;<i type="button" class="fa-solid fa-user" id="likeUser"></i></i></h2>'
+									+ '<h5>'+placeData[i].PLACE_ADDR+'</h5></div>' // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+									liked = true; // 좋아요 상태를 true로 설정
+									break; // 이미 좋아하는 장소를 찾았으므로 루프를 종료
+									}
+								}
+						
+							if (!liked){
+								// 좋아하는 장소가 없는 경우 하트를 검은색으로 설정
+								iwContent = '<div class="bold"><h2 style="display: flex;">'
+									+ '<div id="placeName">' + placeData[i].PLACE_NAME + '</div>'
+									+ '&nbsp;<i class="fa-solid fa-heart likeBtn" ></i>' //까만하트
+									+ '<input class="likePlaceNum" type="hidden" value="' + placeData[i].PLACE_NUM + '">'
+									+ '&nbsp;<i type="button" class="fa-solid fa-user" id="likeUser"></i></i></h2>'
+									+ '<h5>'+placeData[i].PLACE_ADDR+'</h5></div>' // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+	                   	        }
                       
                       /* @@@@@ 좋아요 여부에 따라서 하트가 바뀌는 기능 end */
                      
@@ -351,6 +369,7 @@ h5 {
                      
                      kakao.maps.event.addListener(marker, 'click', makeOverListener(map, marker, infowindow, placeNum));
                   }
+
                  
             /* @@@@@@@@@@ 인포윈도우를 표시하는 클로저를 만드는 함수 start @@@@@@@@@@ */
             function makeOverListener(map, marker, infowindow, placeNum) {
@@ -397,9 +416,11 @@ h5 {
                         for (var i = 1; i <= pageNum; i++) {
                        	 pageNumGroup.push(i);
                         }
-
-                        currentPNG = 1; 						
                         
+                        currentPNG = 1;
+                        
+                        
+          				
                         selectPageBoard(A, currentPNG);   // A = 2, currentPNG = 1
                         
                         function selectPageBoard(A, currentPNG) {
@@ -436,6 +457,8 @@ h5 {
                         	  
                         }
 
+                        	
+                   
 
                         	  /* if (A > currentPNG) {
                         	    var pagingHTML = '<button id="nextBtn">다음</button>';
@@ -447,7 +470,9 @@ h5 {
                         	    });
                         	  } */
                         	
-                                        
+                       
+                        
+                        
                         // 페이지 번호를 추가
 						function createPageNum(currentPNG){
 							$("#pagingArea").html("");
@@ -485,27 +510,7 @@ h5 {
                   
                   $(".board_hide").addClass('board_show'); // board_show 클래스 추가(top:70%를 우선 적용)
                   boardShow = true;
-         
-                  $("#likeUser").on("click", function(e){  // 브랜드 회원정보 수정
-                     e.preventDefault();
-         
-                     var formData = new FormData();
-                     formData.append("PLACE_NUM", placeNum);
-                    
-                     $.ajax({
-                        url:'/myPlace/idInLikePlace',
-                        type:'POST',
-                        data:formData,
-                        processData: false,
-                        contentType: false,
-                        success:function(idInLikePlace) {
-                           alert(idInLikePlace)
-                        },
-                        error:function() {
-                           alert("서버 오류");
-                        }
-                     });
-                  });
+                  
                };
             }
             
@@ -550,63 +555,110 @@ h5 {
          
       });
       /* 게시판 클릭 기능 */
-
-         
-       /* @@@@@@@@@@ 검정하트클릭 @@@@@@@@@@ */ 
-      $(document).on('click', '.likeBtn', function(e) {
-         e.preventDefault();
-         $(this).addClass('dislikeBtn');
-         $(this).removeClass('likeBtn');
-         var memId = '<%=(String)session.getAttribute("MEM_ID")%>'
-         var placeNum = $(this).siblings('.likePlaceNum').val();
-         
-         
-         $.ajax({
-            url: '/myPlace/addLikePlace',
-            type:'POST',
-            data:{ "LIKEPLACE_MEM": memId, "LIKEPLACE_PLACE": placeNum},
-            
-            success:function(placeData) {
-               alert("내장소 저장");
-               
-    		             
-    		        	 },
-    		        error:function() {
-    		            alert("ㅏ안된당");
-    		         }
-    		  
-    		         }); 
-    	});
-		
-    //빨강하트클릭 
-      $(document).on('click', '.dislikeBtn', function(e) {
-    	  
-    	  e.preventDefault();
-    	  $(this).addClass('likeBtn');
-          $(this).removeClass('dislikeBtn');
-    	  
-    	  var memId = '<%=(String)session.getAttribute("MEM_ID")%>'
-    	  
-          var placeNum = $(this).siblings('.likePlaceNum').val();
-    	  
-    		  $.ajax({
-    		         url: '/myPlace/disLikePlace',
-    		         type:'POST',
-    		         data:{ "LIKEPLACE_MEM": memId, "LIKEPLACE_PLACE": placeNum},
-    		         
-    		         success:function(placeData) {
-    		        	 alert("내장소 저장취소");
-    		        	 
-            },
-               error:function() {
-               alert("ㅏ안된당");
-            }
-         });
-      }); 
-    
-      /* @@@@@@@@@@ 하트클릭 @@@@@@@@@@ */
       
-      });  
+	});
+   
+	/* class="likePlace" 인 요소 클릭 시 배경색상을 바꾸는 기능 start */
+	$(document).on("click", ".likePlace", function(e) {
+		// 모든 likePlace 요소에서 btn_write_selected 클래스 제거
+		$(".likePlace").removeClass("btn_place_selected");
+		// 클릭한 버튼에만 abc 클래스 추가
+		$(this).addClass("btn_place_selected");
+	});
+	/* class="likePlace" 인 요소 클릭 시 배경색상을 바꾸는 기능 end */
+	
+	/* @@@@@@@@@@ 검정하트클릭 @@@@@@@@@@ */ 
+	$(document).on('click', '.likeBtn', function(e) {
+		e.preventDefault();
+		$(this).addClass('dislikeBtn');
+		$(this).removeClass('likeBtn');
+		var memId = '<%=(String)session.getAttribute("MEM_ID")%>'
+		var placeNum1 = $(this).siblings('.likePlaceNum').val();
+		
+		$.ajax({
+			url: '/myPlace/addLikePlace',
+			type:'POST',
+			data:{ "LIKEPLACE_MEM": memId, "LIKEPLACE_PLACE": placeNum1},
+			success:function(placeData) {
+				/* DB에 장소 추가 */
+			},
+			error:function() {
+				alert("error");
+			}    		  
+		}); 
+	});
+	
+	//빨강하트클릭 
+	$(document).on('click', '.dislikeBtn', function(e) {
+		e.preventDefault();
+		$(this).addClass('likeBtn');
+		$(this).removeClass('dislikeBtn');
+		var memId = '<%=(String)session.getAttribute("MEM_ID")%>'    	  
+		var placeNum = $(this).siblings('.likePlaceNum').val();
+		
+			$.ajax({
+				url: '/myPlace/disLikePlace',
+				type:'POST',
+				data:{ "LIKEPLACE_MEM": memId, "LIKEPLACE_PLACE": placeNum},
+				success:function(placeData) {
+					/* DB에서 장소 제거 */
+				},
+				error:function() {
+					alert("error");
+				}
+			});
+		}); 
+      /* @@@@@@@@@@ 하트클릭 @@@@@@@@@@ */
+	
+	/* id="likeUser" 인 요소 클릭 시 header, sidebar를 변경 start */
+	$(document).on("click", "#likeUser", function(e) {
+		e.preventDefault();
+		var placeName = $(this).siblings("#placeName").text(); // 클릭한 요소의 형제요소중 id가 placeName인 요소의 글씨
+		var placeNum = $(this).siblings(".likePlaceNum").val();
+		var formData = {"PLACE_NUM" : placeNum}
+		
+		/* "title_1"클래스를 갖고있는 요소가 "title_people"클래스를 갖고있지 않다면 */
+		if(!$(".title_1").hasClass("title_people")){
+			$(".title_1").addClass("title_people");	/* "title_people"클래스를 추가 */
+		}
+		
+		$(".title_1").fadeOut(150); /* 헤더의 좌측 타이틀 페이드아웃 */
+		$("#placeList").html("").fadeOut(150); /* sidebar 비우기 & 페이드아웃 */
+		
+		$(".title_1").text(placeName + "'s people").fadeIn(150); /* "title_1"클래스를 갖고있는 요소의 내용 추가 & 페이드인 */
+		$("#placeList").fadeIn(150); /* sidebar 페이드인 */
+		
+		$.ajax({
+			url:'/myPlace/idInLikePlace',
+			type:'POST',
+			data:formData,
+			success:function(data) {
+				
+				/* 사이드바에 회원들의 id를 추가 */
+				for(var i=data.length-1; i>=0; i--){
+					var map = data[i]; // 각 리스트 요소인 맵을 객체로 정의
+					var htmls = "";
+					
+					htmls += '<div class="likePeople" style="height: 70px; margin: 5px;">';
+					htmls += map["MEM_ID"];
+					htmls += '</div>';
+					
+					$("#placeList").append(htmls);
+				}
+           },
+           error:function() {
+              alert("서버 오류");
+           }
+        });
+	});
+	/* id="likeUser" 인 요소 클릭 시 header, sidebar를 변경 end */
+	
+	$(document).on("click", ".likePeople", function(e){
+		e.preventDefault();
+		var MEM_ID = $(this).text();
+		fn_addPlace(MEM_ID);
+	})
+	
    </script>
 </body>
 
