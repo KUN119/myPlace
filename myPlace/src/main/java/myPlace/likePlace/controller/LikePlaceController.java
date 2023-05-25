@@ -18,7 +18,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import myPlace.likePlace.service.LikePlaceService;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.core.type.TypeReference;
 
 @RestController
@@ -40,7 +39,7 @@ public class LikePlaceController {
     }
 	
 	@RequestMapping(value="/addLikePlace")
-    public void AddLikePlace(@RequestParam Map<String, Object> map, HttpSession session) throws Exception{
+    public void addLikePlace(@RequestParam Map<String, Object> map, HttpSession session) throws Exception{
 		
 		likePlaceService.insertLikePlace(map);
 		
