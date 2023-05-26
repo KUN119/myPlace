@@ -308,11 +308,27 @@ $(document).ready(function(){
 				$(".rankReset").on("click", function(e){
 					e.preventDefault();
 					var placeNum = $(this).data('num');
+					alert(placeNum);
 					fn_goToMap(placeNum);
 				})
 				
 				function fn_goToMap(placeNum){
-					 placeNum
+					var pData = new FormData();
+					alert(placeNum);
+					pData.append("PLACE_NUM", placeNum);
+					
+					$.ajax({
+						url: "/myPlace/placeSearch",
+						type: "POST",
+						data: pData,
+						processData: false,
+						contentType: false,
+						success : function(data, status, xhr) {
+							window.location.href = "/myPlace/mainPage";
+						},
+						error: function(xhr, status, error){
+						}
+					});
 				}
 			},
 			error: function(xhr, status, error){

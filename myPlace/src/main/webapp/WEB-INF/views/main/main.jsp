@@ -109,6 +109,8 @@ h5 {
 </head>
 <%@ include file="/WEB-INF/include/include-header.jsp"%>
 <body>
+<div>${placeSearch.PLACE_NUM}</div>
+
 	<div class="mainContent" id="mainContent">
 		<div class="sidebarArea">
 			<%@ include file="/WEB-INF/include/include-sidebar.jsp"%>
@@ -257,7 +259,7 @@ h5 {
       
       var map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
       
-      ////////////////////////////////지도 생성 끝///////////////////////////////////////////////      
+      ////////////////////////////////지도 생성 끝///////////////////////////////////////////////
       
       /* @@@@@ sidebar에서 동작하는 기능 start @@@@@ */
       /* 클릭한 LIKEPLACE를 지도의 중심으로 위치시킨다. */
