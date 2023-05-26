@@ -8,6 +8,7 @@
       <![CDATA[
          SELECT
             P.PLACE_NAME,
+            P.PLACE_NUM,
             P.PLACE_LAT,
             P.PLACE_LNG
          FROM
@@ -57,42 +58,7 @@
         	LIKEPLACE_MEM = #{MEM_ID}
     ]]>
     </select>
-	
-	
-	<!-- 찜한 상품인지 확인 -->
-	<!-- <select id="selectGoodsLike" parameterType="hashmap" resultType="hashmap"> 
-		<![CDATA[
-			SELECT
-					GOODS_LIKE_NUM,
-			    	GOODS_LIKE_USER,
-			    	GOODS_LIKE_PARENT
-			FROM
-					GOODS_LIKE
-			WHERE
-					GOODS_LIKE_USER = #{session_MEM_NUM}
-		]]>
-	</select> -->
-	
-	<!-- 찜 목록 -->
-	<!-- <select id="selectLikePlaceList" parameterType="hashmap" resultType="hashmap"> 
-		<![CDATA[
-			SELECT
-				P.PLACE_NUM,
-				P.PLACE_NAME,
-				P.PLACE_LAT,
-				P.PLACE_LNG
-			FROM
-				PLACE P
-			JOIN
-				LIKEPLACE L
-			ON
-				P.PLACE_NUM = L.LIKEPLACE_PLACE
-			WHERE
-				L.LIKEPLACE_MEM = #{MEM_ID}
-		]]>
-	</select> -->
-	
-	
+
 
 	<!-- 장소를 좋아하는 사람의 아이디 출력 -->
 	<select id="selectIdInLikePlace" parameterType="hashmap" resultType="hashmap"> 

@@ -36,7 +36,7 @@ public class MainController {
       ModelAndView mv = new ModelAndView("main/main");
       
       return mv;
-   } 
+   }
 	
 	@RequestMapping(value = "/boardPlace", method = RequestMethod.POST)  
 	@ResponseBody
