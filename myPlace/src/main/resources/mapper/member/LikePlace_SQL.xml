@@ -8,6 +8,7 @@
       <![CDATA[
          SELECT
             P.PLACE_NAME,
+            P.PLACE_NUM,
             P.PLACE_LAT,
             P.PLACE_LNG
          FROM

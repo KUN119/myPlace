@@ -33,7 +33,7 @@
 	<div style="display: flex; width:220px; flex-direction:column; align-items: center; z-index: 1">
 		<%-- <h3 style="margin-left: 13%; color: black;"><%=(String)session.getAttribute("MEM_ID")%>님의 장소</h3> --%>
 		<!-- <hr style="border: solid 1px rgb(73, 73, 73); width: 80%; margin-left: 5%;"> -->
-		<div id="placeList" style="display:flex; flex-direction:column; align-items:center; height: 100%;">
+		<div id="placeList" style="display:flex; flex-direction:column; align-items:center; height: 80%; overflow-y: scroll;">
 			<!-- 장소 리스트 추가되는 위치 -->
 		</div>
 	</div>

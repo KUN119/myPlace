@@ -36,15 +36,6 @@ public class MemberController {
 		log.debug("###### 로그인 폼 ######");
 		ModelAndView mv = new ModelAndView("member/loginForm");
 		return mv;
-	} 
-	
-	@RequestMapping(value="/logout")
-	public String logout(@RequestParam Map<String, Object> memId, HttpSession session) throws Exception{
-		log.debug("###### 로그아웃 ######");
-		
-		session.invalidate();
-		
-		return "로그아웃 성공";
 	}
 	
 	@RequestMapping(value="/loginCheck")
@@ -60,9 +51,6 @@ public class MemberController {
 		String jsonList = null;
 		
 		jsonList = objectMapper.writeValueAsString(list);
-		
-		
-		
 		
 		log.debug("아이디 : " + (String) map.get("MEM_ID"));
 		
@@ -87,12 +75,21 @@ public class MemberController {
 		return result;
 	}
 	
+	@RequestMapping(value="/logout")
+	public String logout(@RequestParam Map<String, Object> memId, HttpSession session) throws Exception{
+		log.debug("###### 로그아웃 ######");
+		
+		session.invalidate();
+		
+		return "로그아웃 성공";
+	}
+	
 	// 회원가입 페이지
-   @RequestMapping(value = "/joinForm", method = {RequestMethod.GET})
-   public ModelAndView joinForm(@RequestParam Map<String, Object> map) throws Exception{
-      ModelAndView mv = new ModelAndView("member/joinForm");
-      
-      return mv;
+	@RequestMapping(value = "/joinForm", method = {RequestMethod.GET})
+	public ModelAndView joinForm(@RequestParam Map<String, Object> map) throws Exception{
+		ModelAndView mv = new ModelAndView("member/joinForm");
+		
+		return mv;
    }
    
 // 회원가입 기능
