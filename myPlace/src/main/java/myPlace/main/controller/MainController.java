@@ -38,10 +38,11 @@ public class MainController {
       return mv;
    }
 	
-	@RequestMapping(value = "/boardPlace", method = RequestMethod.POST)
+	@RequestMapping(value = "/boardPlace", method = RequestMethod.POST)  
 	@ResponseBody
 	public List<Map<String, Object>> boardPlace(@RequestParam Map<String, Object> map)throws Exception{
 		List<Map<String, Object>> boardList = new ArrayList<Map<String,Object>>();
+		
 		
 		boardList = boardService.selectBoardList(map);
 		
