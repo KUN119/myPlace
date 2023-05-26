@@ -53,7 +53,13 @@
 		$(document).ready(function(){
 			$("#list").on("click", function(e){ //목록으로 버튼
 				e.preventDefault();
-				location.href='mainPage';
+				var urlParams = new URLSearchParams(window.location.search);
+
+				var AA = urlParams.get('AA');
+				var CC = urlParams.get('currentPage');
+				var placeNum = urlParams.get('BOARD_PLACE');
+				 var pagingUrl = "/myPlace/mainPage?BOARD_PLACE="+placeNum+"&AA=" +AA + "&currentPage=" + CC;
+				 location.href=pagingUrl;
 			});
 			
 			$("#update").on("click", function(e){

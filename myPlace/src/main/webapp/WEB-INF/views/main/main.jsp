@@ -541,7 +541,6 @@ h5 {
             e.preventDefault();
             var currentPage = $(this).text();
             var placeNum = $("#write").attr("name");
-            alert(placeNum);
             fn_selectPage(currentPage, placeNum);
          });
       

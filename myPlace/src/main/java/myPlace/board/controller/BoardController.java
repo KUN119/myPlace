@@ -58,6 +58,7 @@ public class BoardController {
 	public ModelAndView BoardDetail(@RequestParam Map<String, Object> map) throws Exception{
 		ModelAndView mv = new ModelAndView("/board/boardDetail");
 		Map<String, Object> map2 = boardService.selectBoardDetail(map);
+		
 		mv.addObject("map2",map2);
 		return mv;
 	}
@@ -71,7 +72,7 @@ public class BoardController {
 		return mv;
 	}
 	
-	@RequestMapping(value="openBoardUpdate")
+	@RequestMapping(value="/openBoardUpdate")
 	public ModelAndView openBoardUpdate(@RequestParam Map<String, Object> map) throws Exception{
 		ModelAndView mv = new ModelAndView("/board/boardUpdate");
 		
@@ -80,7 +81,7 @@ public class BoardController {
 		
 		return mv;
 	}
-	@RequestMapping(value="boardUpdate")
+	@RequestMapping(value="/boardUpdate")
 	public ModelAndView boardUpdate(@RequestParam Map<String, Object> map) throws Exception{
 		ModelAndView mv = new ModelAndView("redirect:/boardDetail");
 		log.debug("map: " + map);
