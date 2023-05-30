@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,10 +46,10 @@ public class PlaceController {
 		try {
 			URL url = new URL("https://api.odcloud.kr/api/15052408/v1/uddi:611c5470-ad94-49e8-8f72-973732c56304?page=1&perPage=100&serviceKey=oQxZdiXR8K8U%2BsFvOZJxW8bP%2FIs0tqBThPnNxNt0FJrjgOZXM537iVGIyUfCPX86eghuF4HLzRaQ7t4I5gfiPQ%3D%3D");
 			HttpURLConnection urlConnection = (HttpURLConnection)url.openConnection();
-			urlConnection.setRequestProperty("Content-Type", "application/json");
+			urlConnection.setRequestProperty("Content-Type", "application/json"); // 1.셋 리퀘스트
 			
-			BufferedReader bf = new BufferedReader(new InputStreamReader(url.openStream(), "UTF-8"));
-			result = bf.readLine();
+			BufferedReader bf = new BufferedReader(new InputStreamReader(url.openStream(), "UTF-8")); // 새 버퍼 리더
+			result = bf.readLine(); // 버퍼 리드 한 것을 result에 할당
 			
 			JSONParser jsonParser = new JSONParser();
 			JSONObject jsonObject = (JSONObject) jsonParser.parse(result);
@@ -127,4 +129,83 @@ public class PlaceController {
 		
 		return mv;
 	}
+	
+	@RequestMapping(value="/searchPlace")
+	public ResponseEntity<List<Map<String, Object>>> searchPlace(@RequestParam Map<String, Object> map) throws Exception{
+		List<Map<String, Object>> result = new ArrayList<Map<String,Object>>();
+		
+		JSONObject jsonResult = new JSONObject();
+		String searchLat = (String) map.get("lat");
+	    String searchLng = (String) map.get("lng");
+	    String category = (String) map.get("category");
+	    
+		String REST_KEY = "4c4f8b61dba3b485888845d0b1a0411d";
+	    String url1 = "https://dapi.kakao.com/v2/local/search/category.json?"
+	    		+"category_group_code=" + category // 카테고리
+	    		+"&page=1"
+	    		+"&size=15"
+	    		+"&sort=accuracy"
+	    		+"&x=" + searchLng //경도
+	    		+"&y=" + searchLat //위도
+	    		+"&radius=10000";
+
+        URL url = new URL(url1);
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setRequestMethod("GET");
+        //conn.setRequestProperty("X-Requested-With", "curl");
+        conn.setRequestProperty("Authorization", "KakaoAK " + REST_KEY);
+        
+        //request에 JSON data 준비
+        conn.setDoOutput(true);
+            
+        Charset charset = Charset.forName("UTF-8");
+        BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), charset));
+        
+        String line;
+        StringBuilder response = new StringBuilder();
+        while ((line = br.readLine()) != null) {
+            response.append(line);
+        }
+        br.close();
+
+        String responseString = response.toString();
+        JSONParser parser = new JSONParser();
+        //JSONArray jsonArray = null;
+        	
+        //jsonArray = (JSONArray) parser.parse(responseString);
+        jsonResult = (JSONObject) parser.parse(responseString);
+        
+        // "documents" 배열 추출
+        JSONArray documents = (JSONArray) jsonResult.get("documents");
+        
+        System.out.println(documents);
+        
+        for (int i = 0; i < documents.size(); i++) {
+            JSONObject object = (JSONObject) documents.get(i);
+            
+            Map<String, Object> resultMap = new HashMap<String, Object>();
+            
+            String id = (String) object.get("id");
+            String addr = (String) object.get("address_name");
+            String name = (String) object.get("place_name");
+            String type = (String) object.get("category_group_code");
+            String tel = (String) object.get("phone");
+            String lng = (String) object.get("x");
+            String lat = (String) object.get("y");
+
+            resultMap.put("id", id);
+            resultMap.put("lng", lng);
+            resultMap.put("lat", lat);
+            resultMap.put("addr", addr);
+            resultMap.put("name", name);
+            resultMap.put("type", type);
+            resultMap.put("tel", tel);
+            
+            // return시킬 List<Map> 변수를 만들고 매 회마다 add한다.
+            result.add(resultMap);
+            // 데이터가 없을 경우의 예외처리도 만들기
+        }
+        return new ResponseEntity<>(result, HttpStatus.OK);
+	}
+
 }
