@@ -224,8 +224,6 @@ h5 {
 </head>
 <%@ include file="/WEB-INF/include/include-header.jsp"%>
 <body>
-<div>${placeSearch.PLACE_NUM}</div>
-
 	<div class="mainContent" id="mainContent">
 		<div class="sidebarArea">
 			<%@ include file="/WEB-INF/include/include-sidebar.jsp"%>
@@ -310,10 +308,15 @@ h5 {
 			</div>
 		</div>
 	</div>
+<!-- PlaceController에서 넘어온 랭킹 페이지에서 보낸 값 받기 위한 hidden -->
+<input type="hidden" id="psNum" value="${placeSearch.PLACE_NUM}">
+<input type="hidden" id="psLat" value="${placeSearch.PLACE_LAT}">
+<input type="hidden" id="psLng" value="${placeSearch.PLACE_LNG}">
 
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=269b5ee55a61404f07167949c5348f27"></script>
 
 <script type="text/javascript">
+
 
    function fn_openBoardDetail(element) {
       var url = "<c:url value='/boardDetail?BOARD_NUM=" + element + "'/>"; // BOARD_NUM 값을 URL에 추가
@@ -326,25 +329,124 @@ h5 {
 
 <!-- 카카오 맵 기능 -->
 <script type="text/javascript">
-	
-	$(document).ready(function(){
-		var CC; //currentPage
-		var AA = 1; // 현재 페이지 덩어리
-		var placeNum;
-		
-		////////////////////////////////지도 생성///////////////////////////////////////////////
-		var container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
-		var options = { //지도를 생성할 때 필요한 기본 옵션
-			center: new kakao.maps.LatLng(37.56677914878755, 126.97862963358072), //지도의 중심좌표.
-			level: 9 //지도의 레벨(확대, 축소 정도)
-			};
+   $(document).ready(function(){
+	   var CC; //currentPage
+	   var AA = 1; // 현재 페이지 덩어리
+      /* 클릭한 place의 게시글을 불러오는 기능 start */
+         function fn_selectPage(selectedPage, placeNum){
+            var boardPerPage = 5;  //한페이지당 출력할 게시물의 수
+            var pagePerGroup = 5; // 그룹당 표시할 페이지 수    
+            var currentPage = selectedPage; // 현재 페이지 번호
+            var startIdx = currentPage * boardPerPage - ( boardPerPage -1);
+            var endIdx = currentPage * boardPerPage;
+            
+            CC = currentPage
+            
+            var formData = { "BOARD_PLACE": placeNum,
+                                   "startIdx" : startIdx,
+                                 "endIdx" : endIdx};
+              $.ajax({
+               url: '/myPlace/boardPlace',
+               type: 'POST',
+               data: formData,
+               dataType: "json",
+               success: function(data) {
+                  // 게시물 데이터를 반복하여 테이블 행으로 추가
+                  $("#board").html("");
+                  
+                  for (var i = 0; i < data.length; i++) {
+                    var map = data[i];
+                    var tableHTML = "";
+
+                     tableHTML += '<tr style="background-color: #EAFDFC; border: 3px solid #fff">';    
+                     tableHTML += '<td class="boardNum" name="boardNum2" style="text-align:center;">' + map["BOARD_NUM"] + '</td>';
+                     tableHTML += '<td style="text-align:center;">' + map["BOARD_WRITER"] + '</td>';
+                     tableHTML += '<td class="title cursor_pointer" name="title">' + map["BOARD_TITLE"] + '</td>';
+                     tableHTML += '<td style="text-align:center;">' + map["BOARD_DATE"] + '</td>';
+                     tableHTML += '</tr>';
+
+                     // 테이블 HTML을 요소에 추가
+                     $("#board").append(tableHTML);
+                  }
+                  
+               },
+               error: function(xhr, status, error) {
+                  console.log('실패');
+               }
+            });
+         }
+         /* 클릭한 place의 게시글을 불러오는 기능 end */
+         
+         $(document).on("click", ".title", function(e) {
+                      e.preventDefault();
+                      var placeNum = $("#write").attr("name");
+                      var boardDetail = $(this).siblings('.boardNum').text();
+                      var url = "/myPlace/boardDetail?BOARD_NUM=" + boardDetail + "&BOARD_PLACE=" + placeNum + "&AA=" +AA + "&currentPage=" + CC;
+                      window.location.href = url;
+                   });
       
-		var map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
-		////////////////////////////////지도 생성 끝///////////////////////////////////////////////
-		
-		/* @@@@@@@@@@@@@@@@@@@@@@ 지도 관련 기능 추가 start @@@@@@@@@@@@@@@@@@@@@@ */
-		// 일반 지도와 스카이뷰로 지도 타입을 전환할 수 있는 지도타입 컨트롤을 생성합니다
-		var mapTypeControl = new kakao.maps.MapTypeControl();
+     var boardShow = false; // board영역의 보이는지 여부를 나타내는 변수
+      ////////////////////////////////지도 생성///////////////////////////////////////////////
+      var container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
+      var options = { //지도를 생성할 때 필요한 기본 옵션
+         center: new kakao.maps.LatLng(37.56677914878755, 126.97862963358072), //지도의 중심좌표.
+         level: 9 //지도의 레벨(확대, 축소 정도)
+      };
+      
+      var map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
+      
+      ////////////////////////////////지도 생성 끝///////////////////////////////////////////////
+      
+      //랭킹 페이지에서 클릭했을 경우 로직 구현
+      var psNum = document.getElementById("psNum").value;
+      if(psNum != ""){
+	     let psLat = document.getElementById("psLat").value;
+	     let psLng = document.getElementById("psLng").value;
+	     
+	     let moveMap = new kakao.maps.LatLng(psLat, psLng);
+	     map.setLevel(3);
+	     map.setCenter(moveMap);
+      } 
+      
+      /* @@@@@ sidebar에서 동작하는 기능 start @@@@@ */
+      /* 클릭한 LIKEPLACE를 지도의 중심으로 위치시킨다. */
+      $(document).on("click", ".likePlace", function(e) {
+         e.preventDefault();
+           var likePlaceNum = $(this).find('[name="likePlaceNum"]').val();
+           var likePlaceLat = $(this).find('[name="likePlaceLat"]').val();
+           var likePlaceLng = $(this).find('[name="likePlaceLng"]').val();
+         
+         var moveLatLon = new kakao.maps.LatLng(likePlaceLat, likePlaceLng);
+         // 지도 중심을 이동 시킵니다
+         map.setCenter(moveLatLon);
+         map.setLevel(3);
+         // setCenter 직후 setLevel을 실행 시 마커가 가운데에 위치하지 않아서 setCenter를 한 번 더 실행
+         map.setCenter(moveLatLon);
+      });
+      /* @@@@@ sidebar에서 동작하는 기능 end @@@@@ */
+      
+      var placeNum;
+      
+      $.ajax({
+         url: '/myPlace/place',
+         type:'POST',
+         processData: false,
+         contentType: false,
+         success:function(placeData) {
+            var positions = []
+            
+            for(var i = 0; i<placeData.length; i++){
+               positions.push(
+                     {
+                        "title": placeData[i].PLACE_NAME, 
+                        "latlng": new kakao.maps.LatLng(placeData[i].PLACE_LAT, placeData[i].PLACE_LNG),
+                        "addr": placeData[i].PLACE_ADDR,
+                        "placeNum": placeData[i].PLACE_NUM
+                        }
+                     );
+               }
+               // 일반 지도와 스카이뷰로 지도 타입을 전환할 수 있는 지도타입 컨트롤을 생성합니다
+               var mapTypeControl = new kakao.maps.MapTypeControl();
                
 		// 지도에 컨트롤을 추가해야 지도위에 표시됩니다
 		// kakao.maps.ControlPosition은 컨트롤이 표시될 위치를 정의하는데 TOPRIGHT는 오른쪽 위를 의미합니다
