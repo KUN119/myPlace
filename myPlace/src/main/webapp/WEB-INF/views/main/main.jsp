@@ -66,8 +66,8 @@ h5 {
 	height: 30%;
 	width: 100%;
 	display: flex;
-	justify-content:center;
-	align-items:center;
+	/* justify-content:center; */
+	/* align-items:center; */
 	transition: all .3s ease-out;
 	border: solid 2px #66B2FF;
 	border-radius: 0 0 7px 7px;
@@ -117,21 +117,21 @@ h5 {
 
 				<!-- 게시판 영역 start -->
 				<div class="board_hide">
-					<div style="width: 100px;">
-						<!-- 게시판 좌측 비어있는 공간 -->
-					</div>
-					<div id="boardArea" style="display: flex; justify-content: center;">
+					<!-- <div style="width: 100px;">
+						게시판 좌측 비어있는 공간
+					</div> -->
+					<div id="boardArea" style="/* display: flex; */ justify-content: center; width: 100%;">
 						<div class="table-responsive">
 							<!-- <button type="button" value="게시판생성" id="boardBtn">게시글 불러오기</button> -->
 							<table class="table-responsive"
-								style="border: 1px solid #ccc; margin-left: auto; margin-right: auto;">
+								style="border: 1px solid #ccc; margin-left: auto; margin-right: auto; width: 100%;">
 								<colgroup>
 									<col width="15%" />
 									<col width="20%" />
 									<col width="40%" />
 									<col width="40%" />
 								</colgroup>
-								<div>&nbsp;</div>
+								<!-- <div>&nbsp;</div> -->
 								<thead>
 									<tr style="background-color: #BFEAF5; border: 2px solid #fff;">
 										<th scope="col" style="text-align:center; border-right: 2px solid #fff; border-bottom: 1px solid #ccc;">글번호</th>
@@ -159,8 +159,9 @@ h5 {
 							</div>
 						</div>
 					</div>
-					<div style="width: auto;">
-						<div id="addWriteBtn" style="display: flex; justify-content: center; padding-left: 50px;">
+					<div style="width: 20%;">
+						<div id="addWriteBtn" style="display: flex; justify-content: center; align-items: center;
+	height: 100%; /* padding-left: 50px; */">
 							<!--  글쓰기 버튼이 추가되는 위치 -->
 							<div class="btn" id="write">글쓰기</div>
 						</div>
@@ -528,19 +529,22 @@ h5 {
 	});
 	/* class="likePlace" 인 요소 클릭 시 배경색상을 바꾸는 기능 end */
 	
-	/* @@@@@@@@@@ 검정하트클릭 @@@@@@@@@@ */ 
+	/* @@@@@@@@@@ 검정하트클릭(좋아요) @@@@@@@@@@ */ 
 	$(document).on('click', '.likeBtn', function(e) {
 		e.preventDefault();
+		//검정하트를 클릭했을때 버튼을 숨기고 보이고
 		$(this).addClass('dislikeBtn');
 		$(this).removeClass('likeBtn');
 		var memId = '<%=(String)session.getAttribute("MEM_ID")%>'
+		//siblings 같은 위치에 있는(마커눌렀을때 나오는 상자) 정보들
 		var placeName = $(this).siblings('#placeName').text();
 		var placeNum = $(this).siblings('.likePlaceNum').val();
 		var placeLat = $(this).siblings('.PlaceLat').val();
 		var placeLng = $(this).siblings('.PlaceLng').val();
 		
 		$.ajax({
-			url: '/myPlace/addLikePlace',
+			// 컨트롤러의 addLikePlace
+			url: '/myPlace/addLikePlace', 
 			type:'POST',
 			data:{ "LIKEPLACE_MEM": memId, "LIKEPLACE_PLACE": placeNum},
 			success:function(placeData) {
@@ -549,14 +553,16 @@ h5 {
 				/* 사이드바에서 id가 placeList인 영역에 해당 장소를 추가(NAME, NUM, LAT, LNG) */
 				var htmls = "";
 				
-				htmls += '<div class="likePlace" style="height: 70px; margin: 5px;">';
+				htmls += '<div class="likePlace btn btn-outline-primary" style="height: 70px; margin: 5px;">';
 				htmls += 	placeName;
 				htmls += 	'<input type="hidden" name="likePlaceNum" value="' + placeNum + '"/>';
 				htmls += 	'<input type="hidden" name="likePlaceLat" value="' + placeLat + '"/>';
 				htmls += 	'<input type="hidden" name="likePlaceLng" value="' + placeLng + '"/>';
 				htmls += '</div>';
 				
+				//사이드바에 좋아요 장소 추가
 				$("#placeList").append(htmls);
+				//좋아요 장소 버튼 숨김
 				$('input[name="likePlaceNum"][value="' + placeNum + '"]').closest('.likePlace').hide();
 				
 			},
@@ -567,15 +573,17 @@ h5 {
 		
 	});
 	
-	/* @@@@@@@@@@ 빨강하트클릭 @@@@@@@@@@ */
+	/* @@@@@@@@@@ 빨강하트클릭(좋아요취소) @@@@@@@@@@ */
 	$(document).on('click', '.dislikeBtn', function(e) {
 		e.preventDefault();
+		//빨강하트를 클릭했을때 버튼을 숨기고 보이고
 		$(this).addClass('likeBtn');
 		$(this).removeClass('dislikeBtn');
 		var memId = '<%=(String)session.getAttribute("MEM_ID")%>'    	  
 		var placeNum = $(this).siblings('.likePlaceNum').val();
 		
 			$.ajax({
+				// 컨트롤러의 disLikePlace
 				url: '/myPlace/disLikePlace',
 				type:'POST',
 				data:{ "LIKEPLACE_MEM": memId, "LIKEPLACE_PLACE": placeNum},
@@ -591,7 +599,7 @@ h5 {
 				}
 			});
 		}); 
-      /* @@@@@@@@@@ 하트클릭 @@@@@@@@@@ */
+      /* @@@@@@@@@@ 하트클릭 end@@@@@@@@@@ */
 	
 	/* id="likeUser" 인 요소 클릭 시 header, sidebar를 변경 start */
 	$(document).on("click", "#likeUser", function(e) {

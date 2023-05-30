@@ -21,9 +21,9 @@
 	border-radius: 5px;
 }
 
-#placeList {
-    overflow: auto; /* Add this line to enable scrolling */
-    max-height: 80vh; /* Set a maximum height for the sidebar */
+#placeList {						/* div의 id는 #? , class는 .? */
+    overflow: auto; /* 스크롤 활성화*/
+    max-height: 80vh; /* sidebar 최대 높이 설정 */
 }
 
 </style>
@@ -33,7 +33,7 @@
 	<div style="display: flex; width:220px; flex-direction:column; align-items: center; z-index: 1">
 		<%-- <h3 style="margin-left: 13%; color: black;"><%=(String)session.getAttribute("MEM_ID")%>님의 장소</h3> --%>
 		<!-- <hr style="border: solid 1px rgb(73, 73, 73); width: 80%; margin-left: 5%;"> -->
-		<div id="placeList" style="display:flex; flex-direction:column; align-items:center; height: 80%; overflow-y: scroll;">
+		<div id="placeList" style="display:flex; flex-direction:column; align-items:center; height: 100%; ">
 			<!-- 장소 리스트 추가되는 위치 -->
 		</div>
 	</div>

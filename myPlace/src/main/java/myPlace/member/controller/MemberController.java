@@ -43,13 +43,18 @@ public class MemberController {
 		log.debug("###### 로그인 체크 ######");
 		
 		String result = "";
+		// 리스트를 저장할 ArrayList 객체를 생성
 		List<Map<String, Object>> list = new ArrayList<>();
 		Map<String, Object> member = memberService.selectId(map);
+		// likePlaceService.selectLikePlace(map) 메서드를 호출하여 데이터를 가져와 리스트에 저장
 		list = likePlaceService.selectLikePlace(map);
 
+		// ObjectMapper 인스턴스를 생성 (java객체를 json으로 처리 반대도 가능)
+		// jsonList 변수를 선언하고 초기값을 null로 설정
 		ObjectMapper objectMapper = new ObjectMapper();
 		String jsonList = null;
 		
+		// ObjectMapper의 writeValueAsString() 메서드를 사용하여 리스트를 JSON 문자열로 변환하고, 그 결과를 jsonList 변수에 저장
 		jsonList = objectMapper.writeValueAsString(list);
 		
 		log.debug("아이디 : " + (String) map.get("MEM_ID"));
