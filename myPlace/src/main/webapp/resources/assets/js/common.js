@@ -182,3 +182,110 @@ function _movePage(value){
 		eval(gfv_eventName + "(value, searchType, keyword);");
 	}
 }
+
+
+function makeOverListener(map, marker, infowindow, placeNum) {
+               return function () {
+                  infowindow.open(map, marker);
+ 
+	               /* 마커 클릭 시 해당하는 장소의 게시글들을 불러오는 기능 start */
+	                  var boardPerPage = 5; // 페이지당 게시글 수
+	         		  var pagePerBoard = 5; //페이징 할 때 묶을 페이지 수
+	         		  
+                  $.ajax({
+                     url: '/myPlace/boardCount',
+                     type: 'POST',
+                     data: {
+                        "BOARD_PLACE": placeNum,
+                     },
+                     dataType: "json",
+                     success: function(result) {
+                         var pageNum = Math.ceil(result/pagePerBoard); // 게시글 수를 pagePerBoard로 나누고 소수점 아래를 올림하여 정수로 나타냄
+                         var A = Math.ceil(pageNum/5); // 총 게시글 페이지 덩어리 ( 1~5, 6~10)
+                         var B = pageNum%5  // 덩어리(몫)을 구한 후 나머지 값을 구하는 식 (남은 페이징 출력)
+                         
+						if(result==0){
+							pageNum = 1
+							A = 1
+                       	 }
+                         
+                         var pageList = [];
+                         var dataList = [];
+                         var currentPNG; // 현재 pageNumGroup. 현재페이지 덩어리 처음엔 1
+                         var pagingHTML = "";
+                        var pageNumGroup = [];
+                        for (var i = 1; i <= pageNum; i++) {
+                       	 pageNumGroup.push(i);
+                        }
+                        
+                        currentPNG = 1;
+                        
+                        selectPageBoard(A, currentPNG);   // A = 2, currentPNG = 1
+                        
+                        function selectPageBoard(A, currentPNG) {
+                        	  $("#prevBtnHTML").html("");
+                        	  var pagingHTML = '<div id="prevBtn"><</div>';
+                        	  $("#prevBtnHTML").append(pagingHTML);
+                        	
+                        	  $("#nextBtnHTML").html("");
+							  var pagingHTML = '<div id="nextBtn">></div>';
+                        	  $("#nextBtnHTML").append(pagingHTML);
+
+                        	  // 다음 버튼 클릭 시 페이지 이동
+                        	
+	                        	  $("#nextBtn").click(function() {
+	                        		  if(A!=currentPNG){
+			                        	    currentPNG++; // currentPNG 값을 증가시킴
+			                   				
+			                        	    createPageNum(currentPNG); // 증가된 currentPNG 값을 인자로 createPageNum 함수 호출
+			                        	    
+			                        	    AA = currentPNG
+	                        		  }
+	                        	  });
+                        	  
+	                        	  $("#prevBtn").click(function() {
+	                        		    if (A == currentPNG) {
+	                        		        if (currentPNG > 1) {
+	                        		            currentPNG--;
+	                        		            createPageNum(currentPNG);
+	                        		            AA = currentPNG
+	                        		        }
+	                        		    }
+	                        		});
+	                        	  $("#prevBtn, #nextBtn").css("cursor", "pointer");
+                        }
+                        
+                        // 페이지 번호를 추가
+						function createPageNum(currentPNG){
+							$("#pagingArea").html("");
+							var startPageNum = currentPNG * 5 - 4
+							
+							
+							if(A==currentPNG) {
+								for(var i = startPageNum; i< startPageNum+B; i++ ){
+									pagingHTML = '<div class="pageNum">' + i + '</div>';	                           
+			                           $("#pagingArea").append(pagingHTML);
+								}
+							}else {
+								for (var i = startPageNum; i < startPageNum+5; i++) {
+		                           pagingHTML = '<div class="pageNum">' + i + '</div>';	                           
+		                           $("#pagingArea").append(pagingHTML);
+		                        }
+							} 
+						}
+					     createPageNum(currentPNG);
+                     }
+                  });
+                  /* 클릭한 page의 게시글 5개를 불러오는 기능 start */
+                  fn_selectPage(1, placeNum);
+                  /* 클릭한 page의 게시글 5개를 불러오는 기능 end */
+                  
+                  /* 마커 클릭 시 해당하는 장소의 게시글들을 불러오는 기능 end */
+                  
+					$("#addWriteBtn").html('<div class="btn_write" id="write" name="' + placeNum + '">글쓰기</div>');
+                  
+                  $(".board_hide").addClass('board_show'); // board_show 클래스 추가(top:70%를 우선 적용)
+                  boardShow = true;
+                  
+               };
+            }

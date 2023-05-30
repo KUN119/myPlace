@@ -54,7 +54,7 @@
 	
 	<script type="text/javascript">
 		$(document).ready(function(){
-			$("#cancel").on("click", function(e){ //목록으로 버튼
+			$("#cancel").on("click", function(e){ //취소 버튼
 				e.preventDefault();
 				fn_openBoardDetail();
 			});
@@ -73,25 +73,37 @@
 		
 		function fn_openBoardDetail(){
 			var comSubmit = new ComSubmit("frm");
-			comSubmit.setUrl("<c:url value='/boardDetail?BOARD_NUM=${map2.BOARD_NUM }' />");
-			comSubmit.submit();
+			window.history.go(-1);
 		}
 		
-		function fn_updateBoard(){
-			var comSubmit = new ComSubmit("frm");
-			var BOARD_NUM = $("#map2.BOARD_NUM").val();
-			var BOARD_TITLE = $("#TITLE ").val();
-			var BOARD_CONTENT = $("#CONTENT").val();
-			
-			
-			comSubmit.setUrl("<c:url value='/boardUpdate' />");
-			comSubmit.addParam("BOARD_NUM", BOARD_NUM);
-			comSubmit.addParam("BOARD_TITLE", BOARD_TITLE);
-			comSubmit.addParam("BOARD_CONTENT", BOARD_CONTENT);
+		function fn_updateBoard() {
+		    var comSubmit = new ComSubmit("frm");
+		    var BOARD_NUM = $("#map2.BOARD_NUM").val();
+		    var BOARD_TITLE = $("#TITLE").val();
+		    var BOARD_CONTENT = $("#CONTENT").val();
+		    var urlParams = new URLSearchParams(window.location.search);
+		    var AA = urlParams.get('AA');
+		    var CC = urlParams.get('currentPage');
+		    var placeNum = urlParams.get('BOARD_PLACE');
 
-			console.log(comSubmit);
-			comSubmit.submit();
-		}
+		    comSubmit.setUrl("<c:url value='/boardUpdate' />");
+		    comSubmit.addParam("BOARD_NUM", BOARD_NUM);
+		    comSubmit.addParam("BOARD_TITLE", BOARD_TITLE);
+		    comSubmit.addParam("BOARD_CONTENT", BOARD_CONTENT);
+		    comSubmit.addParam("AA", AA);
+		    comSubmit.addParam("placeNum", placeNum);
+		    comSubmit.addParam("CC", CC);		// BOARD_TITLE, BOARD_CONTENT 를 수정해야하므로 controller 의 boardUpdate 메서드를 거쳐야함.
+		    													// 거기서 mv.addObject 를 통해 AA, placeNum, CC를 넘겨받고 url에도 나타남.
+
+/* 		    var pagingUrl = "/myPlace/boardDetail?BOARD_NUM=" + encodeURIComponent(BOARD_NUM2);
+		    pagingUrl += "&BOARD_PLACE=" + encodeURIComponent(placeNum);
+		    pagingUrl += "&AA=" + encodeURIComponent(AA);
+		    pagingUrl += "&currentPage=" + encodeURIComponent(CC);
+		    location.href = pagingUrl; */
+		    console.log(comSubmit);
+		    comSubmit.submit();
+
+		}	
 		
 		function fn_deleteBoard(){
 			var BOARD_NUM = ${map2.BOARD_NUM };

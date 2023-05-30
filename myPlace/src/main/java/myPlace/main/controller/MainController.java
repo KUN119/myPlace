@@ -34,6 +34,7 @@ public class MainController {
       log.debug("###### 메인 페이지 ######");
       log.debug("###### 메인 페이지 map ######:" + map);
       ModelAndView mv = new ModelAndView("main/main");
+      mv.addObject("test",map);
       
       return mv;
    }
