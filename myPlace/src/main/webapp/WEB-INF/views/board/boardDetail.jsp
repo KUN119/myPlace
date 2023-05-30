@@ -59,21 +59,15 @@
 				var CC = urlParams.get('currentPage');
 				var placeNum = urlParams.get('BOARD_PLACE');
 				 var pagingUrl = "/myPlace/mainPage?BOARD_PLACE="+placeNum+"&AA=" +AA + "&currentPage=" + CC;
-						 location.href=pagingUrl;		
-				});
-
-			$("#update").on("click", function(e){  // 수정 버튼
-				e.preventDefault();
-				var urlParams = new URLSearchParams(window.location.search);
-
-				var AA = urlParams.get('AA');
-				var CC = urlParams.get('currentPage');
-				var placeNum = urlParams.get('BOARD_PLACE');
-				var pagingUrl = "openBoardUpdate?BOARD_NUM=${map2.BOARD_NUM}&BOARD_WRITER=${map2.BOARD_WRITER}&BOARD_PLACE="+placeNum+"&AA=" +AA + "&currentPage=" + CC;
-				location.href=pagingUrl;
+				 location.href=pagingUrl;
 			});
 			
-			$("#delete").on("click", function(e){ // 삭제 버튼
+			$("#update").on("click", function(e){
+				e.preventDefault();
+				fn_openBoardUpdate();
+			});
+			
+			$("#delete").on("click", function(e){
 				e.preventDefault();
 				alert("삭제되었습니다.");
 				fn_deleteBoard();

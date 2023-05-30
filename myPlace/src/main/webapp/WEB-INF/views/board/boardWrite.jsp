@@ -48,15 +48,10 @@
 <script>
 
 $(document).ready(function(){
-	$("#list").on("click", function(e){ //목록으로 버튼
-		e.preventDefault();
-		var urlParams = new URLSearchParams(window.location.search);
-		var AA = urlParams.get('AA');
-		var CC = urlParams.get('currentPage');
-		var placeNum = urlParams.get('BOARD_PLACE');
-		 var pagingUrl = "/myPlace/mainPage?BOARD_PLACE="+placeNum+"&AA=" +AA + "&currentPage=" + CC;
-		 location.href=pagingUrl;
-	});
+   $("#list").on("click", function(e){ //목록으로 버튼   
+      e.preventDefault();
+      fn_openBoardList(); // 글 목록 띄우기
+   });
    
    $("#write").on("click", function(e){ //작성하기 버튼
       e.preventDefault();
@@ -89,14 +84,7 @@ $(document).ready(function(){
             , dataType : "text"
             , success: function(result){
                
-            	var urlParams = new URLSearchParams(window.location.search);
-
-        		var AA = urlParams.get('AA');
-        		var CC = urlParams.get('currentPage');
-        		var placeNum = urlParams.get('BOARD_PLACE');
-        		 var pagingUrl = "/myPlace/mainPage?BOARD_NUM="+result+"&BOARD_PLACE="+placeNum+"&AA=" +AA + "&currentPage=" + CC;
-        		 location.href=pagingUrl;
-            	
+               location.href = "boardDetail?BOARD_NUM=" + result;
                
             }
             , error: function(error){

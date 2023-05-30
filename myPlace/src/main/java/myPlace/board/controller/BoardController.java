@@ -59,13 +59,7 @@ public class BoardController {
 		ModelAndView mv = new ModelAndView("/board/boardDetail");
 		Map<String, Object> map2 = boardService.selectBoardDetail(map);
 		
-		System.out.println(map.get("BOARD_CONTENT"));
-		
 		mv.addObject("map2",map2);
-		mv.addObject("test1",map);
-		
-		System.out.println(map.get("BOARD_TITLE"));
-		
 		return mv;
 	}
 	
@@ -92,9 +86,6 @@ public class BoardController {
 		ModelAndView mv = new ModelAndView("redirect:/boardDetail");
 		log.debug("map: " + map);
 		mv.addObject("BOARD_NUM", map.get("BOARD_NUM"));
-		mv.addObject("BOARD_PLACE",map.get("placeNum"));
-		mv.addObject("AA",map.get("AA"));
-		mv.addObject("currentPage",map.get("CC"));
 		boardService.boardUpdate(map);
 		return mv;
 	}
