@@ -116,14 +116,13 @@ public class PlaceController {
 	public ModelAndView placeSearch(@RequestParam Map<String, Object> map) throws Exception{
 		log.debug("###### placeSearch ######");
 		
-		ModelAndView mv = new ModelAndView();
+		ModelAndView mv = new ModelAndView("main/main");
 		
 		Map<String, Object> placeSearch = placeService.selectPlaceSearch(map);
 		
 		log.debug("placeSearch:" + placeSearch);
 		
 		mv.addObject("placeSearch", placeSearch);
-		mv.setViewName("main/main");
 		
 		return mv;
 	}

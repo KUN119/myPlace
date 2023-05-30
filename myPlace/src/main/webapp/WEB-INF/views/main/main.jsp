@@ -101,8 +101,6 @@ h5 {
 </head>
 <%@ include file="/WEB-INF/include/include-header.jsp"%>
 <body>
-<div>${placeSearch.PLACE_NUM}</div>
-
 	<div class="mainContent" id="mainContent">
 		<div class="sidebarArea">
 			<%@ include file="/WEB-INF/include/include-sidebar.jsp"%>
@@ -170,13 +168,14 @@ h5 {
 			</div>
 		</div>
 	</div>
+<!-- PlaceController에서 넘어온 랭킹 페이지에서 보낸 값 받기 위한 hidden -->
+<input type="hidden" id="psNum" value="${placeSearch.PLACE_NUM}">
+<input type="hidden" id="psLat" value="${placeSearch.PLACE_LAT}">
+<input type="hidden" id="psLng" value="${placeSearch.PLACE_LNG}">
 
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=269b5ee55a61404f07167949c5348f27"></script>
 
 <script type="text/javascript">
-
-   
-   
    function fn_openBoardDetail(element) {
       var url = "<c:url value='/boardDetail?BOARD_NUM=" + element + "'/>"; // BOARD_NUM 값을 URL에 추가
       var comSubmit = new ComSubmit("frm");
@@ -187,7 +186,6 @@ h5 {
 </script>  
 <!-- 카카오 맵 기능 -->
 <script type="text/javascript">
-	
    $(document).ready(function(){
 	   var CC; //currentPage
 	   var AA = 1; // 현재 페이지 덩어리
@@ -255,6 +253,17 @@ h5 {
       var map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
       
       ////////////////////////////////지도 생성 끝///////////////////////////////////////////////
+      
+      //랭킹 페이지에서 클릭했을 경우 로직 구현
+      var psNum = document.getElementById("psNum").value;
+      if(psNum != ""){
+	     let psLat = document.getElementById("psLat").value;
+	     let psLng = document.getElementById("psLng").value;
+	     
+	     let moveMap = new kakao.maps.LatLng(psLat, psLng);
+	     map.setLevel(3);
+	     map.setCenter(moveMap);
+      } 
       
       /* @@@@@ sidebar에서 동작하는 기능 start @@@@@ */
       /* 클릭한 LIKEPLACE를 지도의 중심으로 위치시킨다. */
@@ -365,7 +374,7 @@ h5 {
                      
                      var infowindow = new kakao.maps.InfoWindow({
                          content: iwContent,
-                         removable: iwRemoveable
+                         removable: iwRemoveable,
                      });
                      
                      kakao.maps.event.addListener(marker, 'click', makeOverListener(map, marker, infowindow, placeNum));
