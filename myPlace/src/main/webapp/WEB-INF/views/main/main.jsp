@@ -62,7 +62,7 @@ h5 {
 
 .board_hide {
 	position: absolute;
-	top: 100%;
+	top: 100% ;
 	height: 30%;
 	width: 100%;
 	display: flex;
@@ -162,8 +162,10 @@ h5 {
 					<div style="width: auto;">
 						<div id="addWriteBtn" style="display: flex; justify-content: center; padding-left: 50px;">
 							<!--  글쓰기 버튼이 추가되는 위치 -->
+							
 							<div class="btn" id="write">글쓰기</div>
 						</div>
+					<input type="text" value="${test.AA }">
 					</div>
 				</div>
 				<!-- 게시판 영역 end -->
