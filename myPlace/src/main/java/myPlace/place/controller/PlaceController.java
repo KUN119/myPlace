@@ -169,9 +169,7 @@ public class PlaceController {
 
         String responseString = response.toString();
         JSONParser parser = new JSONParser();
-        //JSONArray jsonArray = null;
         	
-        //jsonArray = (JSONArray) parser.parse(responseString);
         jsonResult = (JSONObject) parser.parse(responseString);
         
         // "documents" 배열 추출

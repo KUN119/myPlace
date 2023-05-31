@@ -27,6 +27,25 @@
     max-height: 80vh; /* Set a maximum height for the sidebar */
 }
 
+.likePeople{
+	cursor: pointer;
+	display: flex!important;
+	justify-content: center;
+	align-items:center;
+	font-size: 20px;
+	width:100%;
+	margin: 10px;
+	border: solid 2px #28DF99;
+	border-radius: 5px;
+	transition: background-color 0.2s ease; /* 배경색이 서서히 바뀌도록 transition 속성 설정 */
+}
+
+.likePeople:hover {
+    color: #fff;
+    background-color: #28DF99;
+    border-color: #0d6efd;
+}
+
 </style>
 
 </head>
@@ -55,16 +74,19 @@
 					var htmls = "";
 					
 					htmls += '<div class="likePlace btn btn-outline-primary" style="height: 70px; margin: 5px;">';
-					htmls += map["PLACE_NAME"];
-					htmls += '<input type="hidden" name="likePlaceNum" value="';
-					htmls += map["PLACE_NUM"];
-					htmls += '"/>';
-					htmls += '<input type="hidden" name="likePlaceLat" value="';
-					htmls += map["PLACE_LAT"];
-					htmls += '"/>';
-					htmls += '<input type="hidden" name="likePlaceLng" value="';
-					htmls += map["PLACE_LNG"];
-					htmls += '"/>';
+					htmls += 	map["LIKEPLACE_NAME"];
+					htmls += 	'<input type="hidden" name="likePlaceNum" value="';
+					htmls += 		map["LIKEPLACE_PLACE"];
+					htmls += 	'"/>';
+					htmls += 	'<input type="hidden" name="likePlaceLat" value="';
+					htmls += 		map["LIKEPLACE_LAT"];
+					htmls += 	'"/>';
+					htmls += 	'<input type="hidden" name="likePlaceLng" value="';
+					htmls += 		map["LIKEPLACE_LNG"];
+					htmls += 	'"/>';
+					htmls += 	'<input type="hidden" name="likePlaceAddr" value="';
+					htmls += 		map["LIKEPLACE_ADDR"];
+					htmls += 	'"/>';
 					htmls += '</div>';
 					
 					$("#placeList").append(htmls);

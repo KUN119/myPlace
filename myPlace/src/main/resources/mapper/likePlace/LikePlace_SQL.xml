@@ -3,8 +3,8 @@
 
 <mapper namespace="likePlace">
 
-<!-- 게시판 목록 -->
-    <select id="selectLikePlaceList" parameterType="hashmap" resultType="hashmap"> 
+
+<!--     <select id="selectLikePlaceList" parameterType="hashmap" resultType="hashmap"> 
       <![CDATA[
          SELECT
             P.PLACE_NAME,
@@ -20,21 +20,44 @@
          WHERE
             L.LIKEPLACE_MEM = #{MEM_ID}
       ]]>
-   </select> 
+   </select> -->
+
+	<!-- 게시판 목록 -->
+	<select id="selectLikePlaceList" parameterType="hashmap" resultType="hashmap"> 
+		<![CDATA[
+			SELECT
+				LIKEPLACE_NAME,
+				LIKEPLACE_PLACE,
+				LIKEPLACE_LAT,
+				LIKEPLACE_LNG,
+				LIKEPLACE_ADDR
+			FROM
+				LIKEPLACE
+			WHERE
+				LIKEPLACE_MEM = #{MEM_ID}
+		]]>
+	</select>
 	
 
 	<!-- 찜하기 -->
 	 <insert id="insertLikePlace" parameterType="hashmap">
 		<![CDATA[
-			INSERT INTO LIKEPLACE (        
-			                    LIKEPLACE_MEM,
-			                    LIKEPLACE_PLACE
-			                    
-			                    )
-							VALUES (
-			                     #{LIKEPLACE_MEM},
-      							#{LIKEPLACE_PLACE}
-			                    )
+			INSERT INTO LIKEPLACE (
+				LIKEPLACE_MEM,
+				LIKEPLACE_PLACE,
+				LIKEPLACE_NAME,
+				LIKEPLACE_LAT,
+				LIKEPLACE_LNG,
+				LIKEPLACE_ADDR
+				)
+			VALUES (
+				#{LIKEPLACE_MEM},
+				#{LIKEPLACE_PLACE},
+				#{LIKEPLACE_NAME},
+				#{LIKEPLACE_LAT},
+				#{LIKEPLACE_LNG},
+				#{LIKEPLACE_ADDR}
+				)
 		]]>
 	</insert>    
 	
@@ -61,13 +84,25 @@
 
 
 	<!-- 장소를 좋아하는 사람의 아이디 출력 -->
-	<select id="selectIdInLikePlace" parameterType="hashmap" resultType="hashmap"> 
+<!-- 	<select id="selectIdInLikePlace" parameterType="hashmap" resultType="hashmap"> 
 		<![CDATA[
 			SELECT M.MEM_ID
 			FROM LIKEPLACE LP, PLACE P, MEMBER M 
 			WHERE LP.LIKEPLACE_MEM = M.MEM_ID
 			AND LP.LIKEPLACE_PLACE = P.PLACE_NUM
 			AND LP.LIKEPLACE_PLACE = #{PLACE_NUM}
+		]]>
+	</select> -->
+	
+	<!-- 장소를 좋아하는 사람의 아이디 출력 -->
+	<select id="selectIdInLikePlace" parameterType="hashmap" resultType="hashmap"> 
+		<![CDATA[
+			SELECT
+				LIKEPLACE_MEM
+			FROM
+				LIKEPLACE 
+			WHERE
+				LIKEPLACE_PLACE = #{PLACE_NUM}
 		]]>
 	</select>
 
