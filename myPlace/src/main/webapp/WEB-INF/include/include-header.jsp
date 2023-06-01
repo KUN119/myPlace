@@ -63,9 +63,23 @@ $(document).ready(function() {
 });
 
 $("#logoutBtn").click(function(e){
-   e.stopPropagation();
-   
-   var MEM_ID = '<%=(String)session.getAttribute("MEM_ID")%>'
+	e.stopPropagation();
+	var MEM_ID = '<%=(String)session.getAttribute("MEM_ID")%>'
+	
+	/* 임시로 저장한 장소정보를 모두 삭제 start */
+	$.ajax({
+		url: '/myPlace/deleteTempPlace',
+		type: 'POST',
+		data: {"LIKEPLACE_MEM" : MEM_ID},
+		success: function(data) {
+			/* 임시 데이터 저장 */
+		}
+		, error: function(error){
+			alert("실패");
+			console.log("에러 : " + error);
+		}
+	});
+	/* 임시로 저장한 장소정보를 모두 삭제 end */
    
    $.ajax({
         url : "logout"

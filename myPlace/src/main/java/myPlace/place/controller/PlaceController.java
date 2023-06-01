@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.xml.bind.ParseConversionEvent;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -107,6 +108,9 @@ public class PlaceController {
 	@RequestMapping(value="/placeRank")
 	public List<Map<String, Object>> placeRank(@RequestParam Map<String, Object> map) throws Exception{
 		log.debug("###### placeRank ######");
+		
+		int placeMonth = Integer.parseInt((String) map.get("PLACE_MONTH"));
+		map.put("PLACE_MONTH", placeMonth);
 		
 		List<Map<String, Object>> placeRank = placeService.selectMonthlyPlaceRank(map);
 		log.debug("placeRank: " + placeRank);

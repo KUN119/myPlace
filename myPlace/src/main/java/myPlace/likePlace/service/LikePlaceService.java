@@ -14,5 +14,13 @@ public interface LikePlaceService {
 	public void disLikePlace(Map<String, Object> map) throws Exception;
 	
 	public List<Map<String, Object>> selectLikePlace(Map<String, Object> map) throws Exception;
+	
+	public void insertTempPlace(Map<String, Object> map) throws Exception;
+	
+	public void deleteTempPlace(Map<String, Object> map) throws Exception;
 
+	public Map<String, Object> selectTempPlace(Map<String, Object> map) throws Exception;
+	
+	public Map<String, Object> selectRankPlace(Map<String, Object> map) throws Exception;
+	
 }

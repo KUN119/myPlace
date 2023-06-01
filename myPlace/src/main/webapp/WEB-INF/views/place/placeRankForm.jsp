@@ -293,7 +293,7 @@ $(document).ready(function(){
 				
 				var str = "";
 				$.each(data, function(key, value){
-					str +='<div class="rankReset" style="display: flex; flex-direction: row; justify-content: space-between;" data-num="'+value.PLACE_NUM+'">' + value.PLACE_NAME 
+					str +='<div class="rankReset" style="display: flex; flex-direction: row; justify-content: space-between;" data-num="'+value.LIKEPLACE_PLACE+'">' + value.LIKEPLACE_NAME 
 						+ 	'<div style="display: flex; justify-content: flex-end;">' 
 						+ 		'<i class="fa-solid fa-heart" style="color: #ff0000;"></i>'
 						+ 		value.CNT +'<br/>'

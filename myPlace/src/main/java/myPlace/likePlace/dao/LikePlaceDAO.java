@@ -32,5 +32,23 @@ public class LikePlaceDAO extends AbstractDAO {
 	public List<Map<String, Object>> selectLikePlace(Map<String, Object> map) throws Exception{
 		return (List<Map<String, Object>>)selectList("likePlace.selectLikePlace", map);
 	}
+	
+	public void insertTempPlace(Map<String, Object> map) throws Exception {
+		insert("likePlace.insertTempPlace", map);
+	}
+	
+	public void deleteTempPlace(Map<String, Object> map) throws Exception {
+		delete("likePlace.deleteTempPlace", map);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public Map<String, Object> selectTempPlace(Map<String, Object> map) throws Exception{
+		return (Map<String, Object>) selectOne("likePlace.selectTempPlace", map);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public Map<String, Object> selectRankPlace(Map<String, Object> map) throws Exception{
+		return (Map<String, Object>) selectOne("likePlace.selectRankPlace", map);
+	}
 
 }

@@ -41,4 +41,24 @@ public class LikePlaceListServiceImpl implements LikePlaceService{
 		return likePlaceDAO.selectLikePlace(map);
 	}
 
+	@Override
+	public void insertTempPlace(Map<String, Object> map) throws Exception {
+		likePlaceDAO.insertTempPlace(map);
+	}
+
+	@Override
+	public void deleteTempPlace(Map<String, Object> map) throws Exception {
+		likePlaceDAO.deleteTempPlace(map);
+	}
+
+	@Override
+	public Map<String, Object> selectTempPlace(Map<String, Object> map) throws Exception {
+		return likePlaceDAO.selectTempPlace(map);
+	}
+
+	@Override
+	public Map<String, Object> selectRankPlace(Map<String, Object> map) throws Exception {
+		return likePlaceDAO.selectRankPlace(map);
+	}
+
 }
