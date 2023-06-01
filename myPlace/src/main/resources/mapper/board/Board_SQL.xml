@@ -11,6 +11,7 @@
 			    BOARD_TITLE,
 			    BOARD_CONTENT,
 			    BOARD_DATE,
+			    BOARD_HIT_CNT,
 			    BOARD_PLACE
 			FROM (
 			    SELECT
@@ -19,6 +20,7 @@
 			        BOARD_TITLE,
 			        BOARD_CONTENT,
 			        BOARD_DATE,
+			        BOARD_HIT_CNT,
 			        BOARD_PLACE,
 			        ROW_NUMBER() OVER (ORDER BY BOARD_NUM DESC) AS rn
 			    FROM BOARD
@@ -51,7 +53,8 @@
 				BOARD_TITLE,
 				BOARD_CONTENT, 
 				BOARD_DATE,
-				BOARD_DEL_GB
+				BOARD_DEL_GB,
+				BOARD_HIT_CNT
 			)
 			VALUES
 			(
@@ -61,7 +64,8 @@
 				#{BOARD_TITLE},
 				#{BOARD_CONTENT},
 				SYSDATE,
-				'N'
+				'N',
+				0
 			)
 		]]>
 	</insert>
@@ -74,13 +78,25 @@
 			BOARD_TITLE,
 			BOARD_CONTENT,
 			BOARD_DATE,
-			BOARD_PLACE
+			BOARD_PLACE,
+			BOARD_HIT_CNT
 		FROM
 			BOARD
 		WHERE
 			BOARD_NUM = #{BOARD_NUM}	
 	]]>
 </select>
+	
+	<update id="updateHitCnt" parameterType="hashmap">
+	<![CDATA[
+		UPDATE BOARD 
+		SET
+			BOARD_HIT_CNT = NVL(BOARD_HIT_CNT, 0) + 1
+		WHERE
+			BOARD_NUM = #{BOARD_NUM}	
+	]]>
+</update>
+
 <select id="selectBoardNum" parameterType="String" resultType="int">
       <![CDATA[
          SELECT BOARD_NUM
