@@ -46,4 +46,8 @@ public class BoardDAO extends AbstractDAO {
 		return (String) selectOne("board.boardPaging", map);
 	}
 	
+	public void updateHitCnt(Map<String, Object> map) throws Exception{
+		update("board.updateHitCnt", map);
+	}
+	
 }

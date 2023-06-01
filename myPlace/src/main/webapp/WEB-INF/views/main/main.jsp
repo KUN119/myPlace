@@ -260,7 +260,8 @@ h5 {
 									<col width="15%" />
 									<col width="20%" />
 									<col width="40%" />
-									<col width="40%" />
+									<col width="15%" />
+									<col width="10%" />
 								</colgroup>
 <!-- 								<div>&nbsp;</div> -->
 								<thead>
@@ -268,7 +269,8 @@ h5 {
 										<th scope="col" style="text-align:center; border-right: 2px solid #fff; border-bottom: 1px solid #ccc;">글번호</th>
 										<th scope="col" style="text-align:center; border-right: 2px solid #fff; border-bottom: 1px solid #ccc;">작성자</th>
 										<th scope="col" style="text-align:center; border-right: 2px solid #fff; border-bottom: 1px solid #ccc; width:500px;">제목</th>
-										<th scope="col" style="text-align:center; border-right: 2px solid #fff; border-bottom: 1px solid #ccc;">작성일</th>
+										<th scope="col" style="text-align:centesr; border-right: 2px solid #fff; border-bottom: 1px solid #ccc;">작성일</th>
+										<th scope="col" style="text-align:center; border-right: 2px solid #fff; border-bottom: 1px solid #ccc;">조회수</th>
 									</tr>
 								</thead>
 								<tbody id="board">
@@ -837,6 +839,7 @@ h5 {
 							tableHTML += '<td style="text-align:center;">' + map["BOARD_WRITER"] + '</td>';
 							tableHTML += '<td class="title cursor_pointer" name="title">' + map["BOARD_TITLE"] + '</td>';
 							tableHTML += '<td style="text-align:center;">' + map["BOARD_DATE"] + '</td>';
+							tableHTML += '<td style="text-align:center;">' + map["BOARD_HIT_CNT"] + '</td>';
 							tableHTML += '</tr>';
 			
 						// 테이블 HTML을 요소에 추가
