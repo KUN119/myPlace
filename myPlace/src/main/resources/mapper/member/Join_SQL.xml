@@ -38,8 +38,7 @@
 				MEM_PW,
 				MEM_EMAIL,
 				MEM_NAME,
-				MEM_PHONE,
-				MEM_DEL_TIME
+				MEM_PHONE
 			)
 			VALUES (
 				MEMBER_SEQ.NEXTVAL,
@@ -47,8 +46,7 @@
 				#{MEM_PW},
 				#{MEM_EMAIL},
 				#{MEM_NAME},
-				#{MEM_PHONE},
-				SYSDATE
+				#{MEM_PHONE}
 			)
 		]]>
 	</insert>
