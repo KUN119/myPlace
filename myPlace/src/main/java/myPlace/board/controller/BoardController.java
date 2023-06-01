@@ -98,7 +98,4 @@ public class BoardController {
 		boardService.boardUpdate(map);
 		return mv;
 	}
-	
-
-	
 }
