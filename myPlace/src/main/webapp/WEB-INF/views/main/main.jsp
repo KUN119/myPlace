@@ -302,9 +302,9 @@ h5 {
 		</div>
 	</div>
 	<!-- PlaceController에서 넘어온 랭킹 페이지에서 보낸 값 받기 위한 hidden -->
-	<input type="hidden" id="psNum" value="${placeSearch.PLACE_NUM}">
-	<input type="hidden" id="psLat" value="${placeSearch.PLACE_LAT}">
-	<input type="hidden" id="psLng" value="${placeSearch.PLACE_LNG}">
+	<input type="hidden" id="psNum" value="${placeSearch.LIKEPLACE_PLACE}">
+	<input type="hidden" id="psLat" value="${placeSearch.LIKEPLACE_LAT}">
+	<input type="hidden" id="psLng" value="${placeSearch.LIKEPLACE_LNG}">
 
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=269b5ee55a61404f07167949c5348f27"></script>
 
@@ -331,13 +331,13 @@ h5 {
 		var pageNum; // 게시글 수를 pagePerBoard로 나누고 소수점 아래를 올림하여 정수로 나타냄
 		var A = 2; // 총 게시글 페이지 덩어리 ( 1~5, 6~10)
 		var B; // 덩어리(몫)을 구한 후 나머지 값을 구하는 식 (남은 페이징 출력)
-		
+
 		var pageList = [];
 		var dataList = [];
 		var currentPNG; // 현재 pageNumGroup. 현재페이지 덩어리 처음엔 1
 		var pagingHTML = "";
 		var pageNumGroup = [];
-		
+
 		////////////////////////////////지도 생성///////////////////////////////////////////////
 		var container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
 		var options = { //지도를 생성할 때 필요한 기본 옵션
@@ -347,33 +347,6 @@ h5 {
       
 		var map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
 		////////////////////////////////지도 생성 끝///////////////////////////////////////////////
-		
-		//랭킹 페이지에서 클릭했을 경우 로직 구현
-		var psNum = document.getElementById("psNum").value;
-		if(psNum != ""){
-			let psLat = document.getElementById("psLat").value;
-			let psLng = document.getElementById("psLng").value;
-			let moveMap = new kakao.maps.LatLng(psLat, psLng);
-			map.setLevel(3);
-			map.setCenter(moveMap);
-		}
-		
-		//게시판 상세, 수정, 작성 등에서 돌아왔을 경우 마지막 위치를 기억
-		var urlParams = new URLSearchParams(window.location.search);
-		urlAA = urlParams.get('AA');
-		urlCC = urlParams.get('currentPage');
-		urlPlaceNum = urlParams.get('BOARD_PLACE');
-		
-		// url을 통해서 전달된 urlAA값이 존재할 경우 게시판을 활성화시키고 저장해둔 위치로 이동(AA,CC 활용)
-		if(urlAA != null){
-			if(urlAA != 'null'){
-				$(".board_hide").addClass('board_show'); // board_show 클래스 추가(top:70%를 우선 적용)
-				fn_createPaging(urlPlaceNum, urlAA) //Ajax 함수
-				selectPageBoard(A, urlAA); // 일반함수
-				fn_selectPage(urlCC, urlPlaceNum)
-				$("#addWriteBtn").html('<div class="btn_write" id="write" name="' + urlPlaceNum + '">글쓰기</div>');
-			}
-		}
 		
 		/* @@@@@@@@@@@@@@@@@@@@@@ 지도 관련 기능 추가 start @@@@@@@@@@@@@@@@@@@@@@ */
 		// 일반 지도와 스카이뷰로 지도 타입을 전환할 수 있는 지도타입 컨트롤을 생성합니다
@@ -386,7 +359,8 @@ h5 {
 		// 지도 확대 축소를 제어할 수 있는  줌 컨트롤을 생성합니다
 		var zoomControl = new kakao.maps.ZoomControl();
 		map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
-               
+
+		var moveLatLon;
 		//마커의 이미지
 		var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
 		/* @@@@@@@@@@@@@@@@@@@@@@ 지도 관련 기능 추가 end @@@@@@@@@@@@@@@@@@@@@@ */
@@ -443,6 +417,257 @@ h5 {
 			$("#popup").addClass("reverse-expand-animation");
 		});
 		/* 마우스가 popup 영역을 벗어났을 때 popup이 사라지는 기능 end */
+		
+		// url로부터 파라미터값을 읽는 기능
+		var urlParams = new URLSearchParams(window.location.search);
+		
+		var rankPlaceNum = urlParams.get('placenum');
+		//랭킹 페이지에서 클릭했을 경우 로직 구현
+		if(rankPlaceNum != null){
+			if(rankPlaceNum != 'null'){
+				
+				/* 플레이스넘을 사용해서 LIKEPLACE테이블에서 장소정보를 불러오는 ajax */
+				// placeNum을 이용해서 장소의 임시정보를 불러온다.
+				$.ajax({
+					url: '/myPlace/selectRankPlace',
+					type: 'POST',
+					data: {"LIKEPLACE_PLACE" : rankPlaceNum },
+					dataType: 'json',
+					success: function(result) {
+						
+						tempPlaceName = result["LIKEPLACE_NAME"];
+						tempPlaceLat = result["LIKEPLACE_LAT"];
+						tempPlaceLng = result["LIKEPLACE_LNG"];
+						tempPlaceAddr = result["LIKEPLACE_ADDR"];
+						
+						// 새 마커 추가
+						marker = new kakao.maps.Marker({
+							map: map,
+							position: new kakao.maps.LatLng(tempPlaceLat, tempPlaceLng),
+							clickable: true
+						});
+						
+						var iwContent3 = '<div class="placeName" style="display: inline-flex; margin: 0!important; align-items:center; min-width: 50px; flex-wrap: nowrap!important; height: 30px!important; padding:5px;">'
+							+ tempPlaceName
+							+ '</div>';
+			
+						// 클릭한 랭킹 장소가 내가 좋아요했는지 여부를 확인해야함(현재 미구현)
+						var iwContent4 = '<div class="placeDetail">'
+							+	'<h2>'
+							+	'<div style="display:flex;">'
+							+		'<div id="placeName">'
+							+	 		tempPlaceName
+							+		'</div>'
+							+		'&nbsp;<i class="fa-solid fa-heart likeBtn" ></i>' //까만하트
+							+		'&nbsp;<i type="button" class="fa-solid fa-user" id="likeUser"></i>' // 사람아이콘
+							+	'</div>'
+							+	'</h2>'
+							+	'<div>'
+							+		'&nbsp;'
+							+	'</div>'
+							+	'<div id="placeAddr">'
+							+		'<h5>'+ tempPlaceAddr +'</h5>' // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+							+	'</div>'
+							+	'<input type="hidden" class="likePlaceNum" value="' + rankPlaceNum + '">'
+							+	'<input type="hidden" class="placeLat" value="' + tempPlaceLat + '">'
+							+	'<input type="hidden" class="placeLng" value="' + tempPlaceLng + '">'
+							+ '</div>'
+			
+						var infowindow3 = new kakao.maps.InfoWindow({
+							content : iwContent3,
+						});
+										
+						var infowindow4 = new kakao.maps.InfoWindow({
+							content : iwContent4,
+							removable: true
+						});
+						
+						// 마커에 마우스오버,아웃 이벤트를 적용시켜주는 익명함수
+						(function(marker, infowindow, rankPlaceNum) {
+							kakao.maps.event.addListener(marker, 'mouseover', function() {
+								infowindow.open(map, marker);
+								$(".placeName").parent().parent().addClass("placeName_grandParent");
+								$(".placeName").parent().addClass("placeName_parent");
+								});
+							
+							kakao.maps.event.addListener(marker, 'mouseout', function() {
+								infowindow.close();
+								});
+						})(marker, infowindow3);
+						
+						// 인포윈도우2 open&close 이벤트를 설정하는 익명함수
+						(function(marker, infowindow, e) {
+							kakao.maps.event.addListener(marker, 'click', function() {
+								$('#map').off('click',mapClickPopup); // 맵을 클릭했을 때 동작하는 팝업 이벤트를 동작하지 않도록 off
+								infowindow.open(map, marker);
+								$(".placeDetail").parent().parent().addClass("placeDetail_grandParent");
+								$(".board_hide").addClass('board_show'); // board_show 클래스 추가(top:70%를 우선 적용)
+								});
+							
+							// 지도를 클릭 시 인포윈도우 close
+							kakao.maps.event.addListener(map, 'click', function() {
+								infowindow.close(map, marker);
+								});
+							
+						})(marker, infowindow4);
+
+						//마커 클릭 시 실행되는 게시판 관련기능 설정
+						kakao.maps.event.addListener(marker, 'click', makeOverListener(map, marker, rankPlaceNum));
+						
+						moveLatLon = new kakao.maps.LatLng(tempPlaceLat, tempPlaceLng); // 해당좌표가 지도 가운데 오도록 이동
+						
+						// 지도 중심을 이동 시킵니다
+						map.setCenter(moveLatLon);
+						map.setLevel(3);
+						// setCenter 직후 setLevel을 실행 시 마커가 가운데에 위치하지 않아서 setCenter를 한 번 더 실행
+						map.setCenter(moveLatLon);
+						
+						daum.maps.event.trigger(marker, "click");
+						
+					}
+					, error: function(error){
+						alert("실패");
+						console.log("에러 : " + error);
+					}
+				});
+			}
+		}
+		
+		
+		//게시판 상세, 수정, 작성 등에서 돌아왔을 경우 마지막 위치를 기억
+		urlAA = urlParams.get('AA');
+		urlCC = urlParams.get('currentPage');
+		urlPlaceNum = urlParams.get('BOARD_PLACE');
+		var tempPlaceNum;
+		var tempPlaceName;
+		var tempPlaceLat;
+		var tempPlaceLng;
+		var tempPlaceAddr;
+		
+		// url을 통해서 전달된 urlAA값이 존재할 경우 게시판을 활성화시키고 저장해둔 위치로 이동(AA,CC 활용)
+		if(urlAA != null){
+			if(urlAA != 'null'){
+				tempPlaceNum = urlPlaceNum;
+				
+				var memId = '<%= session.getAttribute("MEM_ID") %>';
+				
+				// placeNum을 이용해서 장소의 임시정보를 불러온다.
+				$.ajax({
+					url: '/myPlace/selectTempPlace',
+					type: 'POST',
+					data: {"LIKEPLACE_PLACE" : tempPlaceNum,
+							"LIKEPLACE_MEM" : memId},
+					dataType: 'json',
+					success: function(result) {
+						
+						tempPlaceName = result["LIKEPLACE_NAME"];
+						tempPlaceLat = result["LIKEPLACE_LAT"];
+						tempPlaceLng = result["LIKEPLACE_LNG"];
+						tempPlaceAddr = result["LIKEPLACE_ADDR"];
+						
+						// 새 마커 추가
+						marker = new kakao.maps.Marker({
+							map: map,
+							position: new kakao.maps.LatLng(tempPlaceLat, tempPlaceLng),
+							clickable: true
+						});
+						
+						var iwContent3 = '<div class="placeName" style="display: inline-flex; margin: 0!important; align-items:center; min-width: 50px; flex-wrap: nowrap!important; height: 30px!important; padding:5px;">'
+							+ tempPlaceName
+							+ '</div>';
+			
+						// 이미 좋아하는 장소이므로 하트를 빨간색으로 설정
+						var iwContent4 = '<div class="placeDetail">'
+							+	'<h2>'
+							+	'<div style="display:flex;">'
+							+		'<div id="placeName">'
+							+	 		tempPlaceName
+							+		'</div>'
+							+		'&nbsp;<i class="fa-solid fa-heart dislikeBtn" ></i>' //빨간하트
+							+		'&nbsp;<i type="button" class="fa-solid fa-user" id="likeUser"></i>' // 사람아이콘
+							+	'</div>'
+							+	'</h2>'
+							+	'<div>'
+							+		'&nbsp;'
+							+	'</div>'
+							+	'<div id="placeAddr">'
+							+		'<h5>'+ tempPlaceAddr +'</h5>' // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+							+	'</div>'
+							+	'<input type="hidden" class="likePlaceNum" value="' + tempPlaceNum + '">'
+							+	'<input type="hidden" class="placeLat" value="' + tempPlaceLat + '">'
+							+	'<input type="hidden" class="placeLng" value="' + tempPlaceLng + '">'
+							+ '</div>'
+			
+						var infowindow3 = new kakao.maps.InfoWindow({
+							content : iwContent3,
+						});
+										
+						var infowindow4 = new kakao.maps.InfoWindow({
+							content : iwContent4,
+							removable: true
+						});
+						
+						// 마커에 마우스오버,아웃 이벤트를 적용시켜주는 익명함수
+						(function(marker, infowindow, tempPlaceNum) {
+							kakao.maps.event.addListener(marker, 'mouseover', function() {
+								infowindow.open(map, marker);
+								$(".placeName").parent().parent().addClass("placeName_grandParent");
+								$(".placeName").parent().addClass("placeName_parent");
+								});
+							
+							kakao.maps.event.addListener(marker, 'mouseout', function() {
+								infowindow.close();
+								});
+						})(marker, infowindow3);
+						
+						// 인포윈도우2 open&close 이벤트를 설정하는 익명함수
+						(function(marker, infowindow, e) {
+							kakao.maps.event.addListener(marker, 'click', function() {
+								$('#map').off('click',mapClickPopup); // 맵을 클릭했을 때 동작하는 팝업 이벤트를 동작하지 않도록 off
+								infowindow.open(map, marker);
+								$(".placeDetail").parent().parent().addClass("placeDetail_grandParent");
+								$(".board_hide").addClass('board_show'); // board_show 클래스 추가(top:70%를 우선 적용)
+								});
+							
+							// 지도를 클릭 시 인포윈도우 close
+							kakao.maps.event.addListener(map, 'click', function() {
+								infowindow.close(map, marker);
+								});
+							
+						})(marker, infowindow4);
+
+						//마커 클릭 시 실행되는 게시판 관련기능 설정
+						kakao.maps.event.addListener(marker, 'click', makeOverListener(map, marker, tempPlaceNum));
+						
+						moveLatLon = new kakao.maps.LatLng(tempPlaceLat, tempPlaceLng); // 해당좌표가 지도 가운데 오도록 이동
+						
+						// 지도 중심을 이동 시킵니다
+						map.setCenter(moveLatLon);
+						map.setLevel(3);
+						// setCenter 직후 setLevel을 실행 시 마커가 가운데에 위치하지 않아서 setCenter를 한 번 더 실행
+						map.setCenter(moveLatLon);
+						
+						daum.maps.event.trigger(marker, "click");
+						
+					}
+					, error: function(error){
+						alert("실패");
+						console.log("에러 : " + error);
+					}
+				});
+				
+				
+				/* 
+				$(".board_hide").addClass('board_show'); // board_show 클래스 추가(top:70%를 우선 적용)
+				fn_createPaging(urlPlaceNum, urlAA) //Ajax 함수
+				selectPageBoard(A, urlAA); // 일반함수
+				fn_selectPage(urlCC, urlPlaceNum)
+				$("#addWriteBtn").html('<div class="btn_write" id="write" name="' + urlPlaceNum + '">글쓰기</div>');
+				 */
+			}
+		}
+		
+		
 		
 		/* @@@@@@@@@@ 카테고리를 선택했을 때 start @@@@@@@@@@ */
 		$(document).on("click", ".category", function(e) {
@@ -588,6 +813,14 @@ h5 {
 						//마커 클릭 시 실행되는 게시판 관련기능 설정
 						kakao.maps.event.addListener(marker, 'click', makeOverListener(map, marker, placeNum));
 						
+						// 마커 클릭 시 장소에대한 임시정보 저장하는 기능 설정
+						kakao.maps.event.addListener(marker, 'click', saveTempPlace(placeData[i]["id"],
+																		placeData[i]["name"],
+																		placeData[i]["lat"],
+																		placeData[i]["lng"],
+																		placeData[i]["addr"]
+																		));
+						
 						// 각 마커에 마우스오버,아웃 이벤트를 적용시켜주는 익명함수
 						(function(marker, infowindow, placeNum) {
 							kakao.maps.event.addListener(marker, 'mouseover', function() {
@@ -648,14 +881,11 @@ h5 {
 			return function () {
 				currentPNG = 1;
 				
-				// placeNum을 이용하여 페이징을 구성
-				fn_createPaging(placeNum, currentPNG);
-				selectPageBoard(A, currentPNG);	// A = 2, currentPNG = 1
-				/* createPageNum(A, B, currentPNG); */
+				var selectedPage = 1;
 				
-				/* 클릭한 page의 게시글 5개를 불러오는 기능 start */
-				fn_selectPage(1, placeNum);
-				/* 클릭한 page의 게시글 5개를 불러오는 기능 end */
+				// placeNum을 이용하여 페이징을 구성
+				fn_createPaging(placeNum, currentPNG, selectedPage);
+				selectPageBoard(A, currentPNG);	// A = 2, currentPNG = 1
 				
 				$("#addWriteBtn").html('<div class="btn_write" id="write" name="' + placeNum + '">글쓰기</div>');
 				$(".board_hide").addClass('board_show'); // board_show 클래스 추가(top:70%를 우선 적용)
@@ -665,7 +895,8 @@ h5 {
              
              
 		/* @@@@@ sidebar에서 동작하는 기능 start @@@@@ */
-		/* 클릭한 LIKEPLACE를 지도의 중심으로 위치시킨다. */
+		
+		/* @@@@@@@@@@ 클릭한 LIKEPLACE를 지도의 중심으로 위치시킨다. @@@@@@@@@@ */
 		$(document).on("click", ".likePlace", function(e) {
 			e.preventDefault();
 			var likePlaceName = $(this).text();
@@ -674,9 +905,9 @@ h5 {
 			var likePlaceLng = $(this).find('[name="likePlaceLng"]').val();
 			var likePlaceAddr = $(this).find('[name="likePlaceAddr"]').val();
 			
-			var moveLatLon = new kakao.maps.LatLng(likePlaceLat, likePlaceLng); // 해당좌표가 지도 가운데 오도록 이동
+			moveLatLon = new kakao.maps.LatLng(likePlaceLat, likePlaceLng); // 해당좌표가 지도 가운데 오도록 이동
 			
-			// 해당 장소의 마커를 생성
+			/* 해당 장소의 마커를 생성 */
 
 			// 기존의 마커를 모두 지우기
 			for (var i = 0; i < markers.length; i++) {
@@ -727,7 +958,7 @@ h5 {
 			});
 							
 			// 마커에 마우스오버,아웃 이벤트를 적용시켜주는 익명함수
-			(function(marker, infowindow, placeNum) {
+			(function(marker, infowindow, likePlaceNum) {
 				kakao.maps.event.addListener(marker, 'mouseover', function() {
 					infowindow.open(map, marker);
 					$(".placeName").parent().parent().addClass("placeName_grandParent");
@@ -776,7 +1007,7 @@ h5 {
 		})
 		
 		/* 특정 장소에대한 게시글의 수를 확인하여 페이징을 형성하는 기능 start */
-		function fn_createPaging(placeNum, currentPNG){
+		function fn_createPaging(placeNum, currentPNG, selectedPage){
 			
 			pageNumGroup = [];
 			
@@ -802,6 +1033,10 @@ h5 {
 					
 					createPageNum(A, B, currentPNG);
 					
+					/* 클릭한 page의 게시글 5개를 불러오는 기능 start */
+					fn_selectPage(selectedPage, placeNum);
+					/* 클릭한 page의 게시글 5개를 불러오는 기능 end */
+					
 				}
 			});
 		}
@@ -809,8 +1044,6 @@ h5 {
 		
 		/* 클릭한 place의 게시글을 불러오는 기능 start */
 		function fn_selectPage(selectedPage, placeNum){
-			var boardPerPage = 5;  //한페이지당 출력할 게시물의 수
-			var pagePerGroup = 5; // 그룹당 표시할 페이지 수    
 			var currentPage = selectedPage; // 현재 페이지 번호
 			var startIdx = currentPage * boardPerPage - ( boardPerPage -1);
 			var endIdx = currentPage * boardPerPage;
@@ -1122,6 +1355,38 @@ h5 {
 		var MEM_ID = $(this).text();
 		fn_addPlace(MEM_ID);
 	})
+	
+	/* 마크를 클릭했을 때, 장소정보를 LIKEPLACE에 임시로 저장(STATE='2') start */
+	function saveTempPlace(placeNum, name, lat, lng, addr){
+		return function () {
+		var memId = '<%= session.getAttribute("MEM_ID") %>';
+		
+		var tempData = {"LIKEPLACE_MEM": memId,
+						"LIKEPLACE_PLACE": placeNum,
+						"LIKEPLACE_NAME": name,
+						"LIKEPLACE_LAT": lat,
+						"LIKEPLACE_LNG": lng,
+						"LIKEPLACE_ADDR": addr
+						}
+		
+		$.ajax({
+			url: '/myPlace/addTempPlace',
+			type: 'POST',
+			data: tempData,
+			success: function(data) {
+				/* 임시 데이터 저장 */
+			}
+			, error: function(error){
+				alert("실패");
+				console.log("에러 : " + error);
+			}
+		});
+		
+	}
+	}
+	/* 마크를 클릭했을 때, 장소정보를 LIKEPLACE에 임시로 저장(STATE='2') end */
+	
+
 	
    </script>
 </body>

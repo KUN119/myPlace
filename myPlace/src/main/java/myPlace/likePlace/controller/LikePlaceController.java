@@ -134,4 +134,44 @@ public class LikePlaceController {
         
         return idInLikePlace;
     }
+	
+	@RequestMapping(value="/addTempPlace")
+    public void addTempPlace(@RequestParam Map<String, Object> map) throws Exception{
+		
+		// 이미 임시데이터가 저장되어있는지 확인
+		Map<String, Object> tempPlace = likePlaceService.selectTempPlace(map);
+		
+		//데이터가 이미 존재한다면
+		if(tempPlace != null) {
+			// 장소정보를 저장하지 않음
+		}else {
+			// 장소정보를 임시로 저장
+			likePlaceService.insertTempPlace(map);
+		}
+		
+	}
+	
+	@RequestMapping(value="/deleteTempPlace")
+    public void deleteTempPlace(@RequestParam Map<String, Object> map) throws Exception{
+		// 임시로 저장한 장소정보를 삭제
+		likePlaceService.deleteTempPlace(map);
+	}
+	
+	@RequestMapping(value="/selectTempPlace")
+    public Map<String, Object> selectTempPlace(@RequestParam Map<String, Object> map) throws Exception{
+		// 임시로 저장한 장소정보를 조회
+		Map<String, Object> result = likePlaceService.selectTempPlace(map);
+		
+		return result;
+	}
+	
+	@RequestMapping(value="/selectRankPlace")
+    public Map<String, Object> selectRankPlace(@RequestParam Map<String, Object> map) throws Exception{
+		// 임시로 저장한 장소정보를 조회
+		Map<String, Object> result = likePlaceService.selectRankPlace(map);
+		
+		return result;
+	}
+	
+	
 }

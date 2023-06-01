@@ -4,6 +4,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>  
 
 <html lang="ko">
+<title>myPlace</title>
 <head>
 <link rel="stylesheet" type="text/css" href="<c:url value='/css/ui.css'/>" />
 <!-- jQuery -->
@@ -20,7 +21,7 @@
          </colgroup>
          <caption>게시글 작성</caption>
          <tbody>
-         	<tr>
+            <tr>
                <th scope="row">작성자</th>
                <th id="boardWriter">${sessionScope.MEM_ID}</th>
             </tr>
@@ -48,15 +49,15 @@
 <script>
 
 $(document).ready(function(){
-	$("#list").on("click", function(e){ //목록으로 버튼
-		e.preventDefault();
-		var urlParams = new URLSearchParams(window.location.search);
-		var AA = urlParams.get('AA');
-		var CC = urlParams.get('currentPage');
-		var placeNum = urlParams.get('BOARD_PLACE');
-		 var pagingUrl = "/myPlace/mainPage?BOARD_PLACE="+placeNum+"&AA=" +AA + "&currentPage=" + CC;
-		 location.href=pagingUrl;
-	});
+   $("#list").on("click", function(e){ //목록으로 버튼
+      e.preventDefault();
+      var urlParams = new URLSearchParams(window.location.search);
+      var AA = urlParams.get('AA');
+      var CC = urlParams.get('currentPage');
+      var placeNum = urlParams.get('BOARD_PLACE');
+       var pagingUrl = "/myPlace/mainPage?BOARD_PLACE="+placeNum+"&AA=" +AA + "&currentPage=" + CC;
+       location.href=pagingUrl;
+   });
    
    $("#write").on("click", function(e){ //작성하기 버튼
       e.preventDefault();
@@ -89,14 +90,14 @@ $(document).ready(function(){
             , dataType : "text"
             , success: function(result){
                
-            	var urlParams = new URLSearchParams(window.location.search);
+               var urlParams = new URLSearchParams(window.location.search);
 
-        		var AA = urlParams.get('AA');
-        		var CC = urlParams.get('currentPage');
-        		var placeNum = urlParams.get('BOARD_PLACE');
-        		 var pagingUrl = "/myPlace/mainPage?BOARD_NUM="+result+"&BOARD_PLACE="+placeNum+"&AA=" +AA + "&currentPage=" + CC;
-        		 location.href=pagingUrl;
-            	
+              var AA = urlParams.get('AA');
+              var CC = urlParams.get('currentPage');
+              var placeNum = urlParams.get('BOARD_PLACE');
+               var pagingUrl = "/myPlace/boardDetail?BOARD_NUM="+result+"&BOARD_PLACE="+placeNum+"&AA=" +AA + "&currentPage=" + CC;
+               location.href=pagingUrl;
+               
                
             }
             , error: function(error){

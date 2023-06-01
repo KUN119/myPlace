@@ -66,6 +66,8 @@ public class MainController {
 	   public String boardCount(@RequestParam Map<String, Object> map) throws Exception {
 		 log.debug(map);
 		 
+		 System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+map.get("BOARD_PLACE"));
+		 
 		 String boardCount = boardService.boardCount(map);
 		 System.out.println(boardCount);
 		 

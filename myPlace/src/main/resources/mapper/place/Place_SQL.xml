@@ -36,6 +36,7 @@
 		]]>
 	</select>
 	
+	<!-- 
 	<select id="selectMonthlyPlaceRank" parameterType="hashmap" resultType="hashmap"> 
 		<![CDATA[
 			SELECT DISTINCT *
@@ -47,6 +48,18 @@
 				FROM PLACE P, LIKEPLACE LP
 				WHERE P.PLACE_NUM = LP.LIKEPLACE_PLACE)
 			WHERE MONTH = #{PLACE_MONTH}
+			ORDER BY CNT DESC
+		]]>
+	</select>
+	 -->
+	 
+	<select id="selectMonthlyPlaceRank" parameterType="hashmap" resultType="hashmap"> 
+		<![CDATA[
+			SELECT DISTINCT LP.*, COUNT(LP.LIKEPLACE_PLACE) AS CNT
+			FROM LIKEPLACE LP
+			WHERE LP.LIKEPLACE_STATE = '1'
+			  AND EXTRACT(MONTH FROM LP.LIKEPLACE_DATE) = 5
+			GROUP BY LP.LIKEPLACE_PLACE, LP.LIKEPLACE_MEM, LP.LIKEPLACE_DATE, LP.LIKEPLACE_LAT, LP.LIKEPLACE_NAME, LP.LIKEPLACE_LNG, LP.LIKEPLACE_ADDR, LP.LIKEPLACE_STATE
 			ORDER BY CNT DESC
 		]]>
 	</select>
