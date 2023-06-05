@@ -296,7 +296,7 @@ $(document).ready(function(){
 					str +='<div class="rankReset" style="display: flex; flex-direction: row; justify-content: space-between;" data-num="'+value.LIKEPLACE_PLACE+'">' + value.LIKEPLACE_NAME 
 						+ 	'<div style="display: flex; justify-content: flex-end;">' 
 						+ 		'<i class="fa-solid fa-heart" style="color: #ff0000;"></i>'
-						+ 		value.CNT +'<br/>'
+						+ 		value.TOTAL_CNT +'<br/>'
 						+ 	'</div>'
 						+ '</div>';
 						
