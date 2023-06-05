@@ -57,13 +57,13 @@ h5 {
 }
 
 .board_show {
-	top: 70% !important;
+	top: 65% !important;
 }
 
 .board_hide {
 	position: absolute;
 	top: 100%;
-	height: 30%;
+	height: 35%;
 	width: 100%;
 	display: flex;
 	justify-content:center;
@@ -651,7 +651,6 @@ h5 {
 						
 					}
 					, error: function(error){
-						alert("실패");
 						console.log("에러 : " + error);
 					}
 				});

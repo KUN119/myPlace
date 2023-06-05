@@ -22,48 +22,48 @@
       ]]>
    </select> -->
 
-	<!-- 게시판 목록 -->
-	<select id="selectLikePlaceList" parameterType="hashmap" resultType="hashmap"> 
-		<![CDATA[
-			SELECT
-				LIKEPLACE_NAME,
-				LIKEPLACE_PLACE,
-				LIKEPLACE_LAT,
-				LIKEPLACE_LNG,
-				LIKEPLACE_ADDR
-			FROM
-				LIKEPLACE
-			WHERE
-				LIKEPLACE_MEM = #{MEM_ID} and LIKEPLACE_STATE = '1'
-		]]>
-	</select>
-	
+   <!-- 게시판 목록 -->
+   <select id="selectLikePlaceList" parameterType="hashmap" resultType="hashmap"> 
+      <![CDATA[
+         SELECT
+            LIKEPLACE_NAME,
+            LIKEPLACE_PLACE,
+            LIKEPLACE_LAT,
+            LIKEPLACE_LNG,
+            LIKEPLACE_ADDR
+         FROM
+            LIKEPLACE
+         WHERE
+            LIKEPLACE_MEM = #{MEM_ID} and LIKEPLACE_STATE = '1'
+      ]]>
+   </select>
+   
 
-	<!-- 찜하기 -->
-	 <insert id="insertLikePlace" parameterType="hashmap">
-		<![CDATA[
-			INSERT INTO LIKEPLACE (
-				LIKEPLACE_MEM,
-				LIKEPLACE_PLACE,
-				LIKEPLACE_NAME,
-				LIKEPLACE_LAT,
-				LIKEPLACE_LNG,
-				LIKEPLACE_ADDR,
-				LIKEPLACE_STATE
-				)
-			VALUES (
-				#{LIKEPLACE_MEM},
-				#{LIKEPLACE_PLACE},
-				#{LIKEPLACE_NAME},
-				#{LIKEPLACE_LAT},
-				#{LIKEPLACE_LNG},
-				#{LIKEPLACE_ADDR},
-				'1'
-				)
-		]]>
-	</insert>    
-	
-	<!-- 찜취소 -->
+   <!-- 찜하기 -->
+    <insert id="insertLikePlace" parameterType="hashmap">
+      <![CDATA[
+         INSERT INTO LIKEPLACE (
+            LIKEPLACE_MEM,
+            LIKEPLACE_PLACE,
+            LIKEPLACE_NAME,
+            LIKEPLACE_LAT,
+            LIKEPLACE_LNG,
+            LIKEPLACE_ADDR,
+            LIKEPLACE_STATE
+            )
+         VALUES (
+            #{LIKEPLACE_MEM},
+            #{LIKEPLACE_PLACE},
+            #{LIKEPLACE_NAME},
+            #{LIKEPLACE_LAT},
+            #{LIKEPLACE_LNG},
+            #{LIKEPLACE_ADDR},
+            '1'
+            )
+      ]]>
+   </insert>    
+   
+   <!-- 찜취소 -->
     <delete id="disLikePlace" parameterType="hashmap">
     <![CDATA[
         DELETE FROM LIKEPLACE
@@ -71,108 +71,121 @@
         AND LIKEPLACE_PLACE = #{LIKEPLACE_PLACE}
         AND LIKEPLACE_STATE = '1'
     ]]>
-	</delete> 
+   </delete> 
 
-	<!-- 찜한 목록 -->
-	<select id="selectLikePlace" parameterType="hashmap" resultType="hashmap">
-	<![CDATA[
+   <!-- 찜한 목록 -->
+   <select id="selectLikePlace" parameterType="hashmap" resultType="hashmap">
+   <![CDATA[
         SELECT 
-        	LIKEPLACE_PLACE
+           LIKEPLACE_PLACE
         FROM
-        	LIKEPLACE
+           LIKEPLACE
         WHERE
-        	LIKEPLACE_MEM = #{MEM_ID} AND LIKEPLACE_STATE = '1'
+           LIKEPLACE_MEM = #{MEM_ID} AND LIKEPLACE_STATE = '1'
     ]]>
     </select>
 
 
-	<!-- 장소를 좋아하는 사람의 아이디 출력 -->
-<!-- 	<select id="selectIdInLikePlace" parameterType="hashmap" resultType="hashmap"> 
-		<![CDATA[
-			SELECT M.MEM_ID
-			FROM LIKEPLACE LP, PLACE P, MEMBER M 
-			WHERE LP.LIKEPLACE_MEM = M.MEM_ID
-			AND LP.LIKEPLACE_PLACE = P.PLACE_NUM
-			AND LP.LIKEPLACE_PLACE = #{PLACE_NUM}
-		]]>
-	</select> -->
-	
-	<!-- 장소를 좋아하는 사람의 아이디 출력 -->
-	<select id="selectIdInLikePlace" parameterType="hashmap" resultType="hashmap"> 
-		<![CDATA[
-			SELECT
-				LIKEPLACE_MEM
-			FROM
-				LIKEPLACE 
-			WHERE
-				LIKEPLACE_PLACE = #{PLACE_NUM} AND LIKEPLACE_STATE = '1'
-		]]>
-	</select>
-	
-	<!-- 장소정보 임시저장 -->
-	 <insert id="insertTempPlace" parameterType="hashmap">
-		<![CDATA[
-			INSERT INTO LIKEPLACE (
-				LIKEPLACE_MEM,
-				LIKEPLACE_PLACE,
-				LIKEPLACE_NAME,
-				LIKEPLACE_LAT,
-				LIKEPLACE_LNG,
-				LIKEPLACE_ADDR,
-				LIKEPLACE_STATE
-				)
-			VALUES (
-				#{LIKEPLACE_MEM},
-				#{LIKEPLACE_PLACE},
-				#{LIKEPLACE_NAME},
-				#{LIKEPLACE_LAT},
-				#{LIKEPLACE_LNG},
-				#{LIKEPLACE_ADDR},
-				'2'
-				)
-		]]>
-	</insert>
-	
-	<!-- 임시로 저장한 장소정보를 모두 삭제 -->
+   <!-- 장소를 좋아하는 사람의 아이디 출력 -->
+<!--    <select id="selectIdInLikePlace" parameterType="hashmap" resultType="hashmap"> 
+      <![CDATA[
+         SELECT M.MEM_ID
+         FROM LIKEPLACE LP, PLACE P, MEMBER M 
+         WHERE LP.LIKEPLACE_MEM = M.MEM_ID
+         AND LP.LIKEPLACE_PLACE = P.PLACE_NUM
+         AND LP.LIKEPLACE_PLACE = #{PLACE_NUM}
+      ]]>
+   </select> -->
+   
+   <!-- 장소를 좋아하는 사람의 아이디 출력 -->
+   <select id="selectIdInLikePlace" parameterType="hashmap" resultType="hashmap"> 
+      <![CDATA[
+         SELECT
+            LIKEPLACE_MEM
+         FROM
+            LIKEPLACE 
+         WHERE
+            LIKEPLACE_PLACE = #{PLACE_NUM} AND LIKEPLACE_STATE = '1'
+      ]]>
+   </select>
+   
+   <!-- 장소정보 임시저장 -->
+    <insert id="insertTempPlace" parameterType="hashmap">
+      <![CDATA[
+         INSERT INTO LIKEPLACE (
+            LIKEPLACE_MEM,
+            LIKEPLACE_PLACE,
+            LIKEPLACE_NAME,
+            LIKEPLACE_LAT,
+            LIKEPLACE_LNG,
+            LIKEPLACE_ADDR,
+            LIKEPLACE_STATE
+            )
+         VALUES (
+            #{LIKEPLACE_MEM},
+            #{LIKEPLACE_PLACE},
+            #{LIKEPLACE_NAME},
+            #{LIKEPLACE_LAT},
+            #{LIKEPLACE_LNG},
+            #{LIKEPLACE_ADDR},
+            '2'
+            )
+      ]]>
+   </insert>
+   
+   <!-- 임시로 저장한 장소정보를 모두 삭제 -->
     <delete id="deleteTempPlace" parameterType="hashmap">
     <![CDATA[
         DELETE FROM LIKEPLACE
         WHERE LIKEPLACE_MEM = #{LIKEPLACE_MEM}
-        	AND LIKEPLACE_STATE = '2'
+           AND LIKEPLACE_STATE = '2'
     ]]>
-	</delete> 
-	
-	<!-- 임시저장한 장소를 조회 -->
-	<select id="selectTempPlace" parameterType="hashmap" resultType="hashmap"> 
-		<![CDATA[
-			SELECT
-				LIKEPLACE_NAME,
-				LIKEPLACE_LAT,
-				LIKEPLACE_LNG,
-				LIKEPLACE_ADDR
-			FROM
-				LIKEPLACE
-			WHERE
-				LIKEPLACE_PLACE = #{LIKEPLACE_PLACE}
-					AND LIKEPLACE_MEM = #{LIKEPLACE_MEM}
-					AND LIKEPLACE_STATE = '2'
-		]]>
-	</select>
-	
-	<!-- 임시저장한 장소를 조회 -->
-	<select id="selectRankPlace" parameterType="hashmap" resultType="hashmap"> 
-		<![CDATA[
-			SELECT
-				LIKEPLACE_NAME,
-				LIKEPLACE_LAT,
-				LIKEPLACE_LNG,
-				LIKEPLACE_ADDR
-			FROM
-				LIKEPLACE
-			WHERE
-				LIKEPLACE_PLACE = #{LIKEPLACE_PLACE}
-					AND LIKEPLACE_STATE = '1'
-		]]>
-	</select>
-	
+   </delete> 
+   
+   <!-- 임시저장한 장소를 조회 -->
+   <select id="selectTempPlace" parameterType="hashmap" resultType="hashmap"> 
+      <![CDATA[
+         SELECT *
+            FROM (
+                SELECT
+                    LIKEPLACE_NAME,
+                    LIKEPLACE_LAT,
+                    LIKEPLACE_LNG,
+                    LIKEPLACE_ADDR
+                FROM
+                    LIKEPLACE
+                WHERE
+                    LIKEPLACE_PLACE = #{LIKEPLACE_PLACE}
+                        AND (LIKEPLACE_STATE = '2' OR LIKEPLACE_STATE = '1')
+            ) WHERE ROWNUM <= 1
+      ]]>
+   </select>
+   
+   <!-- 임시저장한 장소를 조회 -->
+   <select id="selectRankPlace" parameterType="hashmap" resultType="hashmap"> 
+      <![CDATA[
+         SELECT
+           LIKEPLACE_NAME,
+           LIKEPLACE_LAT,
+           LIKEPLACE_LNG,
+           LIKEPLACE_ADDR
+         FROM
+           (
+             SELECT
+               LIKEPLACE_NAME,
+               LIKEPLACE_LAT,
+               LIKEPLACE_LNG,
+               LIKEPLACE_ADDR,
+               ROW_NUMBER() OVER (PARTITION BY LIKEPLACE_PLACE ORDER BY LIKEPLACE_DATE DESC) AS rn
+             FROM
+               LIKEPLACE
+             WHERE
+               LIKEPLACE_PLACE = #{LIKEPLACE_PLACE}
+               AND LIKEPLACE_STATE = '1'
+           ) sub
+         WHERE
+           rn = 1
+      ]]>
+   </select>
+   
 </mapper>

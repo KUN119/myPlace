@@ -89,7 +89,7 @@
 					</h3>
 					<span
 						style="background-color: white; padding: 10px 50px 10px 10px; border: solid 1px black;">
-						<input type="text" id="joinPass2" style="border: 0;">
+						<input type="password" id="joinPass2" style="border: 0;">
 					</span>
 				</div>
 				<div class="join_element">
